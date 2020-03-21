@@ -1,20 +1,16 @@
-<!doctype html>
-<html>
-<head>
-	<title> Browse {{ category }}</title>
-</head>
-<body>
-<h1>Browse {{ category }}</h1>
 
-{% load static %}
-{% for item in items %}
+{% extends "Market/base.html" %}
+{% block content %}
+	{% load static %}
+	<h1>Browse {{ category }}</h1>
 
-<h2> {{ item.name }} </h2>
-<img src="{% static item.image %}" alt="picture unavailable">
-<p>Price: ${{ item.price }}, remaining quantity: {{ item.quantity }}</p>
-<p>{{ item.description }}<p>
+	{% for item in items %}
 
-{% endfor %}
+		<h2> {{ item.name }} </h2>
+		<img src="{% static item.image %}" alt="picture unavailable">
+		<p>Price: ${{ item.price }}, remaining quantity: {{ item.quantity }}</p>
+		<p>{{ item.description }}<p>
 
-</body>
-</html>
+	{% endfor %}
+{% endblock content %}
+
