@@ -8,7 +8,7 @@ from django.db import IntegrityError
 
 
 def signup(request):
-    context = {}
+    context = {'activeNavItem': 'signup'}
     if request.method == 'POST':
         form = forms.SignupForm(request.POST)
         if form.is_valid():
