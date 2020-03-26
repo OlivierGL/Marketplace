@@ -41,10 +41,9 @@ def signup(request):
                     rating=0
                 )
 
-                return HttpResponseRedirect(reverse('login'))
+                return authenticate_and_login(request, form)
             except IntegrityError:
                 form.add_error('username', 'Username is taken')
-        context['form'] = form
     else:
         form = forms.SignupForm()
 
@@ -57,16 +56,20 @@ def do_login(request):
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
-            user = authenticate(request,
-                                username=form.cleaned_data['username'],
-                                password=form.cleaned_data['password'])
-            if user is not None:
-                login(request, user)
-                if 'next' in request.GET:
-                    return HttpResponseRedirect(request.GET['next'])
-                messages.success(request, 'Login successful')
-                return HttpResponseRedirect(reverse('market-home'))
-            else:
-                messages.error(request, 'Unable to log in')
+            return authenticate_and_login(request, form)
         context['form'] = form
     return render(request, 'Users/login.html', context)
+
+
+def authenticate_and_login(request, form):
+    user = authenticate(request,
+                        username=form.cleaned_data['username'],
+                        password=form.cleaned_data['password'])
+    if user is not None:
+        login(request, user)
+        if 'next' in request.GET:
+            return HttpResponseRedirect(request.GET['next'])
+        messages.success(request, 'Login successful')
+        return HttpResponseRedirect(reverse('market-home'))
+    else:
+        messages.error(request, 'Unable to log in')
