@@ -10,9 +10,9 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     {% if title %}
-    <title>{{ title }}</title>
+        <title>{{ title }}</title>
     {% else %}
-    <title>Marketplace</title>
+        <title>Marketplace</title>
     {% endif %}
 </head>
 <body style="padding-top: 70px;">
@@ -31,24 +31,27 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">Our Market</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item {% if activeNavItem == 'paintings' %}active{% endif %}" href="/paintings">Paintings</a>
-                        <a class="dropdown-item {% if activeNavItem == 'sculptures' %}active{% endif %}" href="/sculptures">Sculptures</a>
+                        <a class="dropdown-item {% if activeNavItem == 'paintings' %}active{% endif %}"
+                           href="/paintings">Paintings</a>
+                        <a class="dropdown-item {% if activeNavItem == 'sculptures' %}active{% endif %}"
+                           href="/sculptures">Sculptures</a>
                         <a class="dropdown-item {% if activeNavItem == 'clothes' %}active{% endif %}" href="/clothes">Clothes</a>
                         <a class="dropdown-item {% if activeNavItem == 'jewelry' %}active{% endif %}" href="/jewelry">Jewelry</a>
-                        <a class="dropdown-item {% if activeNavItem == 'glass_art' %}active{% endif %}" href="/glass_art">Glass Art</a>
+                        <a class="dropdown-item {% if activeNavItem == 'glass_art' %}active{% endif %}"
+                           href="/glass_art">Glass Art</a>
                     </div>
                 </li>
                 <li class="nav-item {% if activeNavItem == 'signup' %}active{% endif %}">
                     <a class="nav-link" href="/signup">Signup</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if activeNavItem == 'login' %}active{% endif %}" href="#">Login</a>
+                <li class="nav-item {% if activeNavItem == 'login' %}active{% endif %}">
+                    <a class="nav-link" href="/login">Login</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if activeNavItem == 'cart' %}active{% endif %}" href="#">Cart</a>
+                <li class="nav-item {% if activeNavItem == 'cart' %}active{% endif %}">
+                    <a class="nav-link" href="#">Cart</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if activeNavItem == 'myProfile' %}active{% endif %}" href="#">My Profile</a>
+                <li class="nav-item {% if activeNavItem == 'myProfile' %}active{% endif %}">
+                    <a class="nav-link" href="#">My Profile</a>
                 </li>
             </ul>
         </div>
@@ -60,8 +63,20 @@
     </div>
 </nav>
 
-{% block content %}{% endblock content %}
+<div class="container">
 
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% block content %}{% endblock content %}
+
+</div>
 <!-- jQuery, Popper.js, Bootstrap JS, transition.js -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

@@ -19,7 +19,8 @@ from Users import views as users_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('signup/', users_views.signup),
+    path('signup/', users_views.signup, name='signup'),
+    path('login/', users_views.do_login, name='login'),
     path('', include('Market.urls'), name='market'),
 ]
 

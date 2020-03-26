@@ -1,6 +1,5 @@
 {% extends "Market/base.html" %}
 {% block content %}
-<div class="container">
     <form action="" method="post">
         {% csrf_token %}
         <h2>Personal Information</h2>
@@ -10,7 +9,7 @@
                     <div class="form-group">
                         <label for="firstNameInput">First Name</label>
                         <input type="text" class="form-control" id="firstNameInput" name="first_name"
-                               value="{{form.data.first_name}}">
+                               value="{{ form.data.first_name }}">
                         <small id="firstNameError" class="form-text text-muted">{{ form.first_name.errors }}</small>
                     </div>
                 </div>
@@ -18,7 +17,7 @@
                     <div class="form-group">
                         <label for="lastNameInput">Last Name</label>
                         <input type="text" class="form-control" id="lastNameInput" name="last_name"
-                               value="{{form.data.last_name}}">
+                               value="{{ form.data.last_name }}">
                         <small id="lastNameError" class="form-text text-muted">{{ form.last_name.errors }}</small>
                     </div>
                 </div>
@@ -26,12 +25,12 @@
             <div class="form-group">
                 <label for="usernameInput">Username</label>
                 <input type="text" class="form-control" id="usernameInput" name="username"
-                       value="{{form.data.username}}">
+                       value="{{ form.data.username }}">
                 <small id="usernameError" class="form-text text-muted">{{ form.username.errors }}</small>
             </div>
             <div class="form-group">
                 <label for="emailInput">Email address</label>
-                <input type="email" class="form-control" id="emailInput" name="email" value="{{form.data.email}}"
+                <input type="email" class="form-control" id="emailInput" name="email" value="{{ form.data.email }}"
                        placeholder="email@example.com">
                 <small id="emailError" class="form-text text-muted">{{ form.email.errors }}</small>
             </div>
@@ -56,7 +55,7 @@
                     <div class="form-group">
                         <label for="countryInput">Country</label>
                         <input type="text" class="form-control" id="countryInput" name="country"
-                               value="{{form.country.value}}" readonly="readonly">
+                               value="{{ form.country.value }}" readonly="readonly">
                         <small id="countryError" class="form-text text-muted">{{ areaConstraintMessage }}</small>
                     </div>
                 </div>
@@ -64,7 +63,7 @@
                     <div class="form-group">
                         <label for="provinceInput">Province</label>
                         <input type="text" class="form-control" id="provinceInput" name="province"
-                               value="{{form.province.value}}" readonly="readonly">
+                               value="{{ form.province.value }}" readonly="readonly">
                         <small id="provinceError" class="form-text text-muted">{{ areaConstraintMessage }}</small>
                     </div>
                 </div>
@@ -72,7 +71,7 @@
                     <div class="form-group">
                         <label for="cityInput">City</label>
                         <input type="text" class="form-control" id="cityInput" name="city"
-                               value="{{form.city.value}}" readonly="readonly">
+                               value="{{ form.city.value }}" readonly="readonly">
                         <small id="cityError" class="form-text text-muted">{{ areaConstraintMessage }}</small>
                     </div>
                 </div>
@@ -82,7 +81,7 @@
                     <div class="form-group">
                         <label for="streetAddressInput">Address</label>
                         <input type="text" class="form-control" id="streetAddressInput" name="street_address"
-                               value="{{form.data.street_address}}">
+                               value="{{ form.data.street_address }}">
                         <small id="streetAddressError" class="form-text text-muted">{{ form.street_address.errors }}
                         </small>
                     </div>
@@ -91,7 +90,7 @@
                     <div class="form-group">
                         <label for="postalCodeInput">Postal Code</label>
                         <input type="text" class="form-control" id="postalCodeInput" name="postal_code"
-                               value="{{form.data.postal_code}}">
+                               value="{{ form.data.postal_code }}">
                         <small id="postalCodeError" class="form-text text-muted">{{ form.postal_code.errors }}</small>
                     </div>
                 </div>
@@ -102,5 +101,4 @@
         </p>
 
     </form>
-</div>
 {% endblock content %}

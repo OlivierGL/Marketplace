@@ -2,6 +2,11 @@ from django import forms
 import re
 
 
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField()
+
+
 class SignupForm(forms.Form):
     username = forms.CharField()
     email = forms.EmailField()

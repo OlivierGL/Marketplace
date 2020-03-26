@@ -1,5 +1,9 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from .models import UserInfo, Address
 from . import forms
 from django.db import IntegrityError
@@ -37,7 +41,7 @@ def signup(request):
                     rating=0
                 )
 
-                return render(request, 'Market/home.html')
+                return HttpResponseRedirect(reverse('login'))
             except IntegrityError:
                 form.add_error('username', 'Username is taken')
         context['form'] = form
@@ -46,3 +50,23 @@ def signup(request):
 
     context['form'] = form
     return render(request, 'Users/signup.html', context)
+
+
+def do_login(request):
+    context = {'activeNavItem': 'login'}
+    if request.method == 'POST':
+        form = forms.LoginForm(request.POST)
+        if form.is_valid():
+            user = authenticate(request,
+                                username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                if 'next' in request.GET:
+                    return HttpResponseRedirect(request.GET['next'])
+                messages.success(request, 'Login successful')
+                return HttpResponseRedirect(reverse('market-home'))
+            else:
+                messages.error(request, 'Unable to log in')
+        context['form'] = form
+    return render(request, 'Users/login.html', context)
