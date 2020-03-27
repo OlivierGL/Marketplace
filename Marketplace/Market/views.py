@@ -2,8 +2,10 @@ from django.shortcuts import render
 
 # Create your views here.
 
+
 def home(request):
   return render(request, 'Market/home.html', {'activeNavItem': 'home'})
+
 
 def paintings(request):
 # made up item to demo the browser template. 	
@@ -21,6 +23,7 @@ def paintings(request):
   }
   return render(request, 'Market/browse.html', context)
 
+
 def sculptures(request):
   context = {
   	'category': "Sculptures",
@@ -28,6 +31,7 @@ def sculptures(request):
     'activeNavItem': "sculptures"
   }
   return render(request, 'Market/browse.html', context)
+
 
 def clothes(request):
   context = {
@@ -37,6 +41,7 @@ def clothes(request):
   }
   return render(request, 'Market/browse.html', context)
 
+
 def jewelry(request):
   context = {
   	'category': "Jewelry",
@@ -44,6 +49,7 @@ def jewelry(request):
     'activeNavItem': "jewelry"
   }
   return render(request, 'Market/browse.html', context)
+
 
 def glass_art(request):
   context = {

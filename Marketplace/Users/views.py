@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .models import UserInfo, Address
 from . import forms
 from django.db import IntegrityError
@@ -59,6 +60,13 @@ def do_login(request):
             return authenticate_and_login(request, form)
         context['form'] = form
     return render(request, 'Users/login.html', context)
+
+
+@login_required
+def do_logout(request):
+    logout(request)
+    messages.info(request, 'Logout successful')
+    return HttpResponseRedirect(reverse('login'))
 
 
 def authenticate_and_login(request, form):

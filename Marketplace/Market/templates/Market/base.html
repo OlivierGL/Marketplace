@@ -41,18 +41,24 @@
                            href="/glass_art">Glass Art</a>
                     </div>
                 </li>
-                <li class="nav-item {% if activeNavItem == 'signup' %}active{% endif %}">
-                    <a class="nav-link" href="/signup">Signup</a>
-                </li>
-                <li class="nav-item {% if activeNavItem == 'login' %}active{% endif %}">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item {% if activeNavItem == 'cart' %}active{% endif %}">
-                    <a class="nav-link" href="#">Cart</a>
-                </li>
-                <li class="nav-item {% if activeNavItem == 'myProfile' %}active{% endif %}">
-                    <a class="nav-link" href="#">My Profile</a>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item {% if activeNavItem == 'cart' %}active{% endif %}">
+                        <a class="nav-link" href="#">Cart</a>
+                    </li>
+                    <li class="nav-item {% if activeNavItem == 'myProfile' %}active{% endif %}">
+                        <a class="nav-link" href="#">My Profile</a>
+                    </li>
+                    <li class="nav-item {% if activeNavItem == 'logout' %}active{% endif %}">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item {% if activeNavItem == 'signup' %}active{% endif %}">
+                        <a class="nav-link" href="/signup">Signup</a>
+                    </li>
+                    <li class="nav-item {% if activeNavItem == 'login' %}active{% endif %}">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
 
