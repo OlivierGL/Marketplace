@@ -6,23 +6,23 @@
         <div>
             <ul class="flex-column list-group bg-light">
                 <li class="bg-light list-group-item category-link">
-                    <a class="category-link {% if activeNavItem == 'paintings' %}sidebar-active{% endif %}"
+                    <a class="category-link {% if 'paintings' in activeNavItem %}sidebar-active{% endif %}"
                        href="/paintings">Paintings</a>
                 </li>
                 <li class="bg-light list-group-item">
-                    <a class="category-link {% if activeNavItem == 'sculptures' %}sidebar-active{% endif %}"
+                    <a class="category-link {% if 'sculptures' in activeNavItem %}sidebar-active{% endif %}"
                        href="/sculptures">Sculptures</a>
                 </li>
                 <li class="bg-light list-group-item">
-                    <a class="category-link {% if activeNavItem == 'clothes' %}sidebar-active{% endif %}"
+                    <a class="category-link {% if 'clothes' in activeNavItem %}sidebar-active{% endif %}"
                        href="/clothes">Clothes</a>
                 </li>
                 <li class="bg-light list-group-item">
-                    <a class="category-link {% if activeNavItem == 'jewelry' %}sidebar-active{% endif %}"
+                    <a class="category-link {% if 'jewelry' in activeNavItem %}sidebar-active{% endif %}"
                        href="/jewelry">Jewelry</a>
                 </li>
                 <li class="bg-light list-group-item">
-                    <a class="category-link {% if activeNavItem == 'glass_art' %}sidebar-active{% endif %}"
+                    <a class="category-link {% if 'glass_art' in activeNavItem %}sidebar-active{% endif %}"
                        href="/glass_art">Glass Art</a>
                 </li>
             </ul>

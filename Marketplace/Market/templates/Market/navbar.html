@@ -11,21 +11,8 @@
             <div class="collapse navbar-collapse" id="navbarMarketplace">
                 <div class="container">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                               aria-haspopup="true" aria-expanded="false">Our Market</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item {% if activeNavItem == 'paintings' %}active{% endif %}"
-                                   href="/paintings">Paintings</a>
-                                <a class="dropdown-item {% if activeNavItem == 'sculptures' %}active{% endif %}"
-                                   href="/sculptures">Sculptures</a>
-                                <a class="dropdown-item {% if activeNavItem == 'clothes' %}active{% endif %}"
-                                   href="/clothes">Clothes</a>
-                                <a class="dropdown-item {% if activeNavItem == 'jewelry' %}active{% endif %}"
-                                   href="/jewelry">Jewelry</a>
-                                <a class="dropdown-item {% if activeNavItem == 'glass_art' %}active{% endif %}"
-                                   href="/glass_art">Glass Art</a>
-                            </div>
+                        <li class="nav-item {% if 'browse' in activeNavItem %}active{% endif %}">
+                            <a class="nav-link" href="/paintings">Our Market</a>
                         </li>
                         {% if request.user.is_authenticated %}
                             <li class="nav-item {% if activeNavItem == 'cart' %}active{% endif %}">

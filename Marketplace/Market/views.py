@@ -19,7 +19,7 @@ def paintings(request):
     context = {
         'category': "Paintings",
         'items': items,                                   #"a" is just used as a stub, replace it with items after uncommenting the above
-        'activeNavItem': "paintings"
+        'activeNavItem': "browse/paintings"
     }
     return render(request, 'Market/browse.html', context)
 
@@ -28,7 +28,7 @@ def sculptures(request):
     context = {
         'category': "Sculptures",
         'items': "a",
-        'activeNavItem': "sculptures"
+        'activeNavItem': "browse/sculptures"
     }
     return render(request, 'Market/browse.html', context)
 
@@ -37,7 +37,7 @@ def clothes(request):
     context = {
         'category': "Clothes",
         'items': "a",
-        'activeNavItem': "clothes"
+        'activeNavItem': "browse/clothes"
     }
     return render(request, 'Market/browse.html', context)
 
@@ -46,7 +46,7 @@ def jewelry(request):
     context = {
         'category': "Jewelry",
         'items': "a",
-        'activeNavItem': "jewelry"
+        'activeNavItem': "browse/jewelry"
     }
     return render(request, 'Market/browse.html', context)
 
@@ -55,7 +55,7 @@ def glass_art(request):
     context = {
         'category': "Glass Art",
         'items': "a",
-        'activeNavItem': "glass_art"
+        'activeNavItem': "browse/glass_art"
     }
     return render(request, 'Market/browse.html', context)
 
