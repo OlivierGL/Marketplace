@@ -1,0 +1,11 @@
+.head{
+    color: lightgray;
+}
+
+.category-link{
+    color: black !important;
+}
+
+.sidebar-active{
+    font-weight: bolder;
+}

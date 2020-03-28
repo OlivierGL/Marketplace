@@ -1,16 +1,21 @@
-
 {% extends "Market/base.html" %}
 {% block content %}
-	{% load static %}
-	<h1>Browse {{ category }}</h1>
+    {% load static %}
+    <h1>Browse {{ category }}</h1>
 
-	{% for item in items %}
+    <div class="row">
 
-		<h2> {{ item.name }} </h2>
-		<img src="{% static item.image %}" alt="picture unavailable">
-		<p>Price: ${{ item.price }}, remaining quantity: {{ item.quantity }}</p>
-		<p>{{ item.description }}<p>
+        {% include "Market/browse_sidebar.html" %}
 
-	{% endfor %}
+        <div class="col-9">
+            {% for item in items %}
+
+                <h2> {{ item.name }} </h2>
+                <img class="img-thumbnail" src="{% static item.image %}" alt="picture unavailable">
+                <p>Price: ${{ item.price }}, remaining quantity: {{ item.quantity }}</p>
+                <p>{{ item.description }}<p>
+
+            {% endfor %}</div>
+    </div>
 {% endblock content %}
 
