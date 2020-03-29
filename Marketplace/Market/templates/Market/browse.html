@@ -4,18 +4,30 @@
     <h1>Browse {{ category }}</h1>
 
     <div class="row">
-
-        {% include "Market/browse_sidebar.html" %}
+        <div class="col-3">
+            {% include "Market/browse_sidebar.html" %}
+        </div>
 
         <div class="col-9">
-            {% for item in items %}
-
-                <h2> {{ item.name }} </h2>
-                <img class="img-thumbnail" src="{% static item.image %}" alt="picture unavailable">
-                <p>Price: ${{ item.price }}, remaining quantity: {{ item.quantity }}</p>
-                <p>{{ item.description }}<p>
-
-            {% endfor %}</div>
+            <div class="row row-cols-1 row-cols-md-3">
+                {% for item in items %}
+                    <div class="col mb-4">
+                        <div class="card border-dark h-100">
+                            <img src="{% static item.image %}" class="card-img-top" alt="image unavailable">
+                            <div class="card-body">
+                                <a class="stretched-link h5 card-title" href="#">{{ item.name }}</a>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item text-overflow">{{ item.description }}</li>
+                                <li class="list-group-item">Price: ${{ item.price }},
+                                    Quantity: {{ item.quantity }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% empty %}
+                    Sorry, no {{ category }} are available for now.
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock content %}
-
