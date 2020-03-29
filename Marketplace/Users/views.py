@@ -57,7 +57,7 @@ def do_login(request):
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
-            return authenticate_and_login(request, form)
+            return authenticate_and_login(request, form, context)
         context['form'] = form
     return render(request, 'Users/login.html', context)
 
@@ -69,7 +69,7 @@ def do_logout(request):
     return HttpResponseRedirect(reverse('login'))
 
 
-def authenticate_and_login(request, form):
+def authenticate_and_login(request, form, context):
     user = authenticate(request,
                         username=form.cleaned_data['username'],
                         password=form.cleaned_data['password'])
@@ -81,3 +81,5 @@ def authenticate_and_login(request, form):
         return HttpResponseRedirect(reverse('market-home'))
     else:
         messages.error(request, 'Unable to log in')
+        context['form'] = form
+        return render(request, 'Users/login.html', context)
