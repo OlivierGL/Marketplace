@@ -81,6 +81,8 @@ def glass_art(request):
     }
     return render(request, 'Market/browse.html', context)
 
+
+@login_required
 def cart(request):
     context = {}
     return render(request, 'Market/cart.html', context);
