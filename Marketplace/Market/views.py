@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-
+no_product_error_message = "Sorry, no {} are available for now."
 # Create your views here.
 
 
@@ -41,7 +41,8 @@ def paintings(request):
     context = {
         'category': "Paintings",
         'items': items,
-        'activeNavItem': "browse/paintings"
+        'activeNavItem': "browse/paintings",
+        'noProductErrorMessage': no_product_error_message.format("paintings")
     }
     return render(request, 'Market/browse.html', context)
 
@@ -50,7 +51,8 @@ def sculptures(request):
     context = {
         'category': "Sculptures",
         # 'items': "a",
-        'activeNavItem': "browse/sculptures"
+        'activeNavItem': "browse/sculptures",
+        'noProductErrorMessage': no_product_error_message.format("sculptures")
     }
     return render(request, 'Market/browse.html', context)
 
@@ -59,7 +61,8 @@ def clothes(request):
     context = {
         'category': "Clothes",
         # 'items': "a",
-        'activeNavItem': "browse/clothes"
+        'activeNavItem': "browse/clothes",
+        'noProductErrorMessage': no_product_error_message.format("clothes")
     }
     return render(request, 'Market/browse.html', context)
 
@@ -68,7 +71,8 @@ def jewelry(request):
     context = {
         'category': "Jewelry",
         # 'items': "a",
-        'activeNavItem': "browse/jewelry"
+        'activeNavItem': "browse/jewelry",
+        'noProductErrorMessage': no_product_error_message.format("jewelry")
     }
     return render(request, 'Market/browse.html', context)
 
@@ -77,7 +81,8 @@ def glass_art(request):
     context = {
         'category': "Glass Art",
         # 'items': "a",
-        'activeNavItem': "browse/glass_art"
+        'activeNavItem': "browse/glass_art",
+        'noProductErrorMessage': no_product_error_message.format("glass art")
     }
     return render(request, 'Market/browse.html', context)
 
