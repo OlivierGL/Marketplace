@@ -38,3 +38,7 @@
 .price {
     font-weight: bolder;
 }
+
+.checked {
+  color: orange;
+}
