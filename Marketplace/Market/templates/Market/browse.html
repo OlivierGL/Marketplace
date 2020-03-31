@@ -15,12 +15,12 @@
                         <div class="card border-dark h-100">
                             <img src="{% static item.image %}" class="card-img-top" alt="image unavailable">
                             <div class="card-body">
-                                <a class="stretched-link h5 card-title" href="#">{{ item.name }}</a>
+                                <a class="stretched-link h5 card-title" href="/product/{{ item.pk }}">{{ item.name }}</a>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item text-overflow">{{ item.description }}</li>
                                 <li class="list-group-item">Price: ${{ item.price }},
-                                    Quantity: {{ item.quantity }}</li>
+                                    Quantity: {{ item.quantity }} pk: {{ item.pk }}</li>
                             </ul>
                         </div>
                     </div>
