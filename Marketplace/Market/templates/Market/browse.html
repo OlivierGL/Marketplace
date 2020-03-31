@@ -1,6 +1,5 @@
 {% extends "Market/base.html" %}
 {% block content %}
-    {% load static %}
     <h1>Browse {{ category }}</h1>
 
     <div class="row">
@@ -9,25 +8,7 @@
         </div>
 
         <div class="col-9">
-            <div class="row row-cols-1 row-cols-md-3">
-                {% for item in items %}
-                    <div class="col mb-4">
-                        <div class="card border-dark h-100">
-                            <img src="{% static item.image %}" class="card-img-top" alt="image unavailable">
-                            <div class="card-body">
-                                <a class="stretched-link h5 card-title" href="/product/{{ item.pk }}">{{ item.name }}</a>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item text-overflow">{{ item.description }}</li>
-                                <li class="list-group-item">Price: ${{ item.price }},
-                                    Quantity: {{ item.quantity }} pk: {{ item.pk }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                {% empty %}
-                    Sorry, no {{ category }} are available for now.
-                {% endfor %}
-            </div>
+            {% include "Market/products_list.html" %}
         </div>
     </div>
 {% endblock content %}

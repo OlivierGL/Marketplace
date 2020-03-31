@@ -10,6 +10,7 @@ class LoginForm(forms.Form):
 class SignupForm(forms.Form):
     username = forms.CharField()
     email = forms.EmailField()
+    phone_number = forms.RegexField(regex=r'^\+?1?\d{9,15}$')
     first_name = forms.CharField()
     last_name = forms.CharField()
     password = forms.CharField()
@@ -44,4 +45,3 @@ class SignupForm(forms.Form):
 
         if reg_test.match(trimmed_postal_code) is None:
             self.add_error('postal_code', 'Please enter a valid Montreal area postal code')
-
