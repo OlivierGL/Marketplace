@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -79,3 +80,9 @@ def glass_art(request):
         'activeNavItem': "browse/glass_art"
     }
     return render(request, 'Market/browse.html', context)
+
+
+@login_required
+def cart(request):
+    context = {}
+    return render(request, 'Market/cart.html', context);

@@ -83,3 +83,8 @@ def authenticate_and_login(request, form, context):
         messages.error(request, 'Unable to log in')
         context['form'] = form
         return render(request, 'Users/login.html', context)
+
+@login_required
+def profile(request):
+    context = {}
+    return render(request, 'Users/profile.html', context)
