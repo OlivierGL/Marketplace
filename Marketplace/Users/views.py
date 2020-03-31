@@ -39,10 +39,10 @@ def signup(request):
                 UserInfo.objects.create(
                     user=user_db,
                     address=address_db,
-                    rating=0
+                    rating=0,
+                    phone_number=form.cleaned_data['phone_number']
                 )
-
-                return authenticate_and_login(request, form)
+                return authenticate_and_login(request, form, context)
             except IntegrityError:
                 form.add_error('username', 'Username is taken')
     else:
