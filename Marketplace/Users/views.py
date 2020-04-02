@@ -118,20 +118,13 @@ def profile(request):
         'image': 'Market/thekiss.jpg',
         'price': '1000'},
     ]
-    address = {
-        'street_address': '123, 1st Avenue, apt 10',
-        'city': 'Montreal',
-        'province': 'Quebec',
-        'country': 'Canada',
-        'postal_code': 'H0H1H2'
-    }
+
+    user_info = UserInfo.objects.get(pk=request.user.id)
+
     context = {
         'items': items,
-        'address': address,
-        'rating': 3,
-        'fullname': "John Doe",
+        'user_info': user_info,
         'activeNavItem': "myProfile",
-        'phone_number': '(438) 111-2222',
         'noProductErrorMessage': "You have no products for sale."
     }
     return render(request, 'Users/profile.html', context)
