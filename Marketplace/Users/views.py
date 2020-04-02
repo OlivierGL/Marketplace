@@ -119,7 +119,7 @@ def profile(request):
         'price': '1000'},
     ]
 
-    user_info = UserInfo.objects.get(pk=request.user.id)
+    user_info = UserInfo.objects.get(user=request.user)
 
     context = {
         'items': items,
