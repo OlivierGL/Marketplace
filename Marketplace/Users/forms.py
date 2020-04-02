@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 import re
 
 
@@ -23,6 +25,13 @@ class SignupForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(SignupForm, self).clean()
+
+        if 'password' in cleaned_data:
+            try:
+                validate_password(cleaned_data['password'])
+            except ValidationError as err:
+                for error_message in err.messages:
+                    self.add_error('password', error_message)
 
         if 'password' in cleaned_data and 'password_confirm' in cleaned_data and cleaned_data['password'] != \
                 cleaned_data['password_confirm']:
