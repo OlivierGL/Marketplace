@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .models import UserInfo, Address
 from . import forms
 from django.db import IntegrityError
+from Market import models as market_models 
 
 
 # Create your views here.
@@ -42,6 +43,9 @@ def signup(request):
                     rating=0,
                     phone_number=form.cleaned_data['phone_number']
                 )
+
+                market_models.Cart.objects.create(user_id=user_db)
+
                 return authenticate_and_login(request, form, context)
             except IntegrityError:
                 form.add_error('username', 'Username is taken')

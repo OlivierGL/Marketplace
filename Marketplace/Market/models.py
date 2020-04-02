@@ -46,7 +46,7 @@ class GlassArt(models.Model):
 
 # Cart table, to which  cart products will be related with cart_id
 class Cart(models.Model):
-  user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+  user_id = models.OneToOneField(User, on_delete=models.CASCADE)
 
 # having the Cart intermediary allows to easily get rid of the cart products with 
 # on_delete=models.CASCADE
