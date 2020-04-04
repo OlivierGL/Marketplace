@@ -1,0 +1,37 @@
+<br/>
+{% if product.category == "PAINTING" %}
+
+    <span class="font-weight-bold">Dimensions: </span>{{ product.painting.height }} cm x {{ product.painting.width }} cm
+    <br/>
+    <br/>
+    {{ product.painting.paint }}
+
+{% elif product.category == "SCULPTURE" %}
+
+    <span class="font-weight-bold">Height: </span>{{ product.sculpture.height }}
+    <br/>
+    <br/>
+    {{ product.sculpture.material }}
+
+{% elif product.category == "GARMENT" %}
+
+    <span class="font-weight-bold">Size: </span>{{ product.garment.size }}
+    <br/>
+    <br/>
+    {{ product.garment.materials }}
+
+{% elif product.category == "JEWELRY" %}
+
+    <span class="font-weight-bold">Jewels: </span>{{ product.jewelry.jewels }}
+    <br/>
+    <br/>
+    <span class="font-weight-bold">Other materials: </span>{{ product.jewelry.other_materials }}
+
+{% elif product.category == "GLASS_ART" %}
+
+    <span class="font-weight-bold">Glass type: </span>{{ product.glassart.glass_type }}
+    <br/>
+    <br/>
+    <span class="font-weight-bold">Other materials: </span>{{ product.glassart.other_materials }}
+
+{% endif %}
