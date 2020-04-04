@@ -96,14 +96,33 @@ def glass_art(request):
 @login_required
 def cart(request):
     current_user = request.user
-    userCart = models.Cart.objects.get(user_id=current_user)
+    user_cart = models.UserInfo.objects.get(user=current_user).cart
 
-    cartProducts = models.CartProduct.objects.filter(cart_id=userCart).values()
+    cart_products = user_cart.cart_products.all()
 
-    context = {'CartProducts': cartProducts}
+    context = {'CartProducts': cart_products}
     return render(request, 'Market/cart.html', context)
 
 
 def product(request, primary_key):
-    context = {'product': models.Product.objects.get(pk=primary_key)}
+    product_db = models.Product.objects.get(pk=primary_key)
+    current_user = models.UserInfo.objects.get(user=request.user)
+    user_is_artist = request.user.id == product_db.artist.user.id
+
+    context = {'product': product_db,
+               'current_user': current_user,
+               'user_is_artist': user_is_artist}
     return render(request, 'Market/product.html', context)
+
+
+def add_to_cart(request):
+    post = request.POST
+
+    cart_id = post['cartId']
+    product_id = post['productId']
+    quantity = post['quantity']
+
+    cart_db = models.Cart.objects.get(pk=cart_id)
+    product_db = models.Product.objects.get(pk=product_id)
+
+    models.CartProduct.objects.create(cart=cart_db, product=product_db, quantity=quantity)

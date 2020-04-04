@@ -1,7 +1,7 @@
 {% extends "Market/base.html" %}
-
 {% block content %}
     {% load static %}
+    {% csrf_token %}
 
     <div class="jumbotron">
         <h4 class="display-4">{{ product.name }}</h4>
@@ -24,6 +24,21 @@
                 <hr class="my-4">
                 <h5>Additional information</h5>
                 {% include "Market/category_information.html" %}
+                <div class="float-right">
+                    {% if user_is_artist %}
+                        <a class="btn btn-primary bg-dark"
+                           href="#">Modify this product</a>
+                    {% else %}
+                        <button id="addToCartButton" data-cartId="{{ current_user.cart.id }}" data-productId="{{ product.id }}"
+                                class="btn btn-primary bg-dark">Add <span id="qtyToAddToCart"></span> to cart
+                        </button>
+                        <button id="minus">-</button>
+                        <input readonly class="input-text-center" type="number" id="quantityToAdd" name="quantityToAdd"
+                               value="1" min="1"
+                               max="{{ product.quantity }}">
+                        <button id="plus">+</button>
+                    {% endif %}
+                </div>
             </div>
 
         </div>

@@ -1,5 +1,4 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 
@@ -12,4 +11,5 @@ urlpatterns = [
     path('glass_art/', views.glass_art, name='market-glass_art'),
     path('cart/', views.cart, name='cart'),
     path('product/<int:primary_key>/', views.product, name='product_with_pk'),
+    path('addtocart/', views.add_to_cart, name='add_to_cart'),
 ]
