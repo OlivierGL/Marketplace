@@ -1,28 +1,28 @@
 {% extends "Market/base.html" %}
 {% block content %}
     {% load static %}
-    <h1>Hello, {{ fullname }}</h1>
+    <h1>Hello, {{ user_info.user.first_name }}</h1>
 
     <div class="row">
         <div class="col-4">
             <div class="d-flex flex-column">
                 <div class="head bg-dark text-center p-2">
                     <h4>Your rating</h4>
-                    <span class="fa fa-star {% if rating > 0.5 %} checked {% endif %}"></span>
-                    <span class="fa fa-star {% if rating > 1.5 %} checked {% endif %}"></span>
-                    <span class="fa fa-star {% if rating > 2.5 %} checked {% endif %}"></span>
-                    <span class="fa fa-star {% if rating > 3.5 %} checked {% endif %}"></span>
-                    <span class="fa fa-star {% if rating > 4.5 %} checked {% endif %}"></span>
+                    <span class="fa fa-star {% if user_info.rating > 0.5 %} checked {% endif %}"></span>
+                    <span class="fa fa-star {% if user_info.rating > 1.5 %} checked {% endif %}"></span>
+                    <span class="fa fa-star {% if user_info.rating > 2.5 %} checked {% endif %}"></span>
+                    <span class="fa fa-star {% if user_info.rating > 3.5 %} checked {% endif %}"></span>
+                    <span class="fa fa-star {% if user_info.rating > 4.5 %} checked {% endif %}"></span>
                 </div>
                 <div>
                     <ul class="flex-column list-group bg-light">
                         <li class="bg-light list-group-item">
                             <div class="container font-weight-light">
                                 <h4>Contact information</h4>
-                                {{ fullname }} <br/>
-                                {{ address.street_address }} <br/>
-                                {{ address.city }}, {{ address.province }}, {{ address.country }} - {{ address.postal_code }} <br/>
-                                {{ phone_number }}
+                                {{ user_info.user.first_name }} {{ user_info.user.last_name }} <br/>
+                                {{ user_info.address.street_address }} <br/>
+                                {{ user_info.address.city }}, {{ user_info.address.province }}, {{ user_info.address.country }} - {{ user_info.address.postal_code }} <br/>
+                                {{ user_info.phone_number }}
                             </div>
                         </li>
                         <li class="bg-light list-group-item text-center">

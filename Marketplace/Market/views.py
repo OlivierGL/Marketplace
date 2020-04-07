@@ -3,9 +3,9 @@ from django.contrib.auth.decorators import login_required
 from . import models
 
 no_product_error_message = "Sorry, no {} are available for now."
+
+
 # Create your views here.
-
-
 def home(request):
     return render(request, 'Market/home.html', {'activeNavItem': 'home'})
 
@@ -95,14 +95,14 @@ def glass_art(request):
 
 @login_required
 def cart(request):
-
     current_user = request.user
     userCart = models.Cart.objects.get(user_id=current_user)
 
     cartProducts = models.CartProduct.objects.filter(cart_id=userCart).values()
 
     context = {'CartProducts': cartProducts}
-    return render(request, 'Market/cart.html', context);
+    return render(request, 'Market/cart.html', context)
+
 
 def product(request, primary_key):
     context = {'product': models.Product.objects.get(pk=primary_key)}

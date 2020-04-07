@@ -92,46 +92,44 @@ def authenticate_and_login(request, form, context):
 @login_required
 def profile(request):
     items = [{
+        'pk': 1,
         'name': 'The Creation of the Sun and the Moon',
         'description': "It is one of the frescoes from Michelangelo's nine Books of Genesis scenes on the Sistine Chapel ceiling.",
         'quantity': '3',
         'image': 'Market/thecreation.jpg',
         'price': '4300'}, {
+        'pk': 2,
         'name': 'Self-portrait',
         'description': "Most probably, van Gogh's self-portraits are depicting the face as it appeared in the mirror he used to reproduce his face, i.e. his right side in the image is in reality the left side of his face.",
         'quantity': '2',
         'image': 'Market/selfportrait.jpg',
         'price': '2000'}, {
+        'pk': 3,
         'name': 'Mona Lisa',
         'description': "The best known, the most visited, the most written about, the most sung about, the most parodied work of art in the world",
         'quantity': '7',
         'image': 'Market/monalisa.jpg',
         'price': '1864'}, {
+        'pk': 4,
         'name': 'The Scream',
         'description': "The agonised face in the painting has become one of the most iconic images of art, seen as symbolising the anxiety of the human condition.",
         'quantity': '1',
         'image': 'Market/scream.jpg',
         'price': '4300'}, {
+        'pk': 5,
         'name': 'The Kiss',
         'description': "The Kiss (in German Der Kuss) is an oil-on-canvas painting with added gold leaf, silver and platinum, by the Austrian Symbolist painter Gustav Klimt. It was painted at some point in 1907 and 1908, during the height of what scholars call his 'Golden Period'.",
         'quantity': '11',
         'image': 'Market/thekiss.jpg',
         'price': '1000'},
     ]
-    address = {
-        'street_address': '123, 1st Avenue, apt 10',
-        'city': 'Montreal',
-        'province': 'Quebec',
-        'country': 'Canada',
-        'postal_code': 'H0H1H2'
-    }
+
+    user_info = UserInfo.objects.get(user=request.user)
+
     context = {
         'items': items,
-        'address': address,
-        'rating': 3,
-        'fullname': "John Doe",
+        'user_info': user_info,
         'activeNavItem': "myProfile",
-        'phone_number': '(438) 111-2222',
         'noProductErrorMessage': "You have no products for sale."
     }
     return render(request, 'Users/profile.html', context)
