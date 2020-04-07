@@ -3,7 +3,7 @@
     {% for item in items %}
         <div class="col mb-4">
             <div class="card border-dark h-100">
-                <img src="{% static item.image %}" class="card-img-top" alt="image unavailable">
+                <img src="{{ item.image.url }}" class="card-img-top" alt="Image Unavailable">
                 <div class="card-body">
                     <a class="stretched-link h5 card-title" href="/product/{{ item.pk }}">{{ item.name }}</a>
                 </div>
