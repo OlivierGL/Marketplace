@@ -2,6 +2,11 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from . import models
+from . import forms
+from Users import models as user_models
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib import messages
 
 no_product_error_message = "Sorry, no {} are available for now."
 
@@ -47,7 +52,7 @@ def paintings(request):
     ]
     context = {
         'category': "Paintings",
-        'items': items,
+        'items': models.Product.objects.filter(category="PAINTING"),
         'activeNavItem': "browse/paintings",
         'noProductErrorMessage': no_product_error_message.format("paintings")
     }
@@ -57,7 +62,7 @@ def paintings(request):
 def sculptures(request):
     context = {
         'category': "Sculptures",
-        # 'items': "a",
+        'items': models.Product.objects.filter(category="SCULPTURE"),
         'activeNavItem': "browse/sculptures",
         'noProductErrorMessage': no_product_error_message.format("sculptures")
     }
@@ -67,7 +72,7 @@ def sculptures(request):
 def clothes(request):
     context = {
         'category': "Clothes",
-        # 'items': "a",
+        'items': models.Product.objects.filter(category="GARMENT"),
         'activeNavItem': "browse/clothes",
         'noProductErrorMessage': no_product_error_message.format("clothes")
     }
@@ -77,7 +82,7 @@ def clothes(request):
 def jewelry(request):
     context = {
         'category': "Jewelry",
-        # 'items': "a",
+        'items': models.Product.objects.filter(category="JEWELRY"),
         'activeNavItem': "browse/jewelry",
         'noProductErrorMessage': no_product_error_message.format("jewelry")
     }
@@ -87,7 +92,7 @@ def jewelry(request):
 def glass_art(request):
     context = {
         'category': "Glass Art",
-        # 'items': "a",
+        'items': models.Product.objects.filter(category="GLASS_ART"),
         'activeNavItem': "browse/glass_art",
         'noProductErrorMessage': no_product_error_message.format("glass art")
     }
@@ -96,12 +101,12 @@ def glass_art(request):
 
 @login_required
 def cart(request):
-    current_user = request.user
-    user_cart = models.UserInfo.objects.get(user=current_user).cart
+    current_user = user_models.UserInfo.objects.get(user=request.user)
+    userCart = models.Cart.objects.get(user=current_user)
 
-    cart_products = user_cart.cart_products.all()
+    cartProducts = models.CartProduct.objects.filter(cart=userCart).values()
 
-    context = {'CartProducts': cart_products}
+    context = {'CartProducts': cartProducts}
     return render(request, 'Market/cart.html', context)
 
 
@@ -114,3 +119,26 @@ def product(request, primary_key):
                'current_user': current_user,
                'user_is_artist': user_is_artist}
     return render(request, 'Market/product.html', context)
+
+
+def add_product(request):
+    context = {}
+    if request.method == 'POST':
+        add_product_form = forms.AddProductForm(request.POST, request.FILES)
+        if add_product_form.is_valid():
+            product = add_product_form.save(commit=False)
+            product.artist = user_models.UserInfo.objects.get(user=request.user)
+            product.save()
+
+            messages.success(request, 'Product Added Successfuly')
+            return HttpResponseRedirect(reverse('profile'))
+        else:
+            messages.error(request, 'Error: Product wasn\'t Added Successfuly')
+            context['form'] = forms.AddProductForm()
+            return render(request, 'Market/add_product.html', context)
+
+    else:
+        form = forms.AddProductForm()
+        context['form'] = form
+        return render(request, 'Market/add_product.html', context)
+

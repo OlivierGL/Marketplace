@@ -127,7 +127,7 @@ def profile(request):
     user_info = UserInfo.objects.get(user=request.user)
 
     context = {
-        'items': items,
+        'items': market_models.Product.objects.filter(artist=user_info),
         'user_info': user_info,
         'activeNavItem': "myProfile",
         'noProductErrorMessage': "You have no products for sale."

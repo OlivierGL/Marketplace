@@ -6,8 +6,12 @@ CATEGORY_CHOICES = (
     ("SCULPTURE", "Sculpture"),
     ("GARMENT", "Garment"),
     ("JEWELRY", "Jewelry"),
-    ("GLASS_ART", "GlassArt"),
+    ("GLASS_ART", "Glass Art"),
 )
+
+
+def get_image_path(instance, filename):
+    return 'user-' + str(instance.artist.pk) + '/' + filename
 
 
 # table with all products. Product rows contain general information. For more specific
@@ -17,7 +21,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     quantity = models.IntegerField()
-    image = models.TextField()
+    image = models.FileField(upload_to=get_image_path)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     date_posted = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="PAINTING")
