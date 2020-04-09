@@ -1,9 +1,6 @@
 $(document).ready(function () {
     addShadowOnHover();
-    setUpAddToCartButton();
-    $('#qtyToAddToCart').text(1);
-    bindMinusButton();
-    bindPlusButton();
+    setActiveNavBar();
 });
 
 function addShadowOnHover() {
@@ -16,35 +13,8 @@ function addShadowOnHover() {
     );
 }
 
-function setUpAddToCartButton() {
-    $('#addToCartButton').click(function () {
-        let cartId = $(this).attr("data-cartId");
-        let productId = $(this).attr("data-productId");
-        let qty = $('#quantityToAdd').val();
-        let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
-        $.ajax({
-            type: "POST",
-            url: "/addtocart/",
-            data: {
-                'cartId': cartId,
-                'productId': productId,
-                'quantity': qty,
-                'csrfmiddlewaretoken': csrfToken
-            }
-        });
-    })
-}
-
-function bindMinusButton() {
-    $('#minus').click(function () {
-        this.parentNode.querySelector('#quantityToAdd').stepDown();
-        $('#qtyToAddToCart').text(this.parentNode.querySelector('#quantityToAdd').value);
-    });
-}
-
-function bindPlusButton() {
-    $('#plus').click(function () {
-        this.parentNode.querySelector('#quantityToAdd').stepUp();
-        $('#qtyToAddToCart').text(this.parentNode.querySelector('#quantityToAdd').value);
+function setActiveNavBar() {
+    $(document).on('click', '.nav-item a', function () {
+        $(this).parent().addClass('active').siblings().removeClass('active');
     });
 }

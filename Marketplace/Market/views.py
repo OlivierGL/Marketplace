@@ -114,35 +114,3 @@ def product(request, primary_key):
                'current_user': current_user,
                'user_is_artist': user_is_artist}
     return render(request, 'Market/product.html', context)
-
-
-def add_to_cart(request):
-    post = request.POST
-
-    cart_id = post['cartId']
-    product_id = post['productId']
-    quantity = int(post['quantity'])
-
-    cart_db = models.Cart.objects.get(pk=cart_id)
-    product_db = models.Product.objects.get(pk=product_id)
-
-    product_already_in_cart = models.CartProduct.objects.get(product=product_db, cart=cart_db)
-
-    if product_already_in_cart:
-        quantity_in_cart = quantity + product_already_in_cart.quantity
-        if product_db.quantity < quantity_in_cart:
-            messages.error(request, 'Quantity in stock insufficient.')
-        else:
-            product_already_in_cart.quantity += quantity
-            product_already_in_cart.save()
-            product_db.quantity -= quantity
-            product_db.save()
-            messages.success(request, quantity + ' new items of this product were added to your cart.')
-    else:
-        if product_db.quantity < quantity:
-            messages.error(request, 'Quantity in stock insufficient.')
-        else:
-            models.CartProduct.objects.create(cart=cart_db, product=product_db, quantity=quantity)
-            product_db.quantity -= quantity
-            product_db.save()
-            messages.success(request, quantity + ' new items of this product were added to your cart.')
