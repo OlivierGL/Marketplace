@@ -37,14 +37,14 @@ def signup(request):
                     postal_code=form.cleaned_data['postal_code'],
                 )
 
-                UserInfo.objects.create(
+                user_info = UserInfo.objects.create(
                     user=user_db,
                     address=address_db,
                     rating=0,
                     phone_number=form.cleaned_data['phone_number']
                 )
 
-                market_models.Cart.objects.create(user_id=user_db)
+                market_models.Cart.objects.create(user=user_info)
 
                 return authenticate_and_login(request, form, context)
             except IntegrityError:
@@ -127,7 +127,7 @@ def profile(request):
     user_info = UserInfo.objects.get(user=request.user)
 
     context = {
-        'items': items,
+        'items': market_models.Product.objects.filter(artist=user_info),
         'user_info': user_info,
         'activeNavItem': "myProfile",
         'noProductErrorMessage': "You have no products for sale."

@@ -8,7 +8,7 @@
         <hr class="my-4">
         <div class="row">
             <div class="col-7 align-self-center">
-                <img src="{% static product.image %}" class="img-fluid" alt="image unavailable">
+                <img src="{{ product.image.url }}" class="img-fluid" alt="image unavailable">
             </div>
             <div class="col-5">
                 <small class="text-muted">By {{ product.artist.user.first_name }} {{ product.artist.user.last_name }} -
