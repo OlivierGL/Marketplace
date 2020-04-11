@@ -2,6 +2,7 @@ $(document).ready(function () {
     bindMinusButton();
     bindPlusButton();
     setUpAddToCartButton();
+    setAddToCartClickEvent();
 });
 
 let productPageSocket = new WebSocket(
@@ -57,18 +58,6 @@ function setUpAddToCartButton() {
         });
         qtyToAddInput.val(1);
         $('#qtyToAddToCart').text(1);
-        $('#addToCartButton').click(function () {
-            debugger;
-            let cartId = $('#addToCartButton').data("cartid");
-            let productId = $('#addToCartButton').data("productid");
-            let qty = $('#qtyToAddInput').val();
-
-            productPageSocket.send(JSON.stringify({
-                'cartId': cartId,
-                'productId': productId,
-                'quantity': qty
-            }));
-        })
     }
 }
 
@@ -84,4 +73,18 @@ function bindPlusButton() {
         this.parentNode.querySelector('#qtyToAddInput').stepUp();
         $('#qtyToAddToCart').text(this.parentNode.querySelector('#qtyToAddInput').value);
     });
+}
+
+function setAddToCartClickEvent() {
+    $('#addToCartButton').click(function () {
+        let cartId = $('#addToCartButton').data("cartid");
+        let productId = $('#addToCartButton').data("productid");
+        let qty = $('#qtyToAddInput').val();
+
+        productPageSocket.send(JSON.stringify({
+            'cartId': cartId,
+            'productId': productId,
+            'quantity': qty
+        }));
+    })
 }

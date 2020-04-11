@@ -1,12 +1,7 @@
 from django.shortcuts import render
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from . import models
-from . import forms
 from Users import models as user_models
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.contrib import messages
 
 no_product_error_message = "Sorry, no {} are available for now."
 
@@ -102,11 +97,10 @@ def glass_art(request):
 @login_required
 def cart(request):
     current_user = user_models.UserInfo.objects.get(user=request.user)
-    userCart = models.Cart.objects.get(user=current_user)
 
-    cartProducts = models.CartProduct.objects.filter(cart=userCart).values()
+    cart_products = models.CartProduct.objects.filter(cart=current_user.cart)
 
-    context = {'CartProducts': cartProducts}
+    context = {'CartProducts': cart_products}
     return render(request, 'Market/cart.html', context)
 
 
@@ -119,26 +113,3 @@ def product(request, primary_key):
                'current_user': current_user,
                'user_is_artist': user_is_artist}
     return render(request, 'Market/product.html', context)
-
-
-def add_product(request):
-    context = {}
-    if request.method == 'POST':
-        add_product_form = forms.AddProductForm(request.POST, request.FILES)
-        if add_product_form.is_valid():
-            product = add_product_form.save(commit=False)
-            product.artist = user_models.UserInfo.objects.get(user=request.user)
-            product.save()
-
-            messages.success(request, 'Product Added Successfuly')
-            return HttpResponseRedirect(reverse('profile'))
-        else:
-            messages.error(request, 'Error: Product wasn\'t Added Successfuly')
-            context['form'] = forms.AddProductForm()
-            return render(request, 'Market/add_product.html', context)
-
-    else:
-        form = forms.AddProductForm()
-        context['form'] = form
-        return render(request, 'Market/add_product.html', context)
-
