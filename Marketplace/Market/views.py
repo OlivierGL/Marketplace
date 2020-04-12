@@ -104,7 +104,12 @@ def cart(request):
 
     cart_products = models.CartProduct.objects.filter(cart=current_user.cart)
 
-    context = {'CartProducts': cart_products}
+    total = 0
+    for cart_product in cart_products:
+        product_total_price = cart_product.product.price * cart_product.quantity
+        total += product_total_price
+
+    context = {'CartProducts': cart_products, 'total': total}
     return render(request, 'Market/cart.html', context)
 
 
