@@ -106,8 +106,12 @@ def cart(request):
 
 def product(request, primary_key):
     product_db = models.Product.objects.get(pk=primary_key)
-    current_user = models.UserInfo.objects.get(user=request.user)
-    user_is_artist = request.user.id == product_db.artist.user.id
+    if request.user.is_authenticated:
+        current_user = models.UserInfo.objects.get(user=request.user)
+        user_is_artist = request.user.id == product_db.artist.user.id
+    else:
+        current_user = None
+        user_is_artist = False
 
     context = {'product': product_db,
                'current_user': current_user,
