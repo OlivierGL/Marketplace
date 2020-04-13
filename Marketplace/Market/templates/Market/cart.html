@@ -1,49 +1,52 @@
 {% extends "Market/base.html" %}
 {% block content %}
     {% load static %}
-    <div class="row">
-        <div class="col-4">
-            <div class="d-flex flex-column">
-                <div class="head bg-dark text-center p-2">
-                    <h4>Your cart</h4>
+    {% if CartProducts|length > 0 %}
+        <div class="row">
+            <div class="col-4">
+                <div class="d-flex flex-column">
+                    <div class="head bg-dark text-center p-2">
+                        <h4>Your cart</h4>
+                    </div>
+                </div>
+                <div>
+                    <ul class="flex-column list-group bg-light">
+                        <li class="bg-light list-group-item">
+                            Total: ${{ total }}
+                        </li>
+                        <li class="bg-light list-group-item text-center">
+                            <a class="btn btn-primary bg-dark"
+                               href="#">Checkout</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div>
-                <ul class="flex-column list-group bg-light">
-                    <li class="bg-light list-group-item">
-                        Total: ${{ total }}
-                    </li>
-                    <li class="bg-light list-group-item text-center">
-                        <a class="btn btn-primary bg-dark"
-                           href="#">Checkout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-8">
-            <div class="row row-cols-1 row-cols-md-3">
-                {% for cartProduct in CartProducts %}
-                    {% with item=cartProduct.product %}
-                        <div class="col mb-4">
-                            <div class="card border-dark h-100">
-                                <img src="{{ item.image.url }}" class="card-img-top" alt="image unavailable">
-                                <div class="card-body">
-                                    <a class="stretched-link h5 card-title"
-                                       href="/product/{{ item.pk }}">{{ item.name }}</a>
+            <div class="col-8">
+                <div class="row row-cols-1 row-cols-md-3">
+                    {% for cartProduct in CartProducts %}
+                        {% with item=cartProduct.product %}
+                            <div class="col mb-4">
+                                <div class="card border-dark h-100">
+                                    <img src="{{ item.image.url }}" class="card-img-top" alt="image unavailable">
+                                    <div class="card-body">
+                                        <a class="stretched-link h5 card-title"
+                                           href="/product/{{ item.pk }}">{{ item.name }}</a>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item text-overflow">{{ item.description }}</li>
+                                        <li class="list-group-item">Unit price: <span
+                                                class="price">${{ item.price }}</span>
+                                            <br/>
+                                            Quantity in cart: {{ cartProduct.quantity }}</li>
+                                    </ul>
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item text-overflow">{{ item.description }}</li>
-                                    <li class="list-group-item">Unit price: <span class="price">${{ item.price }}</span>
-                                        <br/>
-                                        Quantity in cart: {{ cartProduct.quantity }}</li>
-                                </ul>
                             </div>
-                        </div>
-                    {% endwith %}
-                {% empty %}
-                    Your cart is currently empty
-                {% endfor %}
+                        {% endwith %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <h4 class="display-4">Your cart is currently empty</h4>
+    {% endif %}
 {% endblock content %}

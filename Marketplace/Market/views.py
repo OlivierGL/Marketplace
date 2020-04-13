@@ -102,7 +102,7 @@ def glass_art(request):
 def cart(request):
     current_user = user_models.UserInfo.objects.get(user=request.user)
 
-    cart_products = models.CartProduct.objects.filter(cart=current_user.cart)
+    cart_products = models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
 
     total = 0
     for cart_product in cart_products:
@@ -117,13 +117,16 @@ def product(request, primary_key):
     product_db = models.Product.objects.get(pk=primary_key)
     if request.user.is_authenticated:
         current_user = models.UserInfo.objects.get(user=request.user)
+        product_in_cart = current_user.cart.cart_products.filter(product=product_db, quantity__gt=0).first()
         user_is_artist = request.user.id == product_db.artist.user.id
     else:
         current_user = None
+        product_in_cart = None
         user_is_artist = False
 
     context = {'product': product_db,
                'current_user': current_user,
+               'product_in_cart': product_in_cart,
                'user_is_artist': user_is_artist}
     return render(request, 'Market/product.html', context)
 

@@ -11,15 +11,23 @@ let productPageSocket = new WebSocket(
 
 productPageSocket.onmessage = function (e) {
     let data = JSON.parse(e.data);
-    let message = data['message'];
-    let type = data['type'];
-    let qtyInStock = data['qtyInStock'];
 
+    let qtyInStock = data['qtyInStock'];
     $('#qtyInStock').text(qtyInStock);
     if (qtyInStock <= 0) {
         disableAddButton();
     }
+
+    let qtyInCart = data['qtyInCart'];
+    if (qtyInCart <= 0) {
+        $("#addToCartButton").html('Add to cart');
+    } else {
+        $("#addToCartButton").html('Update quantity in cart');
+    }
     setUpAddToCartButton();
+
+    let message = data['message'];
+    let type = data['type'];
     showModal(message, type);
 };
 
@@ -48,30 +56,35 @@ function setUpAddToCartButton() {
             "min": 0
         });
         qtyToAddInput.val(0);
-        $('#qtyToAddToCart').text(0);
         disableAddButton();
         showModal('Quantity in stock insufficient.', 'Error');
     } else {
+        let addToCartButton = $('#addToCartButton');
+        if (!addToCartButton.data("qtytoadd")) {
+            addToCartButton.data("qtytoadd", 1);
+        }
+        let qtyAlreadyInCart = addToCartButton.data("qtytoadd");
         qtyToAddInput.attr({
             "max": $('#qtyInStock').text(),
-            "min": 1
+            "min": 0
         });
-        qtyToAddInput.val(1);
-        $('#qtyToAddToCart').text(1);
+        qtyToAddInput.val(qtyAlreadyInCart);
     }
 }
 
 function bindMinusButton() {
     $('#minus').click(function () {
         this.parentNode.querySelector('#qtyToAddInput').stepDown();
-        $('#qtyToAddToCart').text(this.parentNode.querySelector('#qtyToAddInput').value);
+        let newValue = this.parentNode.querySelector('#qtyToAddInput').value;
+        $('#addToCartButton').data("qtytoadd", newValue)
     });
 }
 
 function bindPlusButton() {
     $('#plus').click(function () {
         this.parentNode.querySelector('#qtyToAddInput').stepUp();
-        $('#qtyToAddToCart').text(this.parentNode.querySelector('#qtyToAddInput').value);
+        let newValue = this.parentNode.querySelector('#qtyToAddInput').value;
+        $('#addToCartButton').data("qtytoadd", newValue)
     });
 }
 
@@ -79,7 +92,7 @@ function setAddToCartClickEvent() {
     $('#addToCartButton').click(function () {
         let cartId = $('#addToCartButton').data("cartid");
         let productId = $('#addToCartButton').data("productid");
-        let qty = $('#qtyToAddInput').val();
+        let qty = $('#addToCartButton').data("qtytoadd");
 
         productPageSocket.send(JSON.stringify({
             'cartId': cartId,

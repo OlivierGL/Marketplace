@@ -17,6 +17,7 @@ class ProductConsumer(WebsocketConsumer):
         quantity = int(text_data_json['quantity'])
         product_db = models.Product.objects.get(pk=product_id)
 
+        qty_in_cart = 0
         if cart_id == '':
             message = 'Please login to your account before adding products to your cart.'
             message_type = 'Error'
@@ -30,28 +31,32 @@ class ProductConsumer(WebsocketConsumer):
                     message = 'Quantity in stock insufficient. You currently have {} in your cart.'.format(
                         product_already_in_cart.quantity)
                     message_type = 'Error'
+                    qty_in_cart = product_already_in_cart.quantity
+                elif product_already_in_cart.quantity == quantity:
+                    message = 'Quantity in cart has not changed. You currently have {} in your cart.'.format(
+                        product_already_in_cart.quantity)
+                    message_type = 'Error'
+                    qty_in_cart = product_already_in_cart.quantity
                 else:
-                    product_already_in_cart.quantity += quantity
+                    product_already_in_cart.quantity = quantity
                     product_already_in_cart.save()
-                    product_db.quantity -= quantity
-                    product_db.save()
-                    message = '{} added to your cart. Total in cart: {}'.format(quantity,
-                                                                                product_already_in_cart.quantity)
+                    message = 'Cart updated successfully. Total items in cart: {}'.format(quantity)
                     message_type = 'Success'
+                    qty_in_cart = product_already_in_cart.quantity
             else:
                 if product_db.quantity < quantity:
                     message = 'Quantity in stock insufficient.'
                     message_type = 'Error'
                 else:
                     models.CartProduct.objects.create(cart=cart_db, product=product_db, quantity=quantity)
-                    product_db.quantity -= quantity
-                    product_db.save()
-                    message = '{} added to your cart.'.format(quantity)
+                    message = 'Cart updated successfully. Total items in cart: {}'.format(quantity)
                     message_type = 'Success'
+                    qty_in_cart = quantity
 
         response = {
             'message': message,
             'type': message_type,
-            'qtyInStock': product_db.quantity
+            'qtyInStock': product_db.quantity,
+            'qtyInCart': qty_in_cart
         }
         self.send(text_data=json.dumps(response))

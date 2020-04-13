@@ -32,8 +32,13 @@
                            href="#">Modify this product</a>
                     {% else %}
                         <button id="addToCartButton" data-cartId="{{ current_user.cart.id }}"
-                                data-productId="{{ product.pk }}"
-                                class="btn btn-primary bg-dark">Add <span id="qtyToAddToCart"></span> to cart
+                                data-productId="{{ product.pk }}" data-qtyToAdd="{{ product_in_cart.quantity }}"
+                                class="btn btn-primary bg-dark">
+                            {% if product_in_cart.quantity %}
+                                Update quantity in cart
+                            {% else %}
+                                Add to cart
+                            {% endif %}
                         </button>
                         <button id="minus">-</button>
                         <input readonly class="input-text-center" type="number" id="qtyToAddInput"
