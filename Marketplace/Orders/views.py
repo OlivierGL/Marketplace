@@ -4,10 +4,26 @@ from django.urls import reverse
 from paypal.standard.forms import PayPalPaymentsForm
 from Users import models as user_models
 from Market import models as market_models
+from . import forms
 import decimal
 
 PROV_TAX_RATE = decimal.Decimal(0.09975)
 FED_TAX_RATE = decimal.Decimal(0.05)
+
+
+@login_required
+def shipping_info(request):
+    context = {}
+    if request.method == 'POST':
+        shipping_info_form = forms.ShippingAddressForm(request.POST)
+        if shipping_info_form.is_valid():
+            shipping_info_form.save()
+    else:
+        current_user = user_models.UserInfo.objects.get(user=request.user)
+        form = forms.ShippingAddressForm(instance=current_user.user_address.first())
+        context['form'] = form
+
+    return render(request, "Orders/confirm_shipping.html", context)
 
 
 @login_required

@@ -1,5 +1,5 @@
 from django.db import models
-from Users.models import UserInfo
+from Users.models import UserInfo, Address
 from Market.models import Product
 
 
@@ -8,7 +8,7 @@ class Order(models.Model):
     buyer = models.ForeignKey(UserInfo, related_name='buyer', on_delete=models.CASCADE)
     seller = models.ForeignKey(UserInfo, related_name='seller', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    shipping = models.TextField()
+    shipping = models.ForeignKey(Address, related_name='shipping_address', on_delete=models.DO_NOTHING)
 
 
 # an order product that is related to a given order with order_id

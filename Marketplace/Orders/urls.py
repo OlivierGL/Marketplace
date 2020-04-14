@@ -4,6 +4,7 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.checkout_order, name='checkout'),
+    path('checkout/', views.checkout_order, name='checkout'),
+    path('review-shipping/', views.shipping_info, name='review-shipping'),
     path('paypal/', include('paypal.standard.ipn.urls')),
 ]

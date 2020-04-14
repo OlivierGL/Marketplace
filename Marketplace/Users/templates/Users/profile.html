@@ -20,8 +20,8 @@
                             <div class="container font-weight-light">
                                 <h4>Contact information</h4>
                                 {{ user_info.user.first_name }} {{ user_info.user.last_name }} <br/>
-                                {{ user_info.address.street_address }} <br/>
-                                {{ user_info.address.city }}, {{ user_info.address.province }}, {{ user_info.address.country }} - {{ user_info.address.postal_code }} <br/>
+                                {{ address.street_address }} <br/>
+                                {{ address.city }}, {{ address.province }}, {{ address.country }} - {{ address.postal_code }} <br/>
                                 {{ user_info.phone_number }}
                             </div>
                         </li>

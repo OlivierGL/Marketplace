@@ -1,6 +1,13 @@
 {% extends "Market/base.html" %}
 {% block content %}
     {% load static %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/cart">Your cart</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Confirm shipping address</li>
+            <li class="breadcrumb-item active" aria-current="page">Checkout order</li>
+        </ol>
+    </nav>
     <h1>Checkout your order</h1>
     <div class="row">
         <div class="col-4">
@@ -28,7 +35,8 @@
                                         Unit price: ${{ cartProduct.product.price }}
                                     </div>
                                     <div class="col-4">
-                                        <img src="{{ cartProduct.product.image.url }}" class="img-fluid img-thumbnail" alt="image unavailable">
+                                        <img src="{{ cartProduct.product.image.url }}" class="img-fluid img-thumbnail"
+                                             alt="image unavailable">
                                     </div>
                                 </div>
                             </li>

@@ -29,19 +29,19 @@ def signup(request):
                     first_name=form.cleaned_data['first_name'],
                     last_name=form.cleaned_data['last_name'])
 
-                address_db = Address.objects.create(
+                user_info_db = UserInfo.objects.create(
+                    user=user_db,
+                    rating=0,
+                    phone_number=form.cleaned_data['phone_number']
+                )
+
+                Address.objects.create(
                     country=form.cleaned_data['country'],
                     province=form.cleaned_data['province'],
                     city=form.cleaned_data['city'],
                     street_address=form.cleaned_data['street_address'],
                     postal_code=form.cleaned_data['postal_code'],
-                )
-
-                user_info_db = UserInfo.objects.create(
-                    user=user_db,
-                    address=address_db,
-                    rating=0,
-                    phone_number=form.cleaned_data['phone_number']
+                    user=user_info_db
                 )
 
                 market_models.Cart.objects.create(user=user_info_db)
@@ -50,7 +50,9 @@ def signup(request):
             except IntegrityError:
                 form.add_error('username', 'Username is taken')
     else:
-        form = forms.SignupForm()
+        form = forms.SignupForm(initial={'country': 'Canada',
+                                         'province': 'Quebec',
+                                         'city': 'Montreal'})
 
     context['form'] = form
     return render(request, 'Users/signup.html', context)
@@ -125,10 +127,12 @@ def profile(request):
     ]
 
     user_info = UserInfo.objects.get(user=request.user)
+    address = user_info.user_address.first()
 
     context = {
         'items': market_models.Product.objects.filter(artist=user_info),
         'user_info': user_info,
+        'address': address,
         'activeNavItem': "myProfile",
         'noProductErrorMessage': "You have no products for sale."
     }
