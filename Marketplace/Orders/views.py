@@ -42,9 +42,11 @@ def shipping_info(request):
 def checkout_order(request):
     current_user = user_models.UserInfo.objects.get(user=request.user)
 
+    address = current_user.user_address.filter(is_default_shipping=True).first()
     cart_products = market_models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
 
     subtotal = 0
+    product_names = ', '.join([cart_product.product.name for cart_product in cart_products])
     for cart_product in cart_products:
         product_total_price = cart_product.product.price * cart_product.quantity
         subtotal += product_total_price
@@ -56,16 +58,15 @@ def checkout_order(request):
     # PayPal button info
     paypal_dict = {
         "business": "rodrigo.lisboamirco@mail.mcgill.ca",
-        "amount": "50.00",
+        "amount": total,
         "currency_code": "CAD",
-        "item_name": "The Item",
+        "item_name": product_names,
         "invoice": "unique-invoice-id",
         "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
         "return": request.build_absolute_uri(reverse('market-home')),
         "cancel_return": request.build_absolute_uri(reverse('market-paintings')),
     }
 
-    # Create the instance.
     paypal_form = PayPalPaymentsForm(initial=paypal_dict)
     context = {
         "form": paypal_form,
@@ -73,6 +74,7 @@ def checkout_order(request):
         "subtotal": subtotal,
         "provTaxes": prov_taxes,
         "fedTaxes": fed_taxes,
-        "total": total
+        "total": total,
+        "address": address
     }
     return render(request, "Orders/checkout_order.html", context)

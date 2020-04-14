@@ -9,7 +9,6 @@
     <h1>Please confirm your shipping address</h1>
     <form action="" method="post">
         {% csrf_token %}
-        <input type="hidden" id="addressIdInput" name="addressId" value="{{ form.initial.id }}">
         {% include "Users/address_form_fields.html" %}
         <p>
             <input class="btn btn-primary" type="submit" value="Confirm shipping address"/>

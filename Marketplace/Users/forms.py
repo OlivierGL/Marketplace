@@ -13,7 +13,7 @@ class LoginForm(forms.Form):
 class AddressForm(forms.ModelForm):
     class Meta:
         model = models.Address
-        fields = ['id', 'country', 'province', 'city', 'street_address', 'postal_code']
+        fields = ['country', 'province', 'city', 'street_address', 'postal_code']
 
     def clean(self):
         cleaned_data = super(AddressForm, self).clean()
