@@ -76,21 +76,6 @@ class CartProduct(models.Model):
     quantity = models.IntegerField(default=1)
 
 
-# Data about an order that has been placed. An order is for a single product.
-class Order(models.Model):
-    buyer = models.ForeignKey(UserInfo, related_name='buyer', on_delete=models.CASCADE)
-    seller = models.ForeignKey(UserInfo, related_name='seller', on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    shipping = models.TextField()
-
-
-# an order product that is related to a given order with order_id
-class OrderProduct(models.Model):
-    product = models.ForeignKey(Product, related_name='order_product', on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, related_name='order', on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-
-
 # Chat table that only stores the two users in a chat
 class Chat(models.Model):
     user1 = models.ForeignKey(UserInfo, related_name='user1', on_delete=models.CASCADE)

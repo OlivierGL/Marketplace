@@ -41,6 +41,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Users.apps.UsersConfig',
     'Market.apps.MarketConfig',
+    'Orders.apps.OrdersConfig',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
 ]
 
 PAYPAL_TEST = True
+
+PAYPAL_RECEIVER_EMAIL = 'rodrigo.lisboamirco@mail.mcgill.ca'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
