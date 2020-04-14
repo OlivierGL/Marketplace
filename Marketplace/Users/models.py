@@ -16,4 +16,15 @@ class Address(models.Model):
     city = models.TextField()
     street_address = models.TextField()
     postal_code = models.TextField()
+    is_default_shipping = models.BooleanField(default=True)
     user = models.ForeignKey(UserInfo, related_name='user_address', on_delete=models.DO_NOTHING)
+
+    def __eq__(self, other):
+        if not isinstance(other, Address):
+            return False
+
+        return (self.country == other.country and
+                self.province == other.province and
+                self.city == other.city and
+                self.street_address == other.street_address and
+                self.postal_code == other.postal_code)

@@ -12,8 +12,6 @@ from Market import models as market_models
 
 
 # Create your views here.
-
-
 def signup(request):
     context = {'activeNavItem': 'signup',
                'areaConstraintMessage': 'Our service is currently only available in the Montreal area.'}

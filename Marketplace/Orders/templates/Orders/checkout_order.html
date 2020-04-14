@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/cart">Your cart</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Confirm shipping address</li>
+            <li class="breadcrumb-item"><a href="/order/review-shipping">Confirm shipping address</a></li>
             <li class="breadcrumb-item active" aria-current="page">Checkout order</li>
         </ol>
     </nav>
@@ -17,13 +17,6 @@
                 </div>
             </div>
             <ul class="flex-column list-group bg-light">
-                <li class="bg-light list-group-item">
-                    Subtotal: <span class="float-right">${{ subtotal }}</span> <br/>
-                    Provincial taxes: <span class="float-right">${{ provTaxes }}</span> <br/>
-                    Federal taxes: <span class="float-right">${{ fedTaxes }}</span> <br/>
-                    <hr/>
-                    Total: <span class="float-right">${{ total }}</span>
-                </li>
                 <li class="bg-light list-group-item">
                     <ul class="flex-column list-group bg-light">
                         {% for cartProduct in cartProducts %}
@@ -42,6 +35,13 @@
                             </li>
                         {% endfor %}
                     </ul>
+                </li>
+                <li class="bg-light list-group-item">
+                    Subtotal: <span class="float-right">${{ subtotal }}</span> <br/>
+                    Provincial taxes: <span class="float-right">${{ provTaxes }}</span> <br/>
+                    Federal taxes: <span class="float-right">${{ fedTaxes }}</span> <br/>
+                    <hr/>
+                    Total: <span class="float-right">${{ total }}</span>
                 </li>
                 <li class="bg-light list-group-item">
                     <!-- writes out the form tag automatically -->
