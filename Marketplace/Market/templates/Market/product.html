@@ -31,6 +31,8 @@
                         <a class="btn btn-primary bg-dark"
                            href="#">Modify this product</a>
                     {% else %}
+                        <a class="btn btn-primary bg-dark" href="../../profile/{{product.artist.user.pk}}">Seller's Profile</a>
+
                         <button id="addToCartButton" data-cartId="{{ current_user.cart.id }}"
                                 data-productId="{{ product.pk }}" data-qtyToAdd="{{ product_in_cart.quantity }}"
                                 class="btn btn-primary bg-dark">
@@ -77,4 +79,8 @@
 {% block scripts %}
     {{ block.super }}
     <script src="../../static/Market/js/product.js"></script>
+    <script type="text/javascript">
+        function viewProfile()
+
+    </script>
 {% endblock %}
