@@ -101,16 +101,33 @@ def glass_art(request):
 @login_required
 def cart(request):
     current_user = user_models.UserInfo.objects.get(user=request.user)
-    userCart = models.Cart.objects.get(user=current_user)
 
-    cartProducts = models.CartProduct.objects.filter(cart=userCart).values()
+    cart_products = models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
 
-    context = {'CartProducts': cartProducts}
+    total = 0
+    for cart_product in cart_products:
+        product_total_price = cart_product.product.price * cart_product.quantity
+        total += product_total_price
+
+    context = {'CartProducts': cart_products, 'total': total}
     return render(request, 'Market/cart.html', context)
 
 
 def product(request, primary_key):
-    context = {'product': models.Product.objects.get(pk=primary_key)}
+    product_db = models.Product.objects.get(pk=primary_key)
+    if request.user.is_authenticated:
+        current_user = models.UserInfo.objects.get(user=request.user)
+        product_in_cart = current_user.cart.cart_products.filter(product=product_db, quantity__gt=0).first()
+        user_is_artist = request.user.id == product_db.artist.user.id
+    else:
+        current_user = None
+        product_in_cart = None
+        user_is_artist = False
+
+    context = {'product': product_db,
+               'current_user': current_user,
+               'product_in_cart': product_in_cart,
+               'user_is_artist': user_is_artist}
     return render(request, 'Market/product.html', context)
 
 
@@ -118,7 +135,7 @@ def add_product(request):
     context = {}
     if request.method == 'POST':
         add_product_form = forms.AddProductForm(request.POST, request.FILES)
-        if(add_product_form.is_valid()):
+        if add_product_form.is_valid():
             product = add_product_form.save(commit=False)
             product.artist = user_models.UserInfo.objects.get(user=request.user)
             product.save()
@@ -126,7 +143,6 @@ def add_product(request):
             messages.success(request, 'Product Added Successfuly')
             return HttpResponseRedirect(reverse('profile'))
         else:
-
             messages.error(request, 'Error: Product wasn\'t Added Successfuly')
             context['form'] = forms.AddProductForm()
             return render(request, 'Market/add_product.html', context)
@@ -135,4 +151,3 @@ def add_product(request):
         form = forms.AddProductForm()
         context['form'] = form
         return render(request, 'Market/add_product.html', context)
-

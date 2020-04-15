@@ -11,7 +11,8 @@ CATEGORY_CHOICES = (
 
 
 def get_image_path(instance, filename):
-    return 'user-' + str(instance.artist.pk) + '/' + filename 
+    return 'user-' + str(instance.artist.pk) + '/' + filename
+
 
 # table with all products. Product rows contain general information. For more specific
 # information, see the other complementary models below.
@@ -70,9 +71,9 @@ class Cart(models.Model):
 # having the Cart intermediary allows to easily get rid of the cart products with
 # on_delete=models.CASCADE
 class CartProduct(models.Model):
-    product = models.ForeignKey(Product, related_name='cart_product', on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, related_name='cart', on_delete=models.CASCADE)
-    quantity = models.IntegerField()
+    product = models.ForeignKey(Product, related_name='product_cart', on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, related_name='cart_products', on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
 
 
 # Data about an order that has been placed. An order is for a single product.

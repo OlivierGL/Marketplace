@@ -1,5 +1,6 @@
 $(document).ready(function () {
     addShadowOnHover();
+    setActiveNavBar();
 });
 
 function addShadowOnHover() {
@@ -10,4 +11,10 @@ function addShadowOnHover() {
             $(this).removeClass('shadow-lg');
         }
     );
+}
+
+function setActiveNavBar() {
+    $(document).on('click', '.nav-item a', function () {
+        $(this).parent().addClass('active').siblings().removeClass('active');
+    });
 }

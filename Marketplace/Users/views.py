@@ -37,14 +37,14 @@ def signup(request):
                     postal_code=form.cleaned_data['postal_code'],
                 )
 
-                user_info = UserInfo.objects.create(
+                user_info_db = UserInfo.objects.create(
                     user=user_db,
                     address=address_db,
                     rating=0,
                     phone_number=form.cleaned_data['phone_number']
                 )
 
-                market_models.Cart.objects.create(user=user_info)
+                market_models.Cart.objects.create(user=user_info_db)
 
                 return authenticate_and_login(request, form, context)
             except IntegrityError:
