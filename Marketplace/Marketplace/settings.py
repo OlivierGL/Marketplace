@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Chat.apps.ChatConfig',
     'Users.apps.UsersConfig',
     'Market.apps.MarketConfig',
+    'Orders.apps.OrdersConfig',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +50,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'paypal.standard.ipn'
 ]
+
+PAYPAL_TEST = True
+
+PAYPAL_RECEIVER_EMAIL = 'rodrigo.lisboamirco@mail.mcgill.ca'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
