@@ -87,6 +87,7 @@ def cart(request):
 
 def product(request, primary_key):
     product_db = models.Product.objects.get(pk=primary_key)
+    previous_url = request.META.get("HTTP_REFERER") or ""
     if request.user.is_authenticated:
         current_user = models.UserInfo.objects.get(user=request.user)
         product_in_cart = current_user.cart.cart_products.filter(product=product_db, quantity__gt=0).first()
@@ -99,7 +100,8 @@ def product(request, primary_key):
     context = {'product': product_db,
                'current_user': current_user,
                'product_in_cart': product_in_cart,
-               'user_is_artist': user_is_artist}
+               'user_is_artist': user_is_artist,
+               'previous': previous_url}
     return render(request, 'Market/product.html', context)
 
 

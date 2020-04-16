@@ -2,7 +2,11 @@
 {% block content %}
     {% load static %}
     {% csrf_token %}
-
+    {% if previous %}
+        <a class="btn btn-dark" style="margin-bottom: 15px" href="{{ previous }}" role="button">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Go back
+        </a>
+    {% endif %}
     <div class="jumbotron">
         <h4 class="display-4">{{ product.name }}</h4>
         <hr class="my-4">
