@@ -70,7 +70,7 @@
                 <hr/>
                 <li class="bg-light list-inline-item">
                     <h6>Click the button below to finish the purchase via PayPal</h6>
-                    <div id="paypalFormDiv" data-buyerId="{{ user.id }}" data-paypalInvoice="{{ paypalInvoice }}"
+                    <div id="paypalFormDiv" data-cartPageUrl="{% url 'cart' %}" data-buyerId="{{ user.id }}" data-paypalInvoice="{{ paypalInvoice }}"
                          class="container text-center">
                         <!-- writes out the form tag automatically -->
                         {{ form.render }}

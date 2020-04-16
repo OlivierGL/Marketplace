@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .models import UserInfo, Address
 from . import forms
 from django.db import IntegrityError
-from Market import models as market_models 
+from Market import models as market_models
 
 
 # Create your views here.
@@ -129,28 +129,27 @@ def profile(request, primary_key):
     user_data = User.objects.get(pk=primary_key)
     user_info = UserInfo.objects.get(user=user_data)
     address = user_info.user_address.first()
-    user_pk = user_data.pk
     current_user_info = UserInfo.objects.get(user=request.user)
 
     # Disabling the navbar bold text for My Profile if we're not visiting the
     # current user's profile.
     if user_info == current_user_info:
         context = {
-        'items': market_models.Product.objects.filter(artist=user_info),
-        'user_info': user_info,
-        'current_user_info' : current_user_info,
-        'address': address,
-        'activeNavItem': "myProfile",
-        'noProductErrorMessage': "You have no products for sale."
+            'items': market_models.Product.objects.filter(artist=user_info),
+            'user_info': user_info,
+            'current_user_info': current_user_info,
+            'address': address,
+            'activeNavItem': "myProfile",
+            'noProductErrorMessage': "You have no products for sale."
         }
     else:
         context = {
-        'items': market_models.Product.objects.filter(artist=user_info),
-        'user_info': user_info,
-        'current_user_info' : current_user_info,
-        'address': address,
-        'activeNavItem': "",
-        'noProductErrorMessage': "You have no products for sale."
+            'items': market_models.Product.objects.filter(artist=user_info),
+            'user_info': user_info,
+            'current_user_info': current_user_info,
+            'address': address,
+            'activeNavItem': "",
+            'noProductErrorMessage': "You have no products for sale."
         }
 
     return render(request, 'Users/profile.html', context)

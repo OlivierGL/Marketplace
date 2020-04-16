@@ -7,15 +7,17 @@ let checkoutPageSocket = new WebSocket(
     '/ws/validateProductsOnStock/');
 
 checkoutPageSocket.onmessage = function (e) {
-    debugger;
     let data = JSON.parse(e.data);
     let errors = data['errors'];
     if (errors) {
-        let message = "The following products are not available in stock anymore. Please update your cart. " + errors.join(', ');
+        let message = "The following products are not available in stock anymore. Your cart has been updated. " + errors.join(', ');
         let type = "Error";
         showModal(message, type);
-    }
-    else{
+        $("#modalWsMessage").on('hidden.bs.modal', function () {
+            // Go to cart page just when modal closes
+            document.location.href = $("#paypalFormDiv").data("cartpageurl")
+        });
+    } else {
         $("#paypalFormDiv").children().trigger('submit', [{'shouldCallPayPal': true}]);
     }
 };
@@ -27,7 +29,6 @@ checkoutPageSocket.onclose = function () {
 function setPayPalForm() {
     let paypalDiv = $("#paypalFormDiv");
     paypalDiv.children().on("submit", function (e, shouldCallPayPal) {
-        debugger;
         if (!shouldCallPayPal) {
             e.preventDefault();
             let buyerId = paypalDiv.data("buyerid");
