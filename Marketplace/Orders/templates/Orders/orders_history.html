@@ -1,0 +1,106 @@
+{% extends "Market/base.html" %}
+{% block content %}
+    {% load static %}
+
+    <div class="d-flex flex-column">
+        <div class="head bg-dark text-center p-2">
+            <h4>Your orders</h4>
+        </div>
+    </div>
+
+    <ul id="productsUl" class="list-group bg-light">
+        {% for order in orders %}
+            <li class="bg-light list-group-item">
+                <div class="row">
+                    <div class="col-4">
+                        <ul class="list-inline bg-light">
+                            <li class="bg-light list-inline-item">
+                                <div class="font-weight-light">
+                                    <h6>Order id:</h6>{{ order.payPalInvoice }}
+                                </div>
+                            </li>
+                            <hr/>
+                            <li class="bg-light list-inline-item">
+                                <div class="font-weight-light">
+                                    <h6 class="d-inline">Order status:</h6>
+                                    <span class="badge {% if order.status == 'PAID' %}
+                                                            badge-success
+                                                       {% elif order.status == 'CANCELED' %}
+                                                            badge-danger
+                                                       {% else %}
+                                                            badge-primary
+                                                       {% endif %}">{{ order.status }}</span>
+                                </div>
+                            </li>
+                            <hr/>
+                            <li class="bg-light list-inline-item">
+                                <div class="font-weight-light">
+                                    <h6>Shipping information</h6>
+                                    {{ user.first_name }} {{ user.last_name }} <br/>
+                                    {{ order.shipping.street_address }} <br/>
+                                    {{ order.shipping.city }}, {{ order.shipping.province }}, {{ order.shipping.country }}
+                                    - {{ order.shipping.postal_code }}
+                                </div>
+                            </li>
+                            <hr/>
+                            <li class="bg-light list-inline-item">
+                                <div class="row font-weight-light">
+                                    <div class="col-6 text-nowrap"><h6>Date of purchase:</h6></div>
+                                    <div class="col-6">{{ order.timestamp|date:'Y-m-d H:i' }}</div>
+                                </div>
+                            </li>
+                            <hr/>
+                            <li class="bg-light list-inline-item">
+                                <div class="row">
+                                    <div class="col-7">Subtotal:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.subtotal_amount }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-7">Provincial taxes:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.prov_taxes_amount }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-7">Federal taxes:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.fed_taxes_amount }}</div>
+                                </div>
+                                <hr/>
+                                <div class="row">
+                                    <div class="col-7">Total:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.total_amount }}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-8">
+                        <div class="card-group">
+                            {% for order_product in order.order_products.all %}
+                                <div>
+                                    <div class="card border-dark h-100" style="width: 12rem;">
+                                        <img src="{{ order_product.product.image.url }}" class="card-img-top"
+                                             alt="Image Unavailable">
+                                        <div class="card-body">
+                                            <a class="stretched-link card-title"
+                                               href="/product/{{ order_product.product.pk }}">
+                                                {{ order_product.product.name }}
+                                            </a>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                Unit price: <b>${{ order_product.price_paid }}</b>
+                                                <br/>
+                                                Qty purchased: {{ order_product.quantity }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {% empty %}
+            You have not completed any orders yet.
+        {% endfor %}
+    </ul>
+
+{% endblock content %}

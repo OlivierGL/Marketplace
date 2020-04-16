@@ -2,16 +2,16 @@
 {% block content %}
     {% load static %}
     {% if current_user_info == user_info %}
-    <h1>Hello, {{ user_info.user.first_name }}</h1>
+        <h1>Hello, {{ user_info.user.first_name }}</h1>
     {% endif %}
     <div class="row">
         <div class="col-4">
             <div class="d-flex flex-column">
                 <div class="head bg-dark text-center p-2">
                     {% if current_user_info == user_info %}
-                    <h4>Your rating</h4>
+                        <h4>Your rating</h4>
                     {% else %}
-                    <h4>{{ user_info.user.first_name }}'s Profile</h4>
+                        <h4>{{ user_info.user.first_name }}'s Profile</h4>
                     {% endif %}
                     <span class="fa fa-star {% if user_info.rating > 0.5 %} checked {% endif %}"></span>
                     <span class="fa fa-star {% if user_info.rating > 1.5 %} checked {% endif %}"></span>
@@ -26,37 +26,43 @@
                                 <h4>Contact information</h4>
                                 {{ user_info.user.first_name }} {{ user_info.user.last_name }} <br/>
                                 {{ address.street_address }} <br/>
-                                {{ address.city }}, {{ address.province }}, {{ address.country }} - {{ address.postal_code }} <br/>
+                                {{ address.city }}, {{ address.province }}, {{ address.country }}
+                                - {{ address.postal_code }} <br/>
                                 {{ user_info.phone_number }}
                             </div>
                         </li>
                         {% if current_user_info == user_info %}
-                        <li class="bg-light list-group-item text-center">
-                            <!-- Adding a product is handled by the Market app -->
-                            <a class="btn btn-primary bg-dark"
-                               href="add_product/">Add a new product</a>
-                        </li>
-                        <li class="bg-light list-group-item text-center">
-                            <h4>Your Chats</h4>
-                            {% for room in chat_rooms%} 
-                            <br>
-                            <h5>{{room.1.user.first_name}}: </h5> 
-                            <a class="btn btn-primary bg-dark"
-                               href="/chat/{{room.0.pk}}">Resume</a>
-                            <a id="delete_chat" class="btn btn-primary bg-dark" href="/chat/{{room.0.pk}}/delete/">Delete</a>
-                            <br>
-                            {% empty %}
-                            <div class="container font-weight-light">
-                            You currently have no active chats.
-                            Contact a seller or wait to get contacted to begin a chat.
-                            </div>
-                            {% endfor %}
-                        </li>
+                            <li class="bg-light list-group-item text-center">
+                                <!-- Adding a product is handled by the Market app -->
+                                <a class="btn btn-primary bg-dark"
+                                   href="add_product/">Add a new product</a>
+                            </li>
+                            <li class="bg-light list-group-item text-center">
+                                <a class="btn btn-primary bg-dark"
+                                   href="{% url 'orders-history' %}">See your previous orders</a>
+                            </li>
+                            <li class="bg-light list-group-item text-center">
+                                <h4>Your Chats</h4>
+                                {% for room in chat_rooms %}
+                                    <br>
+                                    <h5>{{ room.1.user.first_name }}: </h5>
+                                    <a class="btn btn-primary bg-dark"
+                                       href="/chat/{{ room.0.pk }}">Resume</a>
+                                    <a id="delete_chat" class="btn btn-primary bg-dark"
+                                       href="/chat/{{ room.0.pk }}/delete/">Delete</a>
+                                    <br>
+                                {% empty %}
+                                    <div class="container font-weight-light">
+                                        You currently have no active chats.
+                                        Contact a seller or wait to get contacted to begin a chat.
+                                    </div>
+                                {% endfor %}
+                            </li>
                         {% else %}
-                        <li class="bg-light list-group-item text-center">
-                            <a class="btn btn-primary bg-dark"
-                               href="/chat/{{user_info.pk}}/{{current_user_info.pk}}/">Contact {{user_info.user.first_name}}</a>
-                        </li>
+                            <li class="bg-light list-group-item text-center">
+                                <a class="btn btn-primary bg-dark"
+                                   href="/chat/{{ user_info.pk }}/{{ current_user_info.pk }}/">Contact {{ user_info.user.first_name }}</a>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>
@@ -66,9 +72,9 @@
         </div>
         <div class="col-8">
             {% if current_user_info == user_info %}
-            <h3>Your products for sale</h3>
+                <h3>Your products for sale</h3>
             {% else %}
-            <h3>{{user_info.user.first_name}}'s Products for Sale</h3>
+                <h3>{{ user_info.user.first_name }}'s products for sale</h3>
             {% endif %}
             {% include "Market/products_list.html" %}
         </div>

@@ -4,7 +4,6 @@ from . import models
 from . import forms
 from Users import models as user_models
 from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.contrib import messages
 
 no_product_error_message = "Sorry, no {} are available for now."
@@ -12,46 +11,19 @@ no_product_error_message = "Sorry, no {} are available for now."
 
 # Create your views here.
 def home(request):
-    return render(request, 'Market/home.html', {'activeNavItem': 'home'})
+    context = {
+        'category': "all products",
+        'items': models.Product.objects.filter(quantity__gt=0),
+        'activeNavItem': "browse/all",
+        'noProductErrorMessage': no_product_error_message.format("products")
+    }
+    return render(request, 'Market/browse.html', context)
 
 
 def paintings(request):
-    # made up item to demo the browser template.
-    items = [{
-        'pk': 1,
-        'name': 'The Creation of the Sun and the Moon',
-        'description': "It is one of the frescoes from Michelangelo's nine Books of Genesis scenes on the Sistine Chapel ceiling.",
-        'quantity': '3',
-        'image': 'Market/thecreation.jpg',
-        'price': '4300'}, {
-        'pk': 2,
-        'name': 'Self-portrait',
-        'description': "Most probably, van Gogh's self-portraits are depicting the face as it appeared in the mirror he used to reproduce his face, i.e. his right side in the image is in reality the left side of his face.",
-        'quantity': '2',
-        'image': 'Market/selfportrait.jpg',
-        'price': '2000'}, {
-        'pk': 3,
-        'name': 'Mona Lisa',
-        'description': "The best known, the most visited, the most written about, the most sung about, the most parodied work of art in the world",
-        'quantity': '7',
-        'image': 'Market/monalisa.jpg',
-        'price': '1864'}, {
-        'pk': 4,
-        'name': 'The Scream',
-        'description': "The agonised face in the painting has become one of the most iconic images of art, seen as symbolising the anxiety of the human condition.",
-        'quantity': '1',
-        'image': 'Market/scream.jpg',
-        'price': '4300'}, {
-        'pk': 5,
-        'name': 'The Kiss',
-        'description': "The Kiss (in German Der Kuss) is an oil-on-canvas painting with added gold leaf, silver and platinum, by the Austrian Symbolist painter Gustav Klimt. It was painted at some point in 1907 and 1908, during the height of what scholars call his 'Golden Period'.",
-        'quantity': '11',
-        'image': 'Market/thekiss.jpg',
-        'price': '1000'},
-    ]
     context = {
         'category': "Paintings",
-        'items': models.Product.objects.filter(category="PAINTING"),
+        'items': models.Product.objects.filter(category="PAINTING", quantity__gt=0),
         'activeNavItem': "browse/paintings",
         'noProductErrorMessage': no_product_error_message.format("paintings")
     }
@@ -61,7 +33,7 @@ def paintings(request):
 def sculptures(request):
     context = {
         'category': "Sculptures",
-        'items': models.Product.objects.filter(category="SCULPTURE"),
+        'items': models.Product.objects.filter(category="SCULPTURE", quantity__gt=0),
         'activeNavItem': "browse/sculptures",
         'noProductErrorMessage': no_product_error_message.format("sculptures")
     }
@@ -71,7 +43,7 @@ def sculptures(request):
 def clothes(request):
     context = {
         'category': "Clothes",
-        'items': models.Product.objects.filter(category="GARMENT"),
+        'items': models.Product.objects.filter(category="GARMENT", quantity__gt=0),
         'activeNavItem': "browse/clothes",
         'noProductErrorMessage': no_product_error_message.format("clothes")
     }
@@ -81,7 +53,7 @@ def clothes(request):
 def jewelry(request):
     context = {
         'category': "Jewelry",
-        'items': models.Product.objects.filter(category="JEWELRY"),
+        'items': models.Product.objects.filter(category="JEWELRY", quantity__gt=0),
         'activeNavItem': "browse/jewelry",
         'noProductErrorMessage': no_product_error_message.format("jewelry")
     }
@@ -91,7 +63,7 @@ def jewelry(request):
 def glass_art(request):
     context = {
         'category': "Glass Art",
-        'items': models.Product.objects.filter(category="GLASS_ART"),
+        'items': models.Product.objects.filter(category="GLASS_ART", quantity__gt=0),
         'activeNavItem': "browse/glass_art",
         'noProductErrorMessage': no_product_error_message.format("glass art")
     }
@@ -115,6 +87,7 @@ def cart(request):
 
 def product(request, primary_key):
     product_db = models.Product.objects.get(pk=primary_key)
+    previous_url = request.META.get("HTTP_REFERER") or ""
     if request.user.is_authenticated:
         current_user = models.UserInfo.objects.get(user=request.user)
         product_in_cart = current_user.cart.cart_products.filter(product=product_db, quantity__gt=0).first()
@@ -127,7 +100,8 @@ def product(request, primary_key):
     context = {'product': product_db,
                'current_user': current_user,
                'product_in_cart': product_in_cart,
-               'user_is_artist': user_is_artist}
+               'user_is_artist': user_is_artist,
+               'previous': previous_url}
     return render(request, 'Market/product.html', context)
 
 

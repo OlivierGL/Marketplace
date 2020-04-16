@@ -25,7 +25,7 @@ def shipping_info(request):
         if form.is_valid():
             address_db = user_models.Address.objects.get(user=current_user, is_default_shipping=True)
             address_form = form.save(commit=False)
-
+            # If user made modifications in form, create new address and make it default shipping
             if address_db != address_form:
                 address_db.is_default_shipping = False
                 address_db.save()
@@ -45,12 +45,41 @@ def shipping_info(request):
 @login_required
 def checkout_order(request):
     current_user = user_models.UserInfo.objects.get(user=request.user)
-
-    address = current_user.user_address.filter(is_default_shipping=True).first()
     cart_products = market_models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
 
-    subtotal = 0
+    address = current_user.user_address.filter(is_default_shipping=True).first()
     product_names = ', '.join([cart_product.product.name for cart_product in cart_products])
+    price = calculate_price(cart_products)
+
+    # unique paypal id
+    paypal_invoice = "ppal-id-"+str(uuid.uuid4())
+
+    # PayPal button info
+    paypal_dict = {
+        "business": "rodrigo.lisboamirco@mail.mcgill.ca",
+        "amount": price['total'],
+        "currency_code": "CAD",
+        "item_name": product_names,
+        "invoice": paypal_invoice,
+        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        "return": request.build_absolute_uri(reverse('successful-payment')),
+        "cancel_return": request.build_absolute_uri(reverse('canceled-payment')),
+        "rm": 2  # Will return a POST to successful-payment
+    }
+
+    paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {
+        "form": paypal_form,
+        "cartProducts": cart_products,
+        "price": price,
+        "address": address,
+        "paypalInvoice": paypal_invoice
+    }
+    return render(request, "Orders/checkout_order.html", context)
+
+
+def calculate_price(cart_products):
+    subtotal = 0
     for cart_product in cart_products:
         product_total_price = cart_product.product.price * cart_product.quantity
         subtotal += product_total_price
@@ -59,34 +88,7 @@ def checkout_order(request):
     fed_taxes = round(subtotal * FED_TAX_RATE, 2)
     total = subtotal + prov_taxes + fed_taxes
 
-    # unique paypal id
-    paypal_invoice = "ppal-id-"+str(uuid.uuid4())
-
-    # PayPal button info
-    paypal_dict = {
-        "business": "rodrigo.lisboamirco@mail.mcgill.ca",
-        "amount": total,
-        "currency_code": "CAD",
-        "item_name": product_names,
-        "invoice": paypal_invoice,
-        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-        "return": request.build_absolute_uri(reverse('successful-payment')),
-        "cancel_return": request.build_absolute_uri(reverse('canceled-payment')),
-        "rm": 2  # Will return a POST
-    }
-
-    paypal_form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {
-        "form": paypal_form,
-        "cartProducts": cart_products,
-        "subtotal": subtotal,
-        "provTaxes": prov_taxes,
-        "fedTaxes": fed_taxes,
-        "total": total,
-        "address": address,
-        "paypalInvoice": paypal_invoice
-    }
-    return render(request, "Orders/checkout_order.html", context)
+    return {"subtotal": subtotal, "provTaxes": prov_taxes, "fedTaxes": fed_taxes, "total": total}
 
 
 @csrf_exempt
@@ -111,7 +113,7 @@ def canceled_payment(request):
     current_user = user_models.UserInfo.objects.get(user=request.user)
 
     # Change order status to canceled
-    order = current_user.buyer_order.order_by('-timestamp').first()
+    order = current_user.buyer_orders.order_by('-timestamp').first()
     order.status = "CANCELED"
     order.save()
 
@@ -127,3 +129,12 @@ def canceled_payment(request):
     return HttpResponseRedirect(reverse('market-home'))
 
 
+@login_required
+def orders_history(request):
+    current_user = user_models.UserInfo.objects.get(user=request.user)
+
+    orders = models.Order.objects.filter(buyer=current_user).order_by('-timestamp')
+    context = {
+        "orders": orders
+    }
+    return render(request, "Orders/orders_history.html", context)

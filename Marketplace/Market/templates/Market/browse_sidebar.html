@@ -5,6 +5,10 @@
     <div>
         <ul class="flex-column list-group bg-light">
             <li class="bg-light list-group-item">
+                <a class="category-link {% if 'all' in activeNavItem %}sidebar-active{% endif %}"
+                   href="/">All products</a>
+            </li>
+            <li class="bg-light list-group-item">
                 <a class="category-link {% if 'paintings' in activeNavItem %}sidebar-active{% endif %}"
                    href="/paintings">Paintings</a>
             </li>

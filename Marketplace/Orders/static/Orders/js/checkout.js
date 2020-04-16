@@ -33,9 +33,17 @@ function setPayPalForm() {
             e.preventDefault();
             let buyerId = paypalDiv.data("buyerid");
             let paypalInvoice = paypalDiv.data("paypalinvoice");
+            let totalAmount = $("#totalAmount").text();
+            let subtotalAmount = $("#subtotalAmount").text();
+            let provTaxes = $("#provTaxes").text();
+            let fedTaxes = $("#fedTaxes").text();
             checkoutPageSocket.send(JSON.stringify({
                 'buyerId': buyerId,
-                'paypalInvoice': paypalInvoice
+                'paypalInvoice': paypalInvoice,
+                'totalAmount': totalAmount,
+                'subtotalAmount': subtotalAmount,
+                'provTaxes': provTaxes,
+                'fedTaxes': fedTaxes,
             }));
         }
     });
