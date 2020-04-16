@@ -12,6 +12,8 @@ from Market import models as market_models
 
 
 # Create your views here.
+
+
 def signup(request):
     context = {'activeNavItem': 'signup',
                'areaConstraintMessage': 'Our service is currently only available in the Montreal area.'}
@@ -90,7 +92,7 @@ def authenticate_and_login(request, form, context):
 
 
 @login_required
-def profile(request):
+def profile(request, primary_key):
     items = [{
         'pk': 1,
         'name': 'The Creation of the Sun and the Moon',
@@ -124,14 +126,31 @@ def profile(request):
         'price': '1000'},
     ]
 
-    user_info = UserInfo.objects.get(user=request.user)
+    user_data = User.objects.get(pk=primary_key)
+    user_info = UserInfo.objects.get(user=user_data)
     address = user_info.user_address.first()
+    user_pk = user_data.pk
+    current_user_info = UserInfo.objects.get(user=request.user)
 
-    context = {
+    # Disabling the navbar bold text for My Profile if we're not visiting the
+    # current user's profile.
+    if user_info == current_user_info:
+        context = {
         'items': market_models.Product.objects.filter(artist=user_info),
         'user_info': user_info,
+        'current_user_info' : current_user_info,
         'address': address,
         'activeNavItem': "myProfile",
         'noProductErrorMessage': "You have no products for sale."
-    }
+        }
+    else:
+        context = {
+        'items': market_models.Product.objects.filter(artist=user_info),
+        'user_info': user_info,
+        'current_user_info' : current_user_info,
+        'address': address,
+        'activeNavItem': "",
+        'noProductErrorMessage': "You have no products for sale."
+        }
+
     return render(request, 'Users/profile.html', context)
