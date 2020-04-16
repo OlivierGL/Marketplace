@@ -15,40 +15,31 @@ class ProductConsumer(WebsocketConsumer):
         cart_id = text_data_json['cartId']
         product_id = text_data_json['productId']
         quantity = int(text_data_json['quantity'])
-        product_db = models.Product.objects.get(pk=product_id)
+        db_product = models.Product.objects.get(pk=product_id)
 
-        qty_in_cart = 0
+        # Only happens if the user is not logged in
         if cart_id == '':
             message = 'Please login to your account before adding products to your cart.'
             message_type = 'Error'
+            qty_in_cart = 0
         else:
             cart_db = models.Cart.objects.get(pk=cart_id)
+            cart_product = models.CartProduct.objects.filter(product=db_product, cart=cart_db)
 
-            product_already_in_cart = models.CartProduct.objects.filter(product=product_db, cart=cart_db)
-            if product_already_in_cart.exists():
-                product_already_in_cart = product_already_in_cart.first()
-                if product_db.quantity < quantity:
-                    message = 'Quantity in stock insufficient. You currently have {} in your cart.'.format(
-                        product_already_in_cart.quantity)
-                    message_type = 'Error'
-                    qty_in_cart = product_already_in_cart.quantity
-                elif product_already_in_cart.quantity == quantity:
-                    message = 'Quantity in cart has not changed. You currently have {} in your cart.'.format(
-                        product_already_in_cart.quantity)
-                    message_type = 'Error'
-                    qty_in_cart = product_already_in_cart.quantity
-                else:
-                    product_already_in_cart.quantity = quantity
-                    product_already_in_cart.save()
-                    message = 'Cart updated successfully. Total items in cart: {}'.format(quantity)
-                    message_type = 'Success'
-                    qty_in_cart = product_already_in_cart.quantity
+            # Product is already in cart, must validate and update the quantity
+            if cart_product.exists():
+                cart_product = cart_product.first()
+                message, message_type, qty_in_cart = validate_product_in_cart(db_product, cart_product, quantity)
+
+            # New product to be added in cart
             else:
-                if product_db.quantity < quantity:
+                # Should never happen because of front-end validations
+                if db_product.quantity < quantity:
                     message = 'Quantity in stock insufficient.'
                     message_type = 'Error'
+                    qty_in_cart = 0
                 else:
-                    models.CartProduct.objects.create(cart=cart_db, product=product_db, quantity=quantity)
+                    models.CartProduct.objects.create(cart=cart_db, product=db_product, quantity=quantity)
                     message = 'Cart updated successfully. Total items in cart: {}'.format(quantity)
                     message_type = 'Success'
                     qty_in_cart = quantity
@@ -56,7 +47,31 @@ class ProductConsumer(WebsocketConsumer):
         response = {
             'message': message,
             'type': message_type,
-            'qtyInStock': product_db.quantity,
+            'qtyInStock': db_product.quantity,
             'qtyInCart': qty_in_cart
         }
         self.send(text_data=json.dumps(response))
+
+
+def validate_product_in_cart(db_product, cart_product, new_quantity):
+    # Not enough products in stock (should never happen because of front-end validations...)
+    if db_product.quantity < new_quantity:
+        message = 'Quantity in stock insufficient. You currently have {} in your cart.'.format(
+            cart_product.quantity)
+        message_type = 'Error'
+        qty_in_cart = cart_product.quantity
+    # Quantity in cart has not changed
+    elif cart_product.quantity == new_quantity:
+        message = 'Quantity in cart has not changed. You currently have {} in your cart.'.format(
+            cart_product.quantity)
+        message_type = 'Error'
+        qty_in_cart = cart_product.quantity
+    # Quantity in cart has successfully been updated
+    else:
+        cart_product.quantity = new_quantity
+        cart_product.save()
+        message = 'Cart updated successfully. Total items in cart: {}'.format(new_quantity)
+        message_type = 'Success'
+        qty_in_cart = cart_product.quantity
+
+    return message, message_type, qty_in_cart

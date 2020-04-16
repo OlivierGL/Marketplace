@@ -51,20 +51,20 @@
                 <li class="bg-light list-inline-item">
                     <div class="row">
                         <div class="col-8">Subtotal:</div>
-                        <div class="col-4">CAD$<span id="subtotalAmount">{{ subtotal }}</span></div>
+                        <div class="col-4">CAD$<span id="subtotalAmount">{{ price.subtotal }}</span></div>
                     </div>
                     <div class="row">
                         <div class="col-8">Provincial taxes:</div>
-                        <div class="col-4">CAD$<span id="provTaxes">{{ provTaxes }}</span></div>
+                        <div class="col-4">CAD$<span id="provTaxes">{{ price.provTaxes }}</span></div>
                     </div>
                     <div class="row">
                         <div class="col-8">Federal taxes:</div>
-                        <div class="col-4">CAD$<span id="fedTaxes">{{ fedTaxes }}</span></div>
+                        <div class="col-4">CAD$<span id="fedTaxes">{{ price.fedTaxes }}</span></div>
                     </div>
                     <hr/>
                     <div class="row">
                         <div class="col-8">Total:</div>
-                        <div class="col-4">CAD$<span id="totalAmount">{{ total }}</span></div>
+                        <div class="col-4">CAD$<span id="totalAmount">{{ price.total }}</span></div>
                     </div>
                 </li>
                 <hr/>
