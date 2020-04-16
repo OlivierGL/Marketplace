@@ -22,6 +22,19 @@
                             <hr/>
                             <li class="bg-light list-inline-item">
                                 <div class="font-weight-light">
+                                    <h6 class="d-inline">Order status:</h6>
+                                    <span class="badge {% if order.status == 'PAID' %}
+                                                            badge-success
+                                                       {% elif order.status == 'CANCELED' %}
+                                                            badge-danger
+                                                       {% else %}
+                                                            badge-primary
+                                                       {% endif %}">{{ order.status }}</span>
+                                </div>
+                            </li>
+                            <hr/>
+                            <li class="bg-light list-inline-item">
+                                <div class="font-weight-light">
                                     <h6>Shipping information</h6>
                                     {{ user.first_name }} {{ user.last_name }} <br/>
                                     {{ order.shipping.street_address }} <br/>
