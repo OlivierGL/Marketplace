@@ -127,3 +127,12 @@ def canceled_payment(request):
     return HttpResponseRedirect(reverse('market-home'))
 
 
+@login_required
+def orders_history(request):
+    current_user = user_models.UserInfo.objects.get(user=request.user)
+
+    orders = models.Order.objects.filter(buyer=current_user)
+    context = {
+        "orders": orders
+    }
+    return render(request, "Orders/orders_history.html", context)

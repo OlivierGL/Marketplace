@@ -11,7 +11,7 @@ ORDER_STATUS = (
 
 # Data about an order that has been placed. An order is for a single product.
 class Order(models.Model):
-    buyer = models.ForeignKey(UserInfo, related_name='buyer_order', on_delete=models.CASCADE)
+    buyer = models.ForeignKey(UserInfo, related_name='buyer_orders', on_delete=models.CASCADE)
     payPalInvoice = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     shipping = models.ForeignKey(Address, related_name='shipping_address', on_delete=models.DO_NOTHING)
