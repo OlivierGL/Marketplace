@@ -131,7 +131,7 @@ def product(request, primary_key):
     return render(request, 'Market/product.html', context)
 
 
-def add_product(request):
+def add_product(request, pk):
     context = {}
     if request.method == 'POST':
         add_product_form = forms.AddProductForm(request.POST, request.FILES)
@@ -141,7 +141,7 @@ def add_product(request):
             product.save()
 
             messages.success(request, 'Product Added Successfuly')
-            return HttpResponseRedirect(reverse('profile'))
+            return HttpResponseRedirect('../')
         else:
             messages.error(request, 'Error: Product wasn\'t Added Successfuly')
             context['form'] = forms.AddProductForm()

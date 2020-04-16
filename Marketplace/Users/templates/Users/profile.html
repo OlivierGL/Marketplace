@@ -36,10 +36,26 @@
                             <a class="btn btn-primary bg-dark"
                                href="add_product/">Add a new product</a>
                         </li>
+                        <li class="bg-light list-group-item text-center">
+                            <h4>Your Chats</h4>
+                            {% for room in chat_rooms%} 
+                            <br>
+                            <h5>{{room.1.user.first_name}}: </h5> 
+                            <a class="btn btn-primary bg-dark"
+                               href="/chat/{{room.0.pk}}">Resume</a>
+                            <a id="delete_chat" class="btn btn-primary bg-dark" href="/chat/{{room.0.pk}}/delete/">Delete</a>
+                            <br>
+                            {% empty %}
+                            <div class="container font-weight-light">
+                            You currently have no active chats.
+                            Contact a seller or wait to get contacted to begin a chat.
+                            </div>
+                            {% endfor %}
+                        </li>
                         {% else %}
                         <li class="bg-light list-group-item text-center">
                             <a class="btn btn-primary bg-dark"
-                               href="#">Contact {{user_info.user.first_name}}</a>
+                               href="/chat/{{user_info.pk}}/{{current_user_info.pk}}/">Contact {{user_info.user.first_name}}</a>
                         </li>
                         {% endif %}
                     </ul>
