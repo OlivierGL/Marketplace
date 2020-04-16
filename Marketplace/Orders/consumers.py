@@ -10,7 +10,7 @@ def validate_products_in_stock(cart_products):
     for cart_product in cart_products:
         db_product = cart_product.product
         if cart_product.quantity > db_product.quantity:
-            errors.append({'name': db_product.name})
+            errors.append(db_product.name)
     return errors
 
 

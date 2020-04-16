@@ -18,3 +18,9 @@ function setActiveNavBar() {
         $(this).parent().addClass('active').siblings().removeClass('active');
     });
 }
+
+function showModal(message, type) {
+    $('#ws_message').text(message);
+    $('#modalWsMessageTitle').text(type);
+    $('#modalWsMessage').modal('show');
+}

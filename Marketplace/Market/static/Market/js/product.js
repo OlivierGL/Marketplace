@@ -35,12 +35,6 @@ productPageSocket.onclose = function () {
     console.error('Websocket closed unexpectedly');
 };
 
-function showModal(message, type) {
-    $('#ws_message').text(message);
-    $('#modalWsMessageTitle').text(type);
-    $('#modalWsMessage').modal('show');
-}
-
 function disableAddButton() {
     let addToCartButton = $('#addToCartButton');
     addToCartButton.prop("disabled", true);

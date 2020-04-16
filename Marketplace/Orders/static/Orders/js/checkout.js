@@ -11,7 +11,9 @@ checkoutPageSocket.onmessage = function (e) {
     let data = JSON.parse(e.data);
     let errors = data['errors'];
     if (errors) {
-
+        let message = "The following products are not available in stock anymore. Please update your cart. " + errors.join(', ');
+        let type = "Error";
+        showModal(message, type);
     }
     else{
         $("#paypalFormDiv").children().trigger('submit', [{'shouldCallPayPal': true}]);
