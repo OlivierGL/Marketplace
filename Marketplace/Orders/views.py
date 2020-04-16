@@ -131,7 +131,7 @@ def canceled_payment(request):
 def orders_history(request):
     current_user = user_models.UserInfo.objects.get(user=request.user)
 
-    orders = models.Order.objects.filter(buyer=current_user)
+    orders = models.Order.objects.filter(buyer=current_user).order_by('-timestamp')
     context = {
         "orders": orders
     }
