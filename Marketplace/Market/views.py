@@ -51,7 +51,7 @@ def paintings(request):
     ]
     context = {
         'category': "Paintings",
-        'items': models.Product.objects.filter(category="PAINTING"),
+        'items': models.Product.objects.filter(category="PAINTING", quantity__gt=0),
         'activeNavItem': "browse/paintings",
         'noProductErrorMessage': no_product_error_message.format("paintings")
     }
@@ -61,7 +61,7 @@ def paintings(request):
 def sculptures(request):
     context = {
         'category': "Sculptures",
-        'items': models.Product.objects.filter(category="SCULPTURE"),
+        'items': models.Product.objects.filter(category="SCULPTURE", quantity__gt=0),
         'activeNavItem': "browse/sculptures",
         'noProductErrorMessage': no_product_error_message.format("sculptures")
     }
@@ -71,7 +71,7 @@ def sculptures(request):
 def clothes(request):
     context = {
         'category': "Clothes",
-        'items': models.Product.objects.filter(category="GARMENT"),
+        'items': models.Product.objects.filter(category="GARMENT", quantity__gt=0),
         'activeNavItem': "browse/clothes",
         'noProductErrorMessage': no_product_error_message.format("clothes")
     }
@@ -81,7 +81,7 @@ def clothes(request):
 def jewelry(request):
     context = {
         'category': "Jewelry",
-        'items': models.Product.objects.filter(category="JEWELRY"),
+        'items': models.Product.objects.filter(category="JEWELRY", quantity__gt=0),
         'activeNavItem': "browse/jewelry",
         'noProductErrorMessage': no_product_error_message.format("jewelry")
     }
@@ -91,7 +91,7 @@ def jewelry(request):
 def glass_art(request):
     context = {
         'category': "Glass Art",
-        'items': models.Product.objects.filter(category="GLASS_ART"),
+        'items': models.Product.objects.filter(category="GLASS_ART", quantity__gt=0),
         'activeNavItem': "browse/glass_art",
         'noProductErrorMessage': no_product_error_message.format("glass art")
     }
