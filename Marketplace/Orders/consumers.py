@@ -35,11 +35,19 @@ class OrdersConsumer(WebsocketConsumer):
         else:
             # Create order
             paypal_invoice = text_data_json['paypalInvoice']
+            total_amount = text_data_json['totalAmount']
+            subtotal_amount = text_data_json['subtotalAmount']
+            prov_taxes = text_data_json['provTaxes']
+            fed_taxes = text_data_json['fedTaxes']
             shipping_address = buyer.user_address.get(is_default_shipping=True)
             order = models.Order.objects.create(
                 buyer=buyer,
                 shipping=shipping_address,
-                payPalInvoice=paypal_invoice
+                payPalInvoice=paypal_invoice,
+                total_amount=total_amount,
+                subtotal_amount=subtotal_amount,
+                fed_taxes_amount=fed_taxes,
+                prov_taxes_amount=prov_taxes
             )
             # Create order_products
             for cart_product in cart_products:
@@ -49,7 +57,8 @@ class OrdersConsumer(WebsocketConsumer):
                 models.OrderProduct.objects.create(
                     product=db_product,
                     order=order,
-                    quantity=cart_product.quantity
+                    quantity=cart_product.quantity,
+                    price_paid=db_product.price
                 )
 
             # Send empty errors list
