@@ -1,0 +1,47 @@
+<fieldset>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="countryInput">Country</label>
+                <input type="text" class="form-control" id="countryInput" name="country"
+                       value="{{ form.country.value }}" readonly="readonly">
+                <small id="countryError" class="form-text text-muted">{{ areaConstraintMessage }}</small>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="provinceInput">Province</label>
+                <input type="text" class="form-control" id="provinceInput" name="province"
+                       value="{{ form.province.value }}" readonly="readonly">
+                <small id="provinceError" class="form-text text-muted">{{ areaConstraintMessage }}</small>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="cityInput">City</label>
+                <input type="text" class="form-control" id="cityInput" name="city"
+                       value="{{ form.city.value }}" readonly="readonly">
+                <small id="cityError" class="form-text text-muted">{{ areaConstraintMessage }}</small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group">
+                <label for="streetAddressInput">Address</label>
+                <input type="text" class="form-control" id="streetAddressInput" name="street_address"
+                       value="{{ form.street_address.value|default_if_none:'' }}">
+                <small id="streetAddressError" class="form-text text-muted">{{ form.street_address.errors }}
+                </small>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="postalCodeInput">Postal Code</label>
+                <input type="text" class="form-control" id="postalCodeInput" name="postal_code"
+                       value="{{ form.postal_code.value|default_if_none:'' }}">
+                <small id="postalCodeError" class="form-text text-muted">{{ form.postal_code.errors }}</small>
+            </div>
+        </div>
+    </div>
+</fieldset>
