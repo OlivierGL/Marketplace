@@ -75,16 +75,3 @@ class CartProduct(models.Model):
     cart = models.ForeignKey(Cart, related_name='cart_products', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
-
-# Chat table that only stores the two users in a chat
-class Chat(models.Model):
-    user1 = models.ForeignKey(UserInfo, related_name='user1', on_delete=models.CASCADE)
-    user2 = models.ForeignKey(UserInfo, related_name='user2', on_delete=models.CASCADE)
-
-
-# table with all messages (can be associated with a chat by using the chat_id column)
-class Message(models.Model):
-    chat = models.IntegerField()
-    user = models.IntegerField()
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)

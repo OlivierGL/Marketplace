@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from .models import UserInfo, Address
 from . import forms
 from django.db import IntegrityError
-from Market import models as market_models
+from Market import models as market_models 
+from Chat import models as chat_models
+from django.db.models import Q
 
 
 # Create your views here.
@@ -130,17 +132,27 @@ def profile(request, primary_key):
     user_info = UserInfo.objects.get(user=user_data)
     address = user_info.user_address.first()
     current_user_info = UserInfo.objects.get(user=request.user)
+    chats = chat_models.Room.objects.filter(Q(user1=current_user_info) | Q(user2=current_user_info) )
+
+    rooms = []
+    for room in chats:
+        if current_user_info != room.user1:
+            correspondant = room.user1
+        else:
+            correspondant = room.user2
+        rooms.append((room,correspondant))
 
     # Disabling the navbar bold text for My Profile if we're not visiting the
     # current user's profile.
     if user_info == current_user_info:
         context = {
-            'items': market_models.Product.objects.filter(artist=user_info),
-            'user_info': user_info,
-            'current_user_info': current_user_info,
-            'address': address,
-            'activeNavItem': "myProfile",
-            'noProductErrorMessage': "You have no products for sale."
+        'items': market_models.Product.objects.filter(artist=user_info),
+        'user_info': user_info,
+        'current_user_info' : current_user_info,
+        'address': address,
+        'activeNavItem': "myProfile",
+        'noProductErrorMessage': "You have no products for sale.",
+        'chat_rooms': rooms,
         }
     else:
         context = {

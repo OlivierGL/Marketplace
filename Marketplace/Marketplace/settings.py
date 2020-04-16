@@ -39,6 +39,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'Chat.apps.ChatConfig',
     'Users.apps.UsersConfig',
     'Market.apps.MarketConfig',
     'Orders.apps.OrdersConfig',

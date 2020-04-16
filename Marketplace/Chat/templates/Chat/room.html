@@ -1,0 +1,67 @@
+{% extends "Market/base.html" %}
+{% block content %}
+
+<textarea id="room-log" cols="150" rows="20" class="form-control">
+{% for message in chat_messages %} ({{message.time_sent|date:'Y-m-d H:i'}}) {{message.sender.user.first_name}} sent: {{message.content}} 
+{% endfor %} Welcome {{user.first_name}}!
+</textarea><br>
+<div class="row">
+<input type="text" id="room-message" class="form-control"/> 
+</div>
+<br>
+<div class="text-right">
+<input type='submit' value='Send Message' id='room-send' class="btn btn-primary bg-dark"/> 
+</div>
+
+
+<script>
+
+	var roomPk = "{{ room_pk }}";
+
+	const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomPk
+            + '/'
+    );
+
+	chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#room-log').value += (data.message + '\n');
+    };
+	
+	chatSocket.onclose = function(e) {
+		console.error('Chat socket closed unexpectedly');
+	}
+
+	document.querySelector('#room-message').focus();
+    document.querySelector('#room-message').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#room-send').click();
+        }
+    };
+
+    document.querySelector('#room-send').onclick = function(e) {
+        const messageInputDom = document.querySelector('#room-message');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
+    };
+
+    var textarea = document.getElementById('room-log');
+    textarea.scrollTop = textarea.scrollHeight;
+
+    $("#room-log").change(function() {
+        $('#room-log').scrollTop($('#room-log')[0].scrollHeight);
+    });
+
+
+</script>
+
+
+{% endblock content %}
+
+
