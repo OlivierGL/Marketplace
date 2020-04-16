@@ -70,7 +70,8 @@
                 <hr/>
                 <li class="bg-light list-inline-item">
                     <h6>Click the button below to finish the purchase via PayPal</h6>
-                    <div class="container text-center">
+                    <div id="paypalFormDiv" data-buyerId="{{ user.id }}" data-paypalInvoice="{{ paypalInvoice }}"
+                         class="container text-center">
                         <!-- writes out the form tag automatically -->
                         {{ form.render }}
                     </div>
@@ -78,4 +79,9 @@
             </ul>
         </li>
     </ul>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "Orders/js/checkout.js" %}"></script>
 {% endblock %}

@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from paypal.standard.forms import PayPalPaymentsForm
 from Users import models as user_models
 from Users.forms import AddressForm
 from Market import models as market_models
+from . import models
 import decimal
+import uuid
 
 PROV_TAX_RATE = decimal.Decimal(0.09975)
 FED_TAX_RATE = decimal.Decimal(0.05)
@@ -55,16 +59,20 @@ def checkout_order(request):
     fed_taxes = round(subtotal * FED_TAX_RATE, 2)
     total = subtotal + prov_taxes + fed_taxes
 
+    # unique paypal id
+    paypal_invoice = "ppal-id-"+str(uuid.uuid4())
+
     # PayPal button info
     paypal_dict = {
         "business": "rodrigo.lisboamirco@mail.mcgill.ca",
         "amount": total,
         "currency_code": "CAD",
         "item_name": product_names,
-        "invoice": "unique-invoice-id",
+        "invoice": paypal_invoice,
         "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-        "return": request.build_absolute_uri(reverse('market-home')),
-        "cancel_return": request.build_absolute_uri(reverse('market-paintings')),
+        "return": request.build_absolute_uri(reverse('successful-payment')),
+        "cancel_return": request.build_absolute_uri(reverse('canceled-payment')),
+        "rm": 2  # Will return a POST
     }
 
     paypal_form = PayPalPaymentsForm(initial=paypal_dict)
@@ -75,6 +83,47 @@ def checkout_order(request):
         "provTaxes": prov_taxes,
         "fedTaxes": fed_taxes,
         "total": total,
-        "address": address
+        "address": address,
+        "paypalInvoice": paypal_invoice
     }
     return render(request, "Orders/checkout_order.html", context)
+
+
+@csrf_exempt
+def successful_payment(request):
+    order = models.Order.objects.get(payPalInvoice=request.POST['invoice'])
+    current_user = order.buyer
+
+    # Change order status to paid
+    order.status = "PAID"
+    order.save()
+
+    # Recreate cart
+    current_user.cart.delete()
+    market_models.Cart.objects.create(user=current_user)
+    messages.success(request, 'Your purchase has been completed successfully!')
+
+    return HttpResponseRedirect(reverse('market-home'))
+
+
+@csrf_exempt
+def canceled_payment(request):
+    current_user = user_models.UserInfo.objects.get(user=request.user)
+
+    # Change order status to canceled
+    order = current_user.buyer_order.order_by('-timestamp').first()
+    order.status = "CANCELED"
+    order.save()
+
+    # Put products back in stock
+    order_products = models.OrderProduct.objects.filter(order=order)
+    for order_product in order_products:
+        db_product = order_product.product
+        db_product.quantity += order_product.quantity
+        db_product.save()
+
+    messages.error(request, 'Your purchase has been canceled')
+
+    return HttpResponseRedirect(reverse('market-home'))
+
+
