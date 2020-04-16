@@ -15,20 +15,45 @@
                     <div class="col-4">
                         <ul class="list-inline bg-light">
                             <li class="bg-light list-inline-item">
-                                <div class="font-weight-light text-nowrap">
+                                <div class="font-weight-light">
+                                    <h6>Order id:</h6>{{ order.payPalInvoice }}
+                                </div>
+                            </li>
+                            <hr/>
+                            <li class="bg-light list-inline-item">
+                                <div class="font-weight-light">
                                     <h6>Shipping information</h6>
                                     {{ user.first_name }} {{ user.last_name }} <br/>
                                     {{ order.shipping.street_address }} <br/>
                                     {{ order.shipping.city }}, {{ order.shipping.province }}, {{ order.shipping.country }}
                                     - {{ order.shipping.postal_code }}
-                                    <br/>
+                                </div>
+                            </li>
+                            <hr/>
+                            <li class="bg-light list-inline-item">
+                                <div class="row font-weight-light">
+                                    <div class="col-6 text-nowrap"><h6>Date of purchase:</h6></div>
+                                    <div class="col-6">{{ order.timestamp|date:'Y-m-d H:i' }}</div>
                                 </div>
                             </li>
                             <hr/>
                             <li class="bg-light list-inline-item">
                                 <div class="row">
-                                    <div class="col-8">Total:</div>
-                                    <div class="col-4">CAD${{ order.totalAmount }}</div>
+                                    <div class="col-7">Subtotal:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.subtotal_amount }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-7">Provincial taxes:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.prov_taxes_amount }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-7">Federal taxes:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.fed_taxes_amount }}</div>
+                                </div>
+                                <hr/>
+                                <div class="row">
+                                    <div class="col-7">Total:</div>
+                                    <div class="col-5 font-weight-bold">CAD${{ order.total_amount }}</div>
                                 </div>
                             </li>
                         </ul>
@@ -48,7 +73,7 @@
                                         </div>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">
-                                                Unit price: <b>${{ order_product.product.price }}</b>
+                                                Unit price: <b>${{ order_product.price_paid }}</b>
                                                 <br/>
                                                 Qty purchased: {{ order_product.quantity }}
                                             </li>
