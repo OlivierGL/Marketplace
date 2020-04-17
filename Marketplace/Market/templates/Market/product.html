@@ -27,18 +27,16 @@
                 <span class="float-right">Quantity in stock: <span
                         id="qtyInStock">{{ product.quantity }}</span></span>
                 <hr class="my-4">
-                <h5>Additional information</h5>
-                Category: <span class="badge badge-info">{{ product.category }}</span>
+                <h5>Category:</h5>
+                <span class="badge badge-info">{{ product.category }}</span>
                 <br/>
-                {% include "Market/category_information.html" %}
+                <hr class="my-4">
+                <br/>
                 <div class=" float-right">
                     {% if user_is_artist %}
                         <a class="btn btn-primary bg-dark"
                            href="modify/">Modify this product</a>
                     {% else %}
-                        <a class="btn btn-primary bg-dark" href="../../profile/{{ product.artist.user.pk }}">Seller's
-                            Profile</a>
-
                         <button id="addToCartButton" data-cartId="{{ current_user.cart.id }}"
                                 data-productId="{{ product.pk }}" data-qtyToAdd="{{ product_in_cart.quantity }}"
                                 class="btn btn-primary bg-dark">
@@ -54,6 +52,8 @@
                                max="{{ product.quantity }}">
                         <button id="plus">+</button>
                         <br/>
+                        <br/>
+                        <a class="btn btn-primary bg-dark" href="/profile/{{ product.artist.user.pk }}">Visit the Seller's Profile</a>
                     {% endif %}
                 </div>
             </div>

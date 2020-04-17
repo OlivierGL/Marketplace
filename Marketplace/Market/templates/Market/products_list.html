@@ -1,20 +1,24 @@
 {% load static %}
 <div class="row row-cols-1 row-cols-md-3">
-    {% for item in items %}
-        <div class="col mb-4">
-            <div class="card border-dark h-100">
-                <img src="{{ item.image.url }}" class="card-img-top" alt="Image Unavailable">
-                <div class="card-body">
-                    <a class="stretched-link h5 card-title" href="product/{{ item.pk }}">{{ item.name }}</a>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-overflow">{{ item.description }}</li>
-                    <li class="list-group-item"><span class="price">${{ item.price }}</span>
-                        <span class="float-right">Quantity: {{ item.quantity }}</span></li>
-                </ul>
-            </div>
-        </div>
-    {% empty %}
-        {{ noProductErrorMessage }}
-    {% endfor %}
+  {% for item in items %}
+    <div class="col mb-4">
+    <div class="card border-dark h-100">
+      <img src="{{ item.image.url }}" class="card-img-top" alt="Image Unavailable">
+      <div class="card-body">
+        <a class="stretched-link h5 card-title" href="product/{{ item.pk }}">{{ item.name }}</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-overflow">{{ item.description }}</li>
+        <li class="list-group-item"><span class="price">${{ item.price }}</span>
+        <span class="float-right">Quantity: {{ item.quantity }}</span></li>
+      </ul>
+    </div>
+    </div>
+  {% empty %}
+    <div>
+      <br>
+      <h5>{{ noProductErrorMessage }}</h5>
+      <p>Please try again later!</p>
+    </div>
+  {% endfor %}
 </div>

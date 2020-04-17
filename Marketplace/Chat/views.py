@@ -4,11 +4,16 @@ from Users import models as user_models
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
-
+from django.core.exceptions import PermissionDenied
 
 def room(request, room_pk=None):
 	room = models.Room.objects.get(pk=room_pk)
 	chat_messages = models.Message.objects.filter(room=room)
+	user_info = user_models.UserInfo.objects.get(user=request.user)
+	# Making sure only the chat users can join.
+	if user_info != room.user1 and user_info != room.user2:
+		raise PermissionDenied()
+
 	context = {
 		'room': room,
 		'chat_messages': chat_messages,

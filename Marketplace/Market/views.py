@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import UpdateView, CreateView, DeleteView
 
-no_product_error_message = "Sorry, no {} are available for now."
+no_product_error_message = "Sorry, no {} are for sale right now."
 
 
 # Create your views here.
