@@ -1,5 +1,6 @@
 from django.db import models
 from Users.models import UserInfo
+from django.urls import reverse
 
 CATEGORY_CHOICES = (
     ("PAINTING", "Painting"),
@@ -25,6 +26,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     date_posted = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="PAINTING")
+
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'primary_key': self.artist.user.pk})
 
 
 # Extra data specific to paintings

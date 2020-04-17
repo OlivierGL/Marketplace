@@ -10,7 +10,7 @@ def room(request, room_pk=None):
 	room = models.Room.objects.get(pk=room_pk)
 	chat_messages = models.Message.objects.filter(room=room)
 	context = {
-		'room_pk': room_pk,
+		'room': room,
 		'chat_messages': chat_messages,
 		'user': request.user
 	}

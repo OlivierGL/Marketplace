@@ -2,11 +2,10 @@
 {% block content %}
     {% load static %}
     {% csrf_token %}
-    {% if previous %}
-        <a class="btn btn-dark" style="margin-bottom: 15px" href="{{ previous }}" role="button">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i> Go back
-        </a>
-    {% endif %}
+    <a class="btn btn-dark" style="margin-bottom: 15px" href="../../" role="button">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Go back
+    </a>
+
     <div class="jumbotron">
         <h4 class="display-4">{{ product.name }}</h4>
         <hr class="my-4">
@@ -35,7 +34,7 @@
                 <div class=" float-right">
                     {% if user_is_artist %}
                         <a class="btn btn-primary bg-dark"
-                           href="#">Modify this product</a>
+                           href="modify/">Modify this product</a>
                     {% else %}
                         <a class="btn btn-primary bg-dark" href="../../profile/{{ product.artist.user.pk }}">Seller's
                             Profile</a>
