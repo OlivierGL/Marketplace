@@ -5,7 +5,9 @@ from django.http import HttpResponseRedirect
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def room(request, room_pk=None):
 	room = models.Room.objects.get(pk=room_pk)
 	chat_messages = models.Message.objects.filter(room=room)
