@@ -17,8 +17,12 @@
   {% empty %}
     <div>
       <br>
-      <h5>{{ noProductErrorMessage }}</h5>
-      <p>Please try again later!</p>
+      <h5 style="width:20em">{{ noProductErrorMessage }}</h5>
+      {% if noProductSubMessage %}
+      <p>{{ noProductSubMessage }}</p>
+      {% else %}
+      <p>Please visit again later!</p>
+      {% endif %}
     </div>
   {% endfor %}
 </div>
