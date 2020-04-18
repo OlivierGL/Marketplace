@@ -15,7 +15,7 @@ class UserInfo(models.Model):
         for rating_received in self.ratings_received.all():
             ratings_sum += rating_received.rating
 
-        return ratings_sum / count if count else 0
+        return round(ratings_sum / count, 2) if count else 0
 
     rating = property(_get_rating)
 

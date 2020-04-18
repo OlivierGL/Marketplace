@@ -98,6 +98,7 @@ def cart(request):
 
     context = {'cartProducts': cart_products,
                'total': total,
+               'activeNavItem': "cart",
                'unavailableProducts': json.dumps(unavailable_products)}
 
     return render(request, 'Market/cart.html', context)
