@@ -1,7 +1,11 @@
 {% extends "Market/base.html" %}
 {% block content %}
-
-<textarea id="room-log" cols="150" rows="20" class="form-control">
+{% if user != room.user1.user %}
+<h2>Chat with {{room.user1.user.first_name}}</h2>
+{% else %}
+<h2>Chat with {{room.user2.user.first_name}}</h2>
+{% endif %}
+<textarea id="room-log" col=50 style="height:25vw" class="form-control">
 {% for message in chat_messages %} ({{message.time_sent|date:'Y-m-d H:i'}}) {{message.sender.user.first_name}} sent: {{message.content}} 
 {% endfor %} Welcome {{user.first_name}}!
 </textarea><br>
@@ -16,7 +20,7 @@
 
 <script>
 
-	var roomPk = "{{ room_pk }}";
+	var roomPk = "{{ room.pk }}";
 
 	const chatSocket = new WebSocket(
             'ws://'
@@ -50,14 +54,6 @@
         }));
         messageInputDom.value = '';
     };
-
-    var textarea = document.getElementById('room-log');
-    textarea.scrollTop = textarea.scrollHeight;
-
-    $("#room-log").change(function() {
-        $('#room-log').scrollTop($('#room-log')[0].scrollHeight);
-    });
-
 
 </script>
 

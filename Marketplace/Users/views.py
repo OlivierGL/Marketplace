@@ -92,42 +92,9 @@ def authenticate_and_login(request, form, context):
         context['form'] = form
         return render(request, 'Users/login.html', context)
 
-
 @login_required
 def profile(request, primary_key):
-    items = [{
-        'pk': 1,
-        'name': 'The Creation of the Sun and the Moon',
-        'description': "It is one of the frescoes from Michelangelo's nine Books of Genesis scenes on the Sistine Chapel ceiling.",
-        'quantity': '3',
-        'image': 'Market/thecreation.jpg',
-        'price': '4300'}, {
-        'pk': 2,
-        'name': 'Self-portrait',
-        'description': "Most probably, van Gogh's self-portraits are depicting the face as it appeared in the mirror he used to reproduce his face, i.e. his right side in the image is in reality the left side of his face.",
-        'quantity': '2',
-        'image': 'Market/selfportrait.jpg',
-        'price': '2000'}, {
-        'pk': 3,
-        'name': 'Mona Lisa',
-        'description': "The best known, the most visited, the most written about, the most sung about, the most parodied work of art in the world",
-        'quantity': '7',
-        'image': 'Market/monalisa.jpg',
-        'price': '1864'}, {
-        'pk': 4,
-        'name': 'The Scream',
-        'description': "The agonised face in the painting has become one of the most iconic images of art, seen as symbolising the anxiety of the human condition.",
-        'quantity': '1',
-        'image': 'Market/scream.jpg',
-        'price': '4300'}, {
-        'pk': 5,
-        'name': 'The Kiss',
-        'description': "The Kiss (in German Der Kuss) is an oil-on-canvas painting with added gold leaf, silver and platinum, by the Austrian Symbolist painter Gustav Klimt. It was painted at some point in 1907 and 1908, during the height of what scholars call his 'Golden Period'.",
-        'quantity': '11',
-        'image': 'Market/thekiss.jpg',
-        'price': '1000'},
-    ]
-
+     
     user_data = User.objects.get(pk=primary_key)
     user_info = UserInfo.objects.get(user=user_data)
     address = user_info.user_address.first()
@@ -152,6 +119,7 @@ def profile(request, primary_key):
             'address': address,
             'activeNavItem': "myProfile",
             'noProductErrorMessage': "You have no products for sale.",
+            'noProductSubMessage': "Sell products by clicking on the \"Add a new product\" button.",
             'chat_rooms': rooms,
         }
     else:
@@ -161,7 +129,7 @@ def profile(request, primary_key):
             'current_user_info': current_user_info,
             'address': address,
             'activeNavItem': "",
-            'noProductErrorMessage': "You have no products for sale."
+            'noProductErrorMessage': "This user has no products for sale."
         }
 
     return render(request, 'Users/profile.html', context)

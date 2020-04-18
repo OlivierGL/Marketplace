@@ -1,5 +1,6 @@
 from django.db import models
 from Users.models import UserInfo
+from django.urls import reverse
 
 CATEGORY_CHOICES = (
     ("PAINTING", "Painting"),
@@ -26,41 +27,9 @@ class Product(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="PAINTING")
 
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'primary_key': self.artist.user.pk})
 
-# Extra data specific to paintings
-class Painting(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    height = models.FloatField()
-    width = models.FloatField()
-    paint = models.CharField(max_length=50)
-
-
-# Extra data specific to sculptures
-class Sculpture(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    height = models.FloatField()
-    material = models.CharField(max_length=500)
-
-
-# Extra data specific to clothes
-class Garment(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    size = models.CharField(max_length=500)
-    materials = models.TextField()
-
-
-# Extra data specific to jewelry
-class Jewelry(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    jewels = models.TextField()
-    other_materials = models.TextField()
-
-
-# Extra data specific to glass art
-class GlassArt(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    glass_type = models.CharField(max_length=500)
-    other_materials = models.TextField()
 
 
 # Cart table, to which  cart products will be related with cart_id
