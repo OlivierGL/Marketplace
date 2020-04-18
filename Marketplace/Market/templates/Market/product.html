@@ -21,6 +21,7 @@
                     <span class="fa fa-star {% if product.artist.rating > 2.5 %} checked {% endif %}"></span>
                     <span class="fa fa-star {% if product.artist.rating > 3.5 %} checked {% endif %}"></span>
                     <span class="fa fa-star {% if product.artist.rating > 4.5 %} checked {% endif %}"></span>
+                    {% if product.artist.rating <= 0 %} - This user has no ratings yet {% endif %}
                 </small>
                 <p class="lead">{{ product.description }}</p>
                 <span class="price">${{ product.price }}</span>
@@ -53,7 +54,8 @@
                         <button id="plus">+</button>
                         <br/>
                         <br/>
-                        <a class="btn btn-primary bg-dark" href="/profile/{{ product.artist.user.pk }}">Visit the Seller's Profile</a>
+                        <a class="btn btn-primary bg-dark" href="/profile/{{ product.artist.user.pk }}">Visit the
+                            Seller's Profile</a>
                     {% endif %}
                 </div>
             </div>

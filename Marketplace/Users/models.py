@@ -12,10 +12,10 @@ class UserInfo(models.Model):
     def _get_rating(self):
         count = self.ratings_received.count()
         ratings_sum = 0
-        for rating_received in self.ratings_received:
+        for rating_received in self.ratings_received.all():
             ratings_sum += rating_received.rating
 
-        return ratings_sum / count
+        return ratings_sum / count if count else 0
 
     rating = property(_get_rating)
 

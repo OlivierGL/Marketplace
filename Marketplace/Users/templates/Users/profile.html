@@ -18,6 +18,7 @@
                     <span class="fa fa-star {% if user_info.rating > 2.5 %} checked {% endif %}"></span>
                     <span class="fa fa-star {% if user_info.rating > 3.5 %} checked {% endif %}"></span>
                     <span class="fa fa-star {% if user_info.rating > 4.5 %} checked {% endif %}"></span>
+                    {% if user_info.rating <= 0 %} <br/> No ratings computed yet {% endif %}
                 </div>
                 <div>
                     <ul class="flex-column list-group bg-light">
