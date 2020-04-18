@@ -137,4 +137,6 @@ def orders_history(request):
     context = {
         "orders": orders
     }
+
+
     return render(request, "Orders/orders_history.html", context)

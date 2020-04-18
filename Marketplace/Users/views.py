@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import UserInfo, Address
+from .models import UserInfo, Address, Rating
 from . import forms
 from django.db import IntegrityError
 from Market import models as market_models
@@ -137,18 +137,36 @@ def profile(request, primary_key):
 
 @login_required
 def rate_user(request, primary_key):
-    receiver_user_data = User.objects.get(pk=primary_key)
-    receiver_user_info = UserInfo.objects.get(user=receiver_user_data)
+    receiver_user_info = UserInfo.objects.get(pk=primary_key)
     current_user = UserInfo.objects.get(user=request.user)
 
+    existing_rating = Rating.objects.filter(receiver=receiver_user_info,
+                                            giver=current_user)
+
     if request.method == 'POST':
-        pass
+        form = forms.RatingForm(request.POST)
+        if form.is_valid():
+            if existing_rating.exists():
+                db_rating = existing_rating.first()
+                db_rating.rating = form.cleaned_data['rating']
+                db_rating.save()
+            else:
+                form.save()
+            messages.success(request, "Your rating has been computed successfully!")
+        else:
+            messages.error(request,
+                           "Something went wrong and your rating could not be computed. Please try again later.")
+        return HttpResponseRedirect(reverse('orders-history'))
     else:
-        form = forms.RatingForm(initial={'receiver': receiver_user_info,
-                                         'giver': current_user,
-                                         'rating': 0})
+        if existing_rating.exists():
+            form = forms.RatingForm(instance=existing_rating.first())
+        else:
+            form = forms.RatingForm(initial={'receiver': receiver_user_info,
+                                             'giver': current_user,
+                                             'rating': 1})
         context = {
             'form': form,
-            'receiver': receiver_user_info
+            'receiver': receiver_user_info,
+            'ratingExists': existing_rating.exists()
         }
         return render(request, 'Users/rate_user.html', context)

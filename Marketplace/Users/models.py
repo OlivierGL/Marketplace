@@ -23,7 +23,7 @@ class UserInfo(models.Model):
 class Rating(models.Model):
     receiver = models.ForeignKey(UserInfo, related_name="ratings_received", on_delete=models.CASCADE)
     giver = models.ForeignKey(UserInfo, related_name="ratings_given", on_delete=models.CASCADE)
-    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
 
 class Address(models.Model):
