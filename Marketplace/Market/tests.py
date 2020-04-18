@@ -3,6 +3,7 @@ from . import models
 from Users import models as users_models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from Users import urls
 
 
 # Create your tests here.
@@ -49,16 +50,25 @@ class test_market(TestCase):
 	        category="PAINTING"
 	    )
 
-	def test_products_deleted_after_user_deleted(self):
-		self.my_setup()
-		products = models.Product.objects.filter(artist=self.user_info1)
-		self.user1.delete()
-		self.assertIs(False, products.exists())
-
-
+	# Checks if users can delete other users' products.
 	def test_delete_product_wrong_user(self):
 		self.my_setup()
 		url = reverse('delete_product', kwargs={'pk':self.product.pk})
 		self.client.login(username=self.user2.username, password='password123')
 		response = self.client.get(url)
 		self.assertIs(True, response.status_code == 403)
+
+
+	# Checks if we get redirected when trying to access a profile page when logged out
+	def test_accessing_profiles_loggedout_redirects(self):
+		self.my_setup()
+		url = reverse('profile', kwargs={ 'primary_key':self.user1.pk})
+		response = self.client.get(url)
+		self.assertIs(True, response.status_code == 302)
+
+	# Checks if products get deleted when the seller's user gets deleted
+	def test_products_deleted_after_user_deleted(self):
+		self.my_setup()
+		products = models.Product.objects.filter(artist=self.user_info1)
+		self.user1.delete()
+		self.assertIs(False, products.exists())
