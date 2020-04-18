@@ -1,7 +1,7 @@
 {% extends "Market/base.html" %}
 {% block content %}
     {% load static %}
-    {% if CartProducts|length > 0 %}
+    {% if cartProducts|length > 0 %}
         <div class="row">
             <div class="col-4">
                 <div class="d-flex flex-column">
@@ -27,7 +27,7 @@
             </div>
             <div class="col-8">
                 <div class="row row-cols-1 row-cols-md-3">
-                    {% for cartProduct in CartProducts %}
+                    {% for cartProduct in cartProducts %}
                         {% with item=cartProduct.product %}
                             <div class="col mb-4">
                                 <div class="card border-dark h-100">
@@ -53,4 +53,27 @@
     {% else %}
         <h4 class="display-4">Your cart is currently empty</h4>
     {% endif %}
+    <span id="modalData" data-unavailableProducts=""></span>
+    {% include "Market/modal.html" %}
 {% endblock content %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $(document).ready(function () {
+            setCartModal();
+        });
+
+        function setCartModal() {
+            debugger;
+            let unavailableProducts = {{ unavailableProducts|safe }};
+            if (unavailableProducts.length) {
+                let message = "The following products are not available in stock for the " +
+                    "quantity desired anymore and have been " +
+                    "either updated or removed from your cart: " + unavailableProducts.join(', ');
+                let messageType = "Error";
+                showModal(message, messageType);
+            }
+        }
+    </script>
+{% endblock %}
