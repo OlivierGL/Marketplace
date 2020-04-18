@@ -45,7 +45,7 @@ class SignupForm(AddressForm):
     password_confirm = forms.CharField()
 
     def clean(self):
-        cleaned_data = super(AddressForm, self).clean()
+        cleaned_data = super(SignupForm, self).clean()
 
         if 'password' in cleaned_data:
             try:
