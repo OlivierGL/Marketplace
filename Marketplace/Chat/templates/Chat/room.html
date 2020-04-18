@@ -5,7 +5,7 @@
 {% else %}
 <h2>Chat with {{room.user2.user.first_name}}</h2>
 {% endif %}
-<textarea id="room-log" col=50 style="height:25vw" class="form-control">
+<textarea readonly id="room-log" col=50 class="form-control" style="height:25vw;box-shadow:none;" onclick="this.blur();" >
 {% for message in chat_messages %} ({{message.time_sent|date:'Y-m-d H:i'}}) {{message.sender.user.first_name}} sent: {{message.content}} 
 {% endfor %} Welcome {{user.first_name}}!
 </textarea><br>

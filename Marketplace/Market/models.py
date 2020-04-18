@@ -23,7 +23,7 @@ class Product(models.Model):
     description = models.TextField()
     quantity = models.IntegerField()
     image = models.FileField(upload_to=get_image_path)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     date_posted = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="PAINTING")
 
