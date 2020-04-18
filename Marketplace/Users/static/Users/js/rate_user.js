@@ -1,6 +1,7 @@
 $(document).ready(function () {
     setUpStars();
-    click_rate_starts(1);
+    let initialRating = $("#ratingInput").val()
+    click_rate_stars(initialRating);
 });
 
 function setUpStars() {
@@ -13,7 +14,7 @@ function setUpStars() {
         });
 
         star.click(function () {
-            click_rate_starts(i);
+            click_rate_stars(i);
         })
     }
 }
@@ -33,7 +34,7 @@ function hover_rate_stars(rating) {
     }
 }
 
-function click_rate_starts(rating) {
+function click_rate_stars(rating) {
     $("#ratingInput").val(rating);
     for (let i = 1; i <= rating; i++) {
         let star = $("#rate_star_" + i);
