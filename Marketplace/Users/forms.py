@@ -10,6 +10,12 @@ class LoginForm(forms.Form):
     password = forms.CharField()
 
 
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = models.Rating
+        fields = ['receiver', 'giver', 'rating']
+
+
 class AddressForm(forms.ModelForm):
     class Meta:
         model = models.Address

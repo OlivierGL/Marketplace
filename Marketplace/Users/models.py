@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # The Marketplace user. The Django User is used as a building block, but additional information is
@@ -7,7 +8,22 @@ from django.contrib.auth.models import User
 class UserInfo(models.Model):
     phone_number = models.TextField(null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rating = models.IntegerField()
+
+    def _get_rating(self):
+        count = self.ratings_received.count()
+        ratings_sum = 0
+        for rating_received in self.ratings_received:
+            ratings_sum += rating_received.rating
+
+        return ratings_sum / count
+
+    rating = property(_get_rating)
+
+
+class Rating(models.Model):
+    receiver = models.ForeignKey(UserInfo, related_name="ratings_received", on_delete=models.CASCADE)
+    giver = models.ForeignKey(UserInfo, related_name="ratings_given", on_delete=models.CASCADE)
+    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
 
 
 class Address(models.Model):

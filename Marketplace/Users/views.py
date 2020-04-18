@@ -92,12 +92,12 @@ def authenticate_and_login(request, form, context):
         context['form'] = form
         return render(request, 'Users/login.html', context)
 
+
 @login_required
 def profile(request, primary_key):
-     
     user_data = User.objects.get(pk=primary_key)
     user_info = UserInfo.objects.get(user=user_data)
-    address = user_info.user_address.first()
+    address = user_info.user_address.filter(is_default_shipping=True).first()
     current_user_info = UserInfo.objects.get(user=request.user)
     chats = chat_models.Room.objects.filter(Q(user1=current_user_info) | Q(user2=current_user_info))
 
@@ -133,3 +133,22 @@ def profile(request, primary_key):
         }
 
     return render(request, 'Users/profile.html', context)
+
+
+@login_required
+def rate_user(request, primary_key):
+    receiver_user_data = User.objects.get(pk=primary_key)
+    receiver_user_info = UserInfo.objects.get(user=receiver_user_data)
+    current_user = UserInfo.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        pass
+    else:
+        form = forms.RatingForm(initial={'receiver': receiver_user_info,
+                                         'giver': current_user,
+                                         'rating': 0})
+        context = {
+            'form': form,
+            'receiver': receiver_user_info
+        }
+        return render(request, 'Users/rate_user.html', context)
