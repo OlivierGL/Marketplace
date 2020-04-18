@@ -92,7 +92,6 @@ def authenticate_and_login(request, form, context):
         context['form'] = form
         return render(request, 'Users/login.html', context)
 
-
 @login_required
 def profile(request, primary_key):
      
