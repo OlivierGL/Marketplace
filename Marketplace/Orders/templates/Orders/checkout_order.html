@@ -1,89 +1,89 @@
 {% extends "Market/base.html" %}
 {% block content %}
-    {% load static %}
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/cart">Your cart</a></li>
-            <li class="breadcrumb-item"><a href="/order/review-shipping">Confirm shipping address</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Checkout order</li>
-        </ol>
-    </nav>
-    <h1>Checkout your order</h1>
-    <div class="d-flex flex-column">
-        <div class="head bg-dark text-center p-2">
-            <h4>Order summary</h4>
-        </div>
+  {% load static %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/cart">Your cart</a></li>
+      <li class="breadcrumb-item"><a href="/order/review-shipping">Confirm shipping address</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Checkout order</li>
+    </ol>
+  </nav>
+  <h1>Checkout your order</h1>
+  <div class="d-flex flex-column">
+    <div class="head bg-dark text-center p-2">
+      <h4>Order summary</h4>
     </div>
-    <ul class="d-flex list-group list-group-horizontal bg-light">
-        <li class="bg-light list-group-item">
-            <ul id="productsUl" class="list-inline bg-light">
-                <hr/>
-                {% for cartProduct in cartProducts %}
-                    <li class="bg-light list-inline-item">
-                        <div class="row">
-                            <div class="col-8">
-                                <h4 class="display-4">{{ cartProduct.product.name }}</h4>
-                                Qty: {{ cartProduct.quantity }} <br/>
-                                Unit price: ${{ cartProduct.product.price }}
-                            </div>
-                            <div class="col-4">
-                                <img src="{{ cartProduct.product.image.url }}" class="img-fluid img-thumbnail"
-                                     alt="image unavailable">
-                            </div>
-                        </div>
-                    </li>
-                    <hr/>
-                {% endfor %}
-            </ul>
+  </div>
+  <ul class="d-flex list-group list-group-horizontal bg-light">
+    <li class="bg-light list-group-item">
+      <ul id="productsUl" class="list-inline bg-light">
+        <hr/>
+        {% for cartProduct in cartProducts %}
+          <li class="bg-light list-inline-item">
+            <div class="row">
+              <div class="col-8">
+                <h4 class="display-4">{{ cartProduct.product.name }}</h4>
+                Qty: {{ cartProduct.quantity }} <br/>
+                Unit price: ${{ cartProduct.product.price }}
+              </div>
+              <div class="col-4">
+                <img src="{{ cartProduct.product.image.url }}" class="img-fluid img-thumbnail"
+                   alt="image unavailable">
+              </div>
+            </div>
+          </li>
+          <hr/>
+        {% endfor %}
+      </ul>
+    </li>
+    <li class="bg-light list-group-item">
+      <ul class="list-inline bg-light">
+        <li class="bg-light list-inline-item">
+          <div class="font-weight-light text-nowrap">
+            <h6>Shipping information</h6>
+            {{ user.first_name }} {{ user.last_name }} <br/>
+            {{ address.street_address }} <br/>
+            {{ address.city }}, {{ address.province }}, {{ address.country }} - {{ address.postal_code }}
+            <br/>
+          </div>
         </li>
-        <li class="bg-light list-group-item">
-            <ul class="list-inline bg-light">
-                <li class="bg-light list-inline-item">
-                    <div class="font-weight-light text-nowrap">
-                        <h6>Shipping information</h6>
-                        {{ user.first_name }} {{ user.last_name }} <br/>
-                        {{ address.street_address }} <br/>
-                        {{ address.city }}, {{ address.province }}, {{ address.country }} - {{ address.postal_code }}
-                        <br/>
-                    </div>
-                </li>
-                <hr/>
-                <li class="bg-light list-inline-item">
-                    <div class="row">
-                        <div class="col-8">Subtotal:</div>
-                        <div class="col-4">CAD$<span id="subtotalAmount">{{ price.subtotal }}</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">Provincial taxes:</div>
-                        <div class="col-4">CAD$<span id="provTaxes">{{ price.provTaxes }}</span></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">Federal taxes:</div>
-                        <div class="col-4">CAD$<span id="fedTaxes">{{ price.fedTaxes }}</span></div>
-                    </div>
-                    <hr/>
-                    <div class="row">
-                        <div class="col-8">Total:</div>
-                        <div class="col-4">CAD$<span id="totalAmount">{{ price.total }}</span></div>
-                    </div>
-                </li>
-                <hr/>
-                <li class="bg-light list-inline-item">
-                    <h6>Click the button below to finish the purchase via PayPal</h6>
-                    <div id="paypalFormDiv" data-cartPageUrl="{% url 'cart' %}" data-buyerId="{{ user.id }}"
-                         data-paypalInvoice="{{ paypalInvoice }}"
-                         class="container text-center">
-                        <!-- writes out the form tag automatically -->
-                        {{ form.render }}
-                    </div>
-                </li>
-            </ul>
+        <hr/>
+        <li class="bg-light list-inline-item">
+          <div class="row">
+            <div class="col-8">Subtotal:</div>
+            <div class="col-4">CAD$<span id="subtotalAmount">{{ price.subtotal }}</span></div>
+          </div>
+          <div class="row">
+            <div class="col-8">Provincial taxes:</div>
+            <div class="col-4">CAD$<span id="provTaxes">{{ price.provTaxes }}</span></div>
+          </div>
+          <div class="row">
+            <div class="col-8">Federal taxes:</div>
+            <div class="col-4">CAD$<span id="fedTaxes">{{ price.fedTaxes }}</span></div>
+          </div>
+          <hr/>
+          <div class="row">
+            <div class="col-8">Total:</div>
+            <div class="col-4">CAD$<span id="totalAmount">{{ price.total }}</span></div>
+          </div>
         </li>
-    </ul>
-    {% include "Market/modal.html" %}
+        <hr/>
+        <li class="bg-light list-inline-item">
+          <h6>Click the button below to finish the purchase via PayPal</h6>
+          <div id="paypalFormDiv" data-cartPageUrl="{% url 'cart' %}" data-buyerId="{{ user.id }}"
+             data-paypalInvoice="{{ paypalInvoice }}"
+             class="container text-center">
+            <!-- writes out the form tag automatically -->
+            {{ form.render }}
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  {% include "Market/modal.html" %}
 {% endblock content %}
 
 {% block scripts %}
-    {{ block.super }}
-    <script src="{% static "Orders/js/checkout.js" %}"></script>
+  {{ block.super }}
+  <script src="{% static "Orders/js/checkout.js" %}"></script>
 {% endblock %}

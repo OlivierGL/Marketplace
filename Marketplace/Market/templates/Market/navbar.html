@@ -1,40 +1,40 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-    <div class="row w-100">
-        <div class="col-md-4">
-            <a class="navbar-brand" href="/">MontreArt</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMarketplace"
-                    aria-controls="navbarMarketplace" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-        <div class="col-md-4">
-            <div class="collapse navbar-collapse" id="navbarMarketplace">
-                <div class="container">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item {% if 'browse' in activeNavItem %}active{% endif %}">
-                            <a class="nav-link" href="/">Our Market</a>
-                        </li>
-                        {% if request.user.is_authenticated %}
-                            <li class="nav-item {% if activeNavItem == 'cart' %}active{% endif %}">
-                                <a class="nav-link" href="/cart">Cart</a>
-                            </li>
-                            <li class="nav-item {% if activeNavItem == 'myProfile' %}active{% endif %}">
-                                <a class="nav-link" href="/profile/{{ request.user.pk }}">My Profile</a>
-                            </li>
-                            <li class="nav-item {% if activeNavItem == 'logout' %}active{% endif %}">
-                                <a class="nav-link" href="/logout">Logout</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item {% if activeNavItem == 'signup' %}active{% endif %}">
-                                <a class="nav-link" href="/signup">Signup</a>
-                            </li>
-                            <li class="nav-item {% if activeNavItem == 'login' %}active{% endif %}">
-                                <a class="nav-link" href="/login">Login</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </div>
+  <div class="row w-100">
+    <div class="col-md-4">
+      <a class="navbar-brand" href="/">MontreArt</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMarketplace"
+          aria-controls="navbarMarketplace" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     </div>
+    <div class="col-md-4">
+      <div class="collapse navbar-collapse" id="navbarMarketplace">
+        <div class="container">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item {% if 'browse' in activeNavItem %}active{% endif %}">
+              <a class="nav-link" href="/">Our Market</a>
+            </li>
+            {% if request.user.is_authenticated %}
+              <li class="nav-item {% if activeNavItem == 'cart' %}active{% endif %}">
+                <a class="nav-link" href="/cart">Cart</a>
+              </li>
+              <li class="nav-item {% if activeNavItem == 'myProfile' %}active{% endif %}">
+                <a class="nav-link" href="/profile/{{ request.user.pk }}">My Profile</a>
+              </li>
+              <li class="nav-item {% if activeNavItem == 'logout' %}active{% endif %}">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            {% else %}
+              <li class="nav-item {% if activeNavItem == 'signup' %}active{% endif %}">
+                <a class="nav-link" href="/signup">Signup</a>
+              </li>
+              <li class="nav-item {% if activeNavItem == 'login' %}active{% endif %}">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>

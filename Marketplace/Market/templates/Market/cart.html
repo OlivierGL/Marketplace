@@ -1,78 +1,78 @@
 {% extends "Market/base.html" %}
 {% block content %}
-    {% load static %}
-    {% if cartProducts|length > 0 %}
-        <div class="row">
-            <div class="col-4">
-                <div class="d-flex flex-column">
-                    <div class="head bg-dark text-center p-2">
-                        <h4>Your cart</h4>
-                    </div>
-                </div>
-                <div>
-                    <ul class="flex-column list-group bg-light">
-                        <li class="bg-light list-group-item">
-                            <p class="lead">
-                                Click on the product to update the quantity in the cart.
-                            </p>
-                            <br/>
-                            Total: ${{ total }}
-                        </li>
-                        <li class="bg-light list-group-item text-center">
-                            <a class="btn btn-primary bg-dark"
-                               href="/order/review-shipping">Checkout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-8">
-                <div class="row row-cols-1 row-cols-md-3">
-                    {% for cartProduct in cartProducts %}
-                        {% with item=cartProduct.product %}
-                            <div class="col mb-4">
-                                <div class="card border-dark h-100">
-                                    <img src="{{ item.image.url }}" class="card-img-top" alt="image unavailable">
-                                    <div class="card-body">
-                                        <a class="stretched-link h5 card-title"
-                                           href="product/{{ item.pk }}">{{ item.name }}</a>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item text-overflow">{{ item.description }}</li>
-                                        <li class="list-group-item">Unit price: <span
-                                                class="price">${{ item.price }}</span>
-                                            <br/>
-                                            Quantity in cart: {{ cartProduct.quantity }}</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        {% endwith %}
-                    {% endfor %}
-                </div>
-            </div>
+  {% load static %}
+  {% if cartProducts|length > 0 %}
+    <div class="row">
+      <div class="col-4">
+        <div class="d-flex flex-column">
+          <div class="head bg-dark text-center p-2">
+            <h4>Your cart</h4>
+          </div>
         </div>
-    {% else %}
-        <h4 class="display-4">Your cart is currently empty</h4>
-    {% endif %}
-    <span id="modalData" data-unavailableProducts=""></span>
-    {% include "Market/modal.html" %}
+        <div>
+          <ul class="flex-column list-group bg-light">
+            <li class="bg-light list-group-item">
+              <p class="lead">
+                Click on the product to update the quantity in the cart.
+              </p>
+              <br/>
+              Total: ${{ total }}
+            </li>
+            <li class="bg-light list-group-item text-center">
+              <a class="btn btn-primary bg-dark"
+                 href="/order/review-shipping">Checkout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="row row-cols-1 row-cols-md-3">
+          {% for cartProduct in cartProducts %}
+            {% with item=cartProduct.product %}
+              <div class="col mb-4">
+                <div class="card border-dark h-100">
+                  <img src="{{ item.image.url }}" class="card-img-top" alt="image unavailable">
+                  <div class="card-body">
+                    <a class="stretched-link h5 card-title"
+                       href="product/{{ item.pk }}">{{ item.name }}</a>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-overflow">{{ item.description }}</li>
+                    <li class="list-group-item">Unit price: <span
+                        class="price">${{ item.price }}</span>
+                      <br/>
+                      Quantity in cart: {{ cartProduct.quantity }}</li>
+                  </ul>
+                </div>
+              </div>
+            {% endwith %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <h4 class="display-4">Your cart is currently empty</h4>
+  {% endif %}
+  <span id="modalData" data-unavailableProducts=""></span>
+  {% include "Market/modal.html" %}
 {% endblock content %}
 
 {% block scripts %}
-    {{ block.super }}
-    <script>
-        $(document).ready(function () {
-            setCartModal();
-        });
+  {{ block.super }}
+  <script>
+    $(document).ready(function () {
+      setCartModal();
+    });
 
-        function setCartModal() {
-            let unavailableProducts = {{ unavailableProducts|safe }};
-            if (unavailableProducts.length) {
-                let message = "The following products are not available in stock for the " +
-                    "quantity desired anymore and have been " +
-                    "either updated or removed from your cart: " + unavailableProducts.join(', ');
-                let messageType = "Error";
-                showModal(message, messageType);
-            }
-        }
-    </script>
+    function setCartModal() {
+      let unavailableProducts = {{ unavailableProducts|safe }};
+      if (unavailableProducts.length) {
+        let message = "The following products are not available in stock for the " +
+          "quantity desired anymore and have been " +
+          "either updated or removed from your cart: " + unavailableProducts.join(', ');
+        let messageType = "Error";
+        showModal(message, messageType);
+      }
+    }
+  </script>
 {% endblock %}
