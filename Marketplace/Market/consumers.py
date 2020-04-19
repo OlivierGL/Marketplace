@@ -1,6 +1,8 @@
-from channels.generic.websocket import WebsocketConsumer
-from . import models
 import json
+
+from channels.generic.websocket import WebsocketConsumer
+
+from . import models
 
 
 class ProductConsumer(WebsocketConsumer):

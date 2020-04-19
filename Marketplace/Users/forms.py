@@ -1,8 +1,10 @@
+import re
+
 from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+
 from . import models
-import re
 
 
 class LoginForm(forms.Form):

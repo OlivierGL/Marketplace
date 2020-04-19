@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from . import models
-from Users import models as user_models
-from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import UpdateView, CreateView, DeleteView
 import json
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render
+from django.views.generic import UpdateView, CreateView, DeleteView
+
+from Users import models as user_models
+from . import models
 
 no_product_error_message = "Sorry, no {} are for sale right now."
 
@@ -19,6 +21,7 @@ def home(request):
         'noProductErrorMessage': no_product_error_message.format("products")
     }
     return render(request, 'Market/browse.html', context)
+
 
 # View for the paintings page (displays the paintings)
 def paintings(request):
@@ -41,6 +44,7 @@ def sculptures(request):
     }
     return render(request, 'Market/browse.html', context)
 
+
 # View for the clothes page (displays the clothes)
 def clothes(request):
     context = {
@@ -51,6 +55,7 @@ def clothes(request):
     }
     return render(request, 'Market/browse.html', context)
 
+
 # View for the jewelry page (displays the jewelry)
 def jewelry(request):
     context = {
@@ -60,6 +65,7 @@ def jewelry(request):
         'noProductErrorMessage': no_product_error_message.format("jewelry")
     }
     return render(request, 'Market/browse.html', context)
+
 
 # View for the glass art page (displays the glass art)
 def glass_art(request):
@@ -75,7 +81,6 @@ def glass_art(request):
 # View for the cart, which 
 @login_required
 def cart(request):
-
     current_user = user_models.UserInfo.objects.get(user=request.user)
     cart_products = models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
 
@@ -110,7 +115,7 @@ def cart(request):
 def product(request, pk):
     # Getting the product from the database
     product_db = models.Product.objects.get(pk=pk)
-    #Getting the user's data
+    # Getting the user's data
     if request.user.is_authenticated:
         current_user = models.UserInfo.objects.get(user=request.user)
         product_in_cart = current_user.cart.cart_products.filter(product=product_db, quantity__gt=0).first()

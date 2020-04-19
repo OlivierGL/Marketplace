@@ -1,16 +1,18 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
-from paypal.standard.forms import PayPalPaymentsForm
-from Users import models as user_models
-from Users.forms import AddressForm
-from Market import models as market_models
-from . import models
 import decimal
 import uuid
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.forms import PayPalPaymentsForm
+
+from Market import models as market_models
+from Users import models as user_models
+from Users.forms import AddressForm
+from . import models
 
 PROV_TAX_RATE = decimal.Decimal(0.09975)
 FED_TAX_RATE = decimal.Decimal(0.05)
@@ -52,7 +54,7 @@ def checkout_order(request):
     price = calculate_price(cart_products)
 
     # unique paypal id
-    paypal_invoice = "ppal-id-"+str(uuid.uuid4())
+    paypal_invoice = "ppal-id-" + str(uuid.uuid4())
 
     # PayPal button info
     paypal_dict = {
@@ -137,6 +139,5 @@ def orders_history(request):
     context = {
         "orders": orders
     }
-
 
     return render(request, "Orders/orders_history.html", context)

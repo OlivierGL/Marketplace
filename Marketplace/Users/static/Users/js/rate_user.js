@@ -1,6 +1,6 @@
 $(document).ready(function () {
     setUpStars();
-    let initialRating = $("#ratingInput").val()
+    let initialRating = $("#ratingInput").val();
     click_rate_stars(initialRating);
 });
 

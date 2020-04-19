@@ -1,6 +1,7 @@
 from django.db import models
-from Users.models import UserInfo, Address
+
 from Market.models import Product
+from Users.models import UserInfo, Address
 
 ORDER_STATUS = (
     ("PAID", "Paid"),

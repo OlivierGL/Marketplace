@@ -1,16 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import UserInfo, Address, Rating
-from . import forms
+from django.contrib.auth.models import User
 from django.db import IntegrityError
-from Market import models as market_models
-from Chat import models as chat_models
 from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+
+from Chat import models as chat_models
+from Market import models as market_models
+from . import forms
+from .models import UserInfo, Address, Rating
 
 
 # Create your views here.

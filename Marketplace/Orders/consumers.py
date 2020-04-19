@@ -1,8 +1,10 @@
-from channels.generic.websocket import WebsocketConsumer
-from Users import models as user_models
-from Market import models as market_models
-from . import models
 import json
+
+from channels.generic.websocket import WebsocketConsumer
+
+from Market import models as market_models
+from Users import models as user_models
+from . import models
 
 
 class OrdersConsumer(WebsocketConsumer):

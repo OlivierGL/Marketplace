@@ -1,6 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 
 # The Marketplace user. The Django User is used as a building block, but additional information is

@@ -1,7 +1,7 @@
-from django.urls import path
 from django.conf.urls import include
-from . import views
+from django.urls import path
 
+from . import views
 
 urlpatterns = [
     path('checkout/', views.checkout_order, name='checkout'),

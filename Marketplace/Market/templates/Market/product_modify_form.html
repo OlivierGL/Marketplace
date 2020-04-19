@@ -2,18 +2,18 @@
 
 <!-- Form to update a product that's already on the market -->
 {% block content %}
-<h1> Modify "{{ form.instance.name }}" </h1>
-<form action="" method="post", enctype="multipart/form-data">
-  {% csrf_token %}a
+    <h1> Modify "{{ form.instance.name }}" </h1>
+    <form action="" method="post" , enctype="multipart/form-data">
+        {% csrf_token %}a
 
-  <!-- Form body -->
-  {% include "Market/product_form_body.html" %}
+        <!-- Form body -->
+        {% include "Market/product_form_body.html" %}
 
-  <!-- Action buttons -->
-  <div>
-    <input class="btn btn-dark" type="submit" value="Update"/> 
-    <a class="btn btn-dark" href="../delete">Delete</a>
-    <a class="btn btn-outline-secondary" href="../"/>Cancel</a>
-  </div>
-</form>
+        <!-- Action buttons -->
+        <div>
+            <input class="btn btn-dark" type="submit" value="Update"/>
+            <a class="btn btn-dark" href="../delete">Delete</a>
+            <a class="btn btn-outline-secondary" href="../">Cancel</a>
+        </div>
+    </form>
 {% endblock content %}

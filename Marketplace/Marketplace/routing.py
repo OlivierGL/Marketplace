@@ -1,9 +1,9 @@
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-import Market.routing
-import Chat.routing
-import Orders.routing
 
+import Chat.routing
+import Market.routing
+import Orders.routing
 
 application = ProtocolTypeRouter({
     # (http->django views is added by default)

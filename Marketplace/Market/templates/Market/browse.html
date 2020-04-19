@@ -3,13 +3,13 @@
 <!-- Displays the sidebar and the product list with a title defined in the -->
 <!-- view that renders this template -->
 {% block content %}
-<h1>Browse {{ category }}</h1>
-<div class="row">
-  <div class="col-3">
-    {% include "Market/browse_sidebar.html" %}
-  </div>
-  <div class="col-9">
-    {% include "Market/products_list.html" %}
-  </div>
-</div>
+    <h1>Browse {{ category }}</h1>
+    <div class="row">
+        <div class="col-3">
+            {% include "Market/browse_sidebar.html" %}
+        </div>
+        <div class="col-9">
+            {% include "Market/products_list.html" %}
+        </div>
+    </div>
 {% endblock content %}
