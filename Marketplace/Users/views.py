@@ -24,7 +24,7 @@ def signup(request):
         form = forms.SignupForm(request.POST)
         if form.is_valid():
             try:
-                user_db = create_user(
+                user_db = User.objects.create_user(
                     username=form.cleaned_data['username'],
                     email=form.cleaned_data['email'],
                     password=form.cleaned_data['password'],
@@ -33,7 +33,6 @@ def signup(request):
 
                 user_info_db = UserInfo.objects.create(
                     user=user_db,
-                    rating=0,
                     phone_number=form.cleaned_data['phone_number']
                 )
 

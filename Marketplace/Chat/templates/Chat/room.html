@@ -1,62 +1,73 @@
 {% extends "Market/base.html" %}
 {% block content %}
+
+<!-- Setting the title of the room -->
 {% if user != room.user1.user %}
 <h2>Chat with {{room.user1.user.first_name}}</h2>
 {% else %}
 <h2>Chat with {{room.user2.user.first_name}}</h2>
 {% endif %}
+
+<!-- What's below looks messy but it was required to leave it like this for pretty formatting -->
+<!-- This is the chat box where the messages are displayed -->
 <textarea readonly id="room-log" col=50 class="form-control" style="height:25vw;box-shadow:none;" onclick="this.blur();" >
-{% for message in chat_messages %} ({{message.time_sent|date:'Y-m-d H:i'}}) {{message.sender.user.first_name}} sent: {{message.content}} 
+{% for message in chat_messages %}({{message.time_sent|date:'Y-m-d H:i'}}) {{message.sender.user.first_name}} sent: {{message.content}} 
 {% endfor %} Welcome {{user.first_name}}!
-</textarea><br>
+</textarea><br/>
+
+<!-- Box to type a message -->
 <div class="row">
-<input type="text" id="room-message" class="form-control"/> 
-</div>
-<br>
+  <input type="text" id="room-message" class="form-control"/> 
+</div><br/>
+
+<!-- Button to send the message -->
 <div class="text-right">
-<input type='submit' value='Send Message' id='room-send' class="btn btn-primary bg-dark"/> 
+  <input type='submit' value='Send Message' id='room-send' class="btn btn-primary bg-dark"/> 
 </div>
 
 
 <script>
+  // Creating the socket
+  var roomPk = "{{ room.pk }}";
 
-	var roomPk = "{{ room.pk }}";
+  const chatSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/chat/'
+    + roomPk
+    + '/'
+  );
 
-	const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomPk
-            + '/'
-    );
+// parsing received messages and printing them in the chat box
+  chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    document.querySelector('#room-log').value += (data.message + '\n');
+  };
 
-	chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            document.querySelector('#room-log').value += (data.message + '\n');
-    };
-	
-	chatSocket.onclose = function(e) {
-		console.error('Chat socket closed unexpectedly');
-	}
+  chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+  }
 
-	document.querySelector('#room-message').focus();
-    document.querySelector('#room-message').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#room-send').click();
-        }
-    };
+  // Setting up the send button to get clicked when enter or return are pressed 
+  // when typing in the message box
+  document.querySelector('#room-message').focus();
+  document.querySelector('#room-message').onkeyup = function(e) {
+    if (e.keyCode === 13) {  // enter, return
+      document.querySelector('#room-send').click();
+    }
+  };
 
-    document.querySelector('#room-send').onclick = function(e) {
-        const messageInputDom = document.querySelector('#room-message');
-        const message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-            'message': message
-        }));
-        messageInputDom.value = '';
-    };
-
+  // Sending the message data to the socket when the send button is clicked.
+  document.querySelector('#room-send').onclick = function(e) {
+    const messageInputDom = document.querySelector('#room-message');
+    const message = messageInputDom.value;
+    chatSocket.send(JSON.stringify({
+      'message': message
+    }));
+    // clearing the message box
+    messageInputDom.value = '';
+  };
 </script>
-
 
 {% endblock content %}
 

@@ -1,61 +1,76 @@
 <fieldset>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label for="productName">Name of your Product:</label>
-                <input type="text" class="form-control" name="name" id="productName"
-                       value="{{ form.instance.name }}">
-                <small id="productNameError" class="form-text text-muted">{{ form.instance.product_name.errors }}</small>
-            </div>
-        </div>
+
+  <!-- Product name input -->
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="productName">Name of your Product:</label>
+        <input type="text" class="form-control" name="name" id="productName"
+        value="{{ form.instance.name }}">
+        <small id="productNameError" 
+        class="form-text text-muted">{{ form.instance.product_name.errors }}</small>
+      </div>
     </div>
-    <div class = "row">
-        <div class="col">
-            <div class="form-group">
-                <label for="productDescription">Description of your Product:</label>
-                <input type="text" class="form-control" id="productDescriptionInput" name="description"
-                       value="{{ form.instance.description }}">
-                <small id="productDescriptionError" class="form-text text-muted">{{ form.instance.description.errors }}</small>
-            </div>
-        </div>
+  </div>
+
+  <!-- Product description input -->
+  <div class = "row">
+    <div class="col">
+      <div class="form-group">
+        <label for="productDescription">Description of your Product:</label>
+        <input type="text" class="form-control" id="productDescriptionInput" name="description"
+        value="{{ form.instance.description }}">
+        <small id="productDescriptionError" class="form-text text-muted">{{ form.instance.description.errors }}</small>
+      </div>
     </div>
-    <div class="row">
-    	<div class="col">
-            <div class="form-group">
-                <label for="quantityInput">Quantity for Sale:</label>
-                <input type="number" min="1" max="10000" class="form-control" id="quantityInput" name="quantity"
-                       value="{{ form.instance.quantity }}">
-                <small id="quantityError" class="form-text text-muted">{{ form.instance.quantity.errors }}</small>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label for="priceInput">Product Price (in Canadian Dollars):</label>
-                <input type="number" step="0.01" min="0" max="9999.99"class="form-control" id="priceInput" name="price"
-                       value="{{ form.instance.price }}"/>
-                <small id="priceError" class="form-text text-muted">{{ form.instance.price.errors }}</small>
-            </div>
-        </div>
+  </div>
+
+  <!-- Product quantity input -->
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="quantityInput">Quantity for Sale:</label>
+        <input type="number" min="1" max="10000" class="form-control" id="quantityInput" name="quantity"
+        value="{{ form.instance.quantity }}">
+        <small id="quantityError" 
+        class="form-text text-muted">{{ form.instance.quantity.errors }}</small>
+      </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label for="imageInput">Product Picture:</label>
-                <input type="file" class="form-control" id="imageInput" name="image"/>
-                <small id="imageError" class="form-text text-muted">{{ form.instance.image.errors }}</small>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label for="categoryInput">Product Category: </label>
-                <select class="form-control" id="categoryInput" name="category">
-                	<option value="PAINTING">Painting</option>
-                	<option value="SCULPTURE">Sculpture</option>
-                	<option value="JEWELRY">Jewelry</option>
-                	<option value="GARMENT">Garment</option>
-                	<option value="GLASS_ART">Glass Art</option>
-                </select>
-            </div>
-        </div>
+
+    <!-- Product price input -->
+    <div class="col">
+      <div class="form-group">
+        <label for="priceInput">Product Price (in Canadian Dollars):</label>
+        <input type="number" step="0.01" min="0" max="9999.99"class="form-control" id="priceInput" 
+        name="price" value="{{ form.instance.price }}"/>
+        <small id="priceError" class="form-text text-muted">{{ form.instance.price.errors }}</small>
+      </div>
     </div>
+  </div>
+
+  <!-- Product picture input-->
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="imageInput">Product Picture:</label>
+        <input type="file" class="form-control" id="imageInput" name="image"/>
+        <small id="imageError" class="form-text text-muted">{{ form.instance.image.errors }}</small>
+      </div>
+    </div>
+
+    <!-- Product category input-->
+    <div class="col">
+      <div class="form-group">
+        <label for="categoryInput">Product Category: </label>
+        <select class="form-control" id="categoryInput" name="category">
+          <option value="PAINTING">Painting</option>
+          <option value="SCULPTURE">Sculpture</option>
+          <option value="JEWELRY">Jewelry</option>
+          <option value="GARMENT">Garment</option>
+          <option value="GLASS_ART">Glass Art</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
 </fieldset>

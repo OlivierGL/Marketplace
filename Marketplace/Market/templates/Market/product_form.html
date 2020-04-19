@@ -1,14 +1,18 @@
 {% extends "Market/base.html" %}
-{% block content %}
 
+<!-- Form to add a product to the market -->
+{% block content %}
 <h1>Add a Product for Sale</h1>
 <form action="" method="post", enctype="multipart/form-data">
-    {% csrf_token %}
-    {% include "Market/product_form_body.html" %}
-    <div>
-        <input class="btn btn-dark" type="submit" value="Sell Product"/>
-        <a class="btn btn-outline-secondary" href="../"/>Cancel</a> 
-    </div>
-</form>
+  {% csrf_token %}
 
+  <!-- form body -->
+  {% include "Market/product_form_body.html" %}
+
+  <!-- Action buttons -->
+  <div>
+    <input class="btn btn-dark" type="submit" value="Sell Product"/>
+    <a class="btn btn-outline-secondary" href="../"/>Cancel</a> 
+  </div>
+</form>
 {% endblock content %}
