@@ -24,7 +24,7 @@ class AddressForm(forms.ModelForm):
         fields = ['country', 'province', 'city', 'street_address', 'postal_code']
 
     def clean(self):
-        cleaned_data = super(AddressForm, self).clean()
+        cleaned_data = super().clean()
 
         if 'postal_code' in cleaned_data:
             self.validate_postal_code(cleaned_data['postal_code'])
@@ -32,6 +32,8 @@ class AddressForm(forms.ModelForm):
         for key, value in cleaned_data.items():
             if not value and key in self.initial:
                 cleaned_data[key] = self.initial[key]
+
+        return cleaned_data
 
     def validate_postal_code(self, postal_code):
         # regex for validating postal code for Montreal area only
@@ -53,7 +55,7 @@ class SignupForm(AddressForm):
     password_confirm = forms.CharField()
 
     def clean(self):
-        cleaned_data = super(AddressForm, self).clean()
+        cleaned_data = super().clean()
 
         if 'password' in cleaned_data:
             try:
