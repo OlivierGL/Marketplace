@@ -1,17 +1,17 @@
 {% extends "Market/base.html" %}
 {% block content %}
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/cart">Your cart</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Confirm shipping address</li>
-        </ol>
-    </nav>
-    <h1>Please confirm your shipping address</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        {% include "Users/address_form_fields.html" %}
-        <p>
-            <input class="btn btn-primary" type="submit" value="Confirm shipping address"/>
-        </p>
-    </form>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/cart">Your cart</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Confirm shipping address</li>
+    </ol>
+  </nav>
+  <h1>Please confirm your shipping address</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    {% include "Users/address_form_fields.html" %}
+    <p>
+      <input class="btn btn-primary" type="submit" value="Confirm shipping address"/>
+    </p>
+  </form>
 {% endblock %}

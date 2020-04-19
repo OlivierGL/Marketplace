@@ -2,75 +2,75 @@
 {% load static %}
 
 {% block styles %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static "Users/css/rate_user.css" %}">
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static "Users/css/rate_user.css" %}">
 {% endblock styles %}
 
 {% block content %}
 
-    <div id="centeredDiv" class="d-flex flex-column">
-        <div class="head bg-dark text-center p-2">
-            <h4>Rate {{ receiver.user.first_name }} {{ receiver.user.last_name }}</h4>
-        </div>
-        <div class="text-center">
-            <ul class="flex-column list-group bg-light">
-                <li class="bg-light list-group-item">
-                    Rate {{ receiver.user.first_name }}'s art and shopping experience from 1 to 5 stars!
-                </li>
-                {% if ratingExists %}
-                    <li class="bg-light list-group-item">
-                        You have already rated this seller. You can update your rate.
-                    </li>
-                {% endif %}
-                <li class="bg-light list-group-item">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <fieldset>
-                            <div class="form-group">
-                                <input type="hidden" class="form-control" id="receiverInput" name="receiver"
-                                       value="{{ form.receiver.value }}">
-                                <input type="hidden" class="form-control" id="giverInput" name="giver"
-                                       value="{{ form.giver.value }}">
-                                <input type="hidden" class="form-control" id="ratingInput" name="rating"
-                                       value="{{ form.rating.value }}">
-
-                                <div id="starsDiv">
-                                    <div class="d-inline-block">
-                                        <span id="rate_star_1" class="fa fa-star"></span>
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <span id="rate_star_2" class="fa fa-star"></span>
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <span id="rate_star_3" class="fa fa-star"></span>
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <span id="rate_star_4" class="fa fa-star"></span>
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <span id="rate_star_5" class="fa fa-star"></span>
-                                    </div>
-                                </div>
-
-                                <small id="ratingError" class="form-text text-muted">{{ form.rating.errors }}</small>
-                            </div>
-                            <p>
-                                <a class="btn btn-dark" href="{% url 'orders-history' %}" role="button">
-                                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Go back
-                                </a>
-                                <input class="btn btn-primary" type="submit"
-                                       value="{% if ratingExists %}Update rating{% else %}Send rating{% endif %}"/>
-                            </p>
-                        </fieldset>
-                    </form>
-                </li>
-            </ul>
-        </div>
+  <div id="centeredDiv" class="d-flex flex-column">
+    <div class="head bg-dark text-center p-2">
+      <h4>Rate {{ receiver.user.first_name }} {{ receiver.user.last_name }}</h4>
     </div>
+    <div class="text-center">
+      <ul class="flex-column list-group bg-light">
+        <li class="bg-light list-group-item">
+          Rate {{ receiver.user.first_name }}'s art and shopping experience from 1 to 5 stars!
+        </li>
+        {% if ratingExists %}
+          <li class="bg-light list-group-item">
+            You have already rated this seller. You can update your rate.
+          </li>
+        {% endif %}
+        <li class="bg-light list-group-item">
+          <form action="" method="post">
+            {% csrf_token %}
+            <fieldset>
+              <div class="form-group">
+                <input type="hidden" class="form-control" id="receiverInput" name="receiver"
+                     value="{{ form.receiver.value }}">
+                <input type="hidden" class="form-control" id="giverInput" name="giver"
+                     value="{{ form.giver.value }}">
+                <input type="hidden" class="form-control" id="ratingInput" name="rating"
+                     value="{{ form.rating.value }}">
+
+                <div id="starsDiv">
+                  <div class="d-inline-block">
+                    <span id="rate_star_1" class="fa fa-star"></span>
+                  </div>
+                  <div class="d-inline-block">
+                    <span id="rate_star_2" class="fa fa-star"></span>
+                  </div>
+                  <div class="d-inline-block">
+                    <span id="rate_star_3" class="fa fa-star"></span>
+                  </div>
+                  <div class="d-inline-block">
+                    <span id="rate_star_4" class="fa fa-star"></span>
+                  </div>
+                  <div class="d-inline-block">
+                    <span id="rate_star_5" class="fa fa-star"></span>
+                  </div>
+                </div>
+
+                <small id="ratingError" class="form-text text-muted">{{ form.rating.errors }}</small>
+              </div>
+              <p>
+                <a class="btn btn-dark" href="{% url 'orders-history' %}" role="button">
+                  <i class="fa fa-arrow-left" aria-hidden="true"></i> Go back
+                </a>
+                <input class="btn btn-primary" type="submit"
+                     value="{% if ratingExists %}Update rating{% else %}Send rating{% endif %}"/>
+              </p>
+            </fieldset>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 {% endblock content %}
 
 {% block scripts %}
-    {{ block.super }}
-    <script src="{% static "Users/js/rate_user.js" %}"></script>
+  {{ block.super }}
+  <script src="{% static "Users/js/rate_user.js" %}"></script>
 {% endblock scripts %}

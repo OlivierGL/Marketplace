@@ -6,12 +6,12 @@ import Market.routing
 import Orders.routing
 
 application = ProtocolTypeRouter({
-    # (http->django views is added by default)
-    'websocket': AuthMiddlewareStack(
-        URLRouter(
-            Market.routing.websocket_urlpatterns +
-            Chat.routing.websocket_urlpatterns +
-            Orders.routing.websocket_urlpatterns
-        )
-    ),
+  # (http->django views is added by default)
+  'websocket': AuthMiddlewareStack(
+    URLRouter(
+      Market.routing.websocket_urlpatterns +
+      Chat.routing.websocket_urlpatterns +
+      Orders.routing.websocket_urlpatterns
+    )
+  ),
 })

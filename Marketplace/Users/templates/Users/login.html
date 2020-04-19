@@ -1,26 +1,26 @@
 {% extends "Market/base.html" %}
 {% block content %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <h2>Login</h2>
-        <fieldset>
-            <div class="form-group">
-                <label for="usernameInput">Username</label>
-                <input type="text" class="form-control" id="usernameInput" name="username"
-                       value="{{ form.data.username }}">
-                <small id="usernameError" class="form-text text-muted">{{ form.username.errors }}</small>
-            </div>
-            <div class="form-group">
-                <label for="passwordInput">Password</label>
-                <input type="password" class="form-control" id="passwordInput" name="password">
-                <small id="passwordError" class="form-text text-muted">{{ form.password.errors }}</small>
-            </div>
-            <p>
-                <input class="btn btn-primary" type="submit" value="Login"/>
-            </p>
-        </fieldset>
-    </form>
-    <br>
-    <p class="text-muted"> Don't have an account?</p>
-    <a style="color:DodgerBlue;" href="/signup">Sign up here!</a>
+  <form action="" method="post">
+    {% csrf_token %}
+    <h2>Login</h2>
+    <fieldset>
+      <div class="form-group">
+        <label for="usernameInput">Username</label>
+        <input type="text" class="form-control" id="usernameInput" name="username"
+             value="{{ form.data.username }}">
+        <small id="usernameError" class="form-text text-muted">{{ form.username.errors }}</small>
+      </div>
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input type="password" class="form-control" id="passwordInput" name="password">
+        <small id="passwordError" class="form-text text-muted">{{ form.password.errors }}</small>
+      </div>
+      <p>
+        <input class="btn btn-primary" type="submit" value="Login"/>
+      </p>
+    </fieldset>
+  </form>
+  <br>
+  <p class="text-muted"> Don't have an account?</p>
+  <a style="color:DodgerBlue;" href="/signup">Sign up here!</a>
 {% endblock content %}

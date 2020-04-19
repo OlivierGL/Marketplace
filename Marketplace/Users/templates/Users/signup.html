@@ -1,71 +1,71 @@
 {% extends "Market/base.html" %}
 {% block content %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <h2>Personal Information</h2>
-        <fieldset>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="firstNameInput">First Name</label>
-                        <input type="text" class="form-control" id="firstNameInput" name="first_name"
-                               value="{{ form.data.first_name }}">
-                        <small id="firstNameError" class="form-text text-muted">{{ form.first_name.errors }}</small>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="lastNameInput">Last Name</label>
-                        <input type="text" class="form-control" id="lastNameInput" name="last_name"
-                               value="{{ form.data.last_name }}">
-                        <small id="lastNameError" class="form-text text-muted">{{ form.last_name.errors }}</small>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="usernameInput">Username</label>
-                <input type="text" class="form-control" id="usernameInput" name="username"
-                       value="{{ form.data.username }}">
-                <small id="usernameError" class="form-text text-muted">{{ form.username.errors }}</small>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="emailInput">Email address</label>
-                        <input type="email" class="form-control" id="emailInput" name="email"
-                               value="{{ form.data.email }}"
-                               placeholder="email@example.com">
-                        <small id="emailError" class="form-text text-muted">{{ form.email.errors }}</small>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="phoneInput">Phone number</label>
-                        <input type="number" class="form-control" id="phoneInput" name="phone_number"
-                               value="{{ form.data.phone_number }}">
-                        <small id="phoneError" class="form-text text-muted">{{ form.phone_number.errors }}</small>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="passwordInput">Password</label>
-                <input type="password" class="form-control" id="passwordInput" name="password">
-                <small id="passwordError" class="form-text text-muted">{{ form.password.errors }}</small>
-            </div>
-            <div class="form-group">
-                <label for="passwordConfirmInput">Confirm Password</label>
-                <input type="password" class="form-control" id="passwordConfirmInput" name="password_confirm">
-                <small id="passwordConfirmError"
-                       class="form-text text-muted">{{ form.password_confirm.errors }}</small>
-            </div>
-        </fieldset>
+  <form action="" method="post">
+    {% csrf_token %}
+    <h2>Personal Information</h2>
+    <fieldset>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="firstNameInput">First Name</label>
+            <input type="text" class="form-control" id="firstNameInput" name="first_name"
+                 value="{{ form.data.first_name }}">
+            <small id="firstNameError" class="form-text text-muted">{{ form.first_name.errors }}</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="lastNameInput">Last Name</label>
+            <input type="text" class="form-control" id="lastNameInput" name="last_name"
+                 value="{{ form.data.last_name }}">
+            <small id="lastNameError" class="form-text text-muted">{{ form.last_name.errors }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="usernameInput">Username</label>
+        <input type="text" class="form-control" id="usernameInput" name="username"
+             value="{{ form.data.username }}">
+        <small id="usernameError" class="form-text text-muted">{{ form.username.errors }}</small>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="emailInput">Email address</label>
+            <input type="email" class="form-control" id="emailInput" name="email"
+                 value="{{ form.data.email }}"
+                 placeholder="email@example.com">
+            <small id="emailError" class="form-text text-muted">{{ form.email.errors }}</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="phoneInput">Phone number</label>
+            <input type="number" class="form-control" id="phoneInput" name="phone_number"
+                 value="{{ form.data.phone_number }}">
+            <small id="phoneError" class="form-text text-muted">{{ form.phone_number.errors }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input type="password" class="form-control" id="passwordInput" name="password">
+        <small id="passwordError" class="form-text text-muted">{{ form.password.errors }}</small>
+      </div>
+      <div class="form-group">
+        <label for="passwordConfirmInput">Confirm Password</label>
+        <input type="password" class="form-control" id="passwordConfirmInput" name="password_confirm">
+        <small id="passwordConfirmError"
+             class="form-text text-muted">{{ form.password_confirm.errors }}</small>
+      </div>
+    </fieldset>
 
-        <hr/>
+    <hr/>
 
-        <h2>Address</h2>
-        {% include "Users/address_form_fields.html" %}
-        <p>
-            <input class="btn btn-primary" type="submit" value="Signup"/>
-        </p>
-    </form>
+    <h2>Address</h2>
+    {% include "Users/address_form_fields.html" %}
+    <p>
+      <input class="btn btn-primary" type="submit" value="Signup"/>
+    </p>
+  </form>
 {% endblock content %}
