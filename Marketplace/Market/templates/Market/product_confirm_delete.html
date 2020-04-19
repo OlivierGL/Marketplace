@@ -1,24 +1,22 @@
 {% extends "Market/base.html" %}
-{% block content %}
-<script>
-    function twoDecimalPlaces(event) {
-        this.value = parseFloat(this.value).toFixed(2);
-    }
-</script>
-<form action="" method="post", enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-group">
-    <h2>Delete Product</h2>
-    <fieldset>
-        <br>
-        <h3>Are you sure you want to remove "{{ object.name }}" from MontreArt?</h3>
-    </fieldset>
-        <div>
-            <br>
-            <input class="btn btn-outline-danger" type="submit" value="Yes, Remove it"/>
-            <a class="btn btn-outline-secondary" href="../modify/"/>Cancel</a>
-        </div>
-    </div>
-</form>
 
+{% block content %}
+<form action="" method="post", enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="form-group">
+
+    <!-- Delete product prompt -->
+    <h2>Delete Product</h2>
+    <fieldset><br/>
+      <h3>Are you sure you want to remove "{{ object.name }}" from MontreArt?</h3>
+    </fieldset>
+
+    <!-- Action buttons -->
+    <div><br/>
+      <input class="btn btn-outline-danger" type="submit" value="Yes, Remove it"/>
+      <a class="btn btn-outline-secondary" href="../modify/"/>Cancel</a>
+    </div>
+
+  </div>
+</form>
 {% endblock content %}

@@ -10,7 +10,7 @@ import json
 no_product_error_message = "Sorry, no {} are for sale right now."
 
 
-# Create your views here.
+# View for the home page of the webapp (displays all products) 
 def home(request):
     context = {
         'category': "all products",
@@ -20,7 +20,7 @@ def home(request):
     }
     return render(request, 'Market/browse.html', context)
 
-
+# View for the paintings page (displays the paintings)
 def paintings(request):
     context = {
         'category': "Paintings",
@@ -31,6 +31,7 @@ def paintings(request):
     return render(request, 'Market/browse.html', context)
 
 
+# View for the sculptures page (displays the sculptures)
 def sculptures(request):
     context = {
         'category': "Sculptures",
@@ -40,7 +41,7 @@ def sculptures(request):
     }
     return render(request, 'Market/browse.html', context)
 
-
+# View for the clothes page (displays the clothes)
 def clothes(request):
     context = {
         'category': "Clothes",
@@ -50,7 +51,7 @@ def clothes(request):
     }
     return render(request, 'Market/browse.html', context)
 
-
+# View for the jewelry page (displays the jewelry)
 def jewelry(request):
     context = {
         'category': "Jewelry",
@@ -60,7 +61,7 @@ def jewelry(request):
     }
     return render(request, 'Market/browse.html', context)
 
-
+# View for the glass art page (displays the glass art)
 def glass_art(request):
     context = {
         'category': "Glass Art",
@@ -71,10 +72,11 @@ def glass_art(request):
     return render(request, 'Market/browse.html', context)
 
 
+# View for the cart, which 
 @login_required
 def cart(request):
-    current_user = user_models.UserInfo.objects.get(user=request.user)
 
+    current_user = user_models.UserInfo.objects.get(user=request.user)
     cart_products = models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
 
     total = 0
@@ -104,11 +106,17 @@ def cart(request):
     return render(request, 'Market/cart.html', context)
 
 
+# View that renders the page that presents a product
 def product(request, pk):
+    # Getting the product from the database
     product_db = models.Product.objects.get(pk=pk)
+    #Getting the user's data
     if request.user.is_authenticated:
         current_user = models.UserInfo.objects.get(user=request.user)
         product_in_cart = current_user.cart.cart_products.filter(product=product_db, quantity__gt=0).first()
+        # Checking if the user is the seller, aka artist. This allows to 
+        # display different action buttons depending on who's accessing the 
+        # product page
         user_is_artist = request.user.id == product_db.artist.user.id
     else:
         current_user = None
@@ -123,50 +131,33 @@ def product(request, pk):
     return render(request, 'Market/product.html', context)
 
 
-'''
-def add_product(request, pk):
-    context = {}
-    if request.method == 'POST':
-        add_product_form = forms.AddProductForm(request.POST, request.FILES)
-        if add_product_form.is_valid():
-            product = add_product_form.save(commit=False)
-            product.artist = user_models.UserInfo.objects.get(user=request.user)
-            product.save()
-
-            messages.success(request, 'Product Added Successfuly')
-            return HttpResponseRedirect('../')
-        else:
-            messages.error(request, 'Error: Product wasn\'t Added Successfuly')
-            context['form'] = forms.AddProductForm()
-            return render(request, 'Market/add_product.html', context)
-
-    else:
-        form = forms.AddProductForm()
-        context['form'] = form
-        return render(request, 'Market/add_product.html', context)
-'''
-
-
+# CreateView to add a product to the market
 class add_product(LoginRequiredMixin, CreateView):
     model = models.Product
     fields = ['name', 'description', 'quantity', 'price', 'image', 'category']
 
     def form_valid(self, form):
+        # Storing the current user as the artist
         form.instance.artist = user_models.UserInfo.objects.get(user=self.request.user)
         messages.success(self.request, 'Product Added Successfuly')
         return super().form_valid(form)
 
 
+# UpdateView to update a product
 class modify_product(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = models.Product
     fields = ['name', 'description', 'quantity', 'price', 'image', 'category']
     template_name_suffix = '_modify_form'
+    # Goes back to the product's page after success
     success_url = '../'
 
     def form_valid(self, form):
+        # Setting the current user as the Artist
         form.instance.artist = user_models.UserInfo.objects.get(user=self.request.user)
         return super().form_valid(form)
 
+    # Method that verifies that the user trying to modify the product
+    # is indeed the seller
     def test_func(self):
         product = self.get_object()
         if product.artist.user == self.request.user:
@@ -174,10 +165,14 @@ class modify_product(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
+# DeleteView to delete a product
 class delete_product(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    # Goes back to the page before the product page on success
     success_url = '../../../'
     model = models.Product
 
+    # Method that verifies that the user trying to delete the product
+    # is indeed the seller
     def test_func(self):
         product = self.get_object()
         if product.artist.user == self.request.user:
@@ -185,7 +180,7 @@ class delete_product(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
-# Below is only to match different url parameters.
+# Below is only to match different url parameters. Same as product above.
 def product_prof(request, pk, primary_key):
     product_db = models.Product.objects.get(pk=pk)
     if request.user.is_authenticated:
