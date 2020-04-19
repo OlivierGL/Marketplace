@@ -12,8 +12,7 @@
     <!-- This is the chat box where the messages are displayed -->
     <textarea readonly id="room-log" col=50 class="form-control" style="height:25vw;box-shadow:none;"
               onclick="this.blur();">
-{% for message in chat_messages %}({{ message.time_sent|date:'Y-m-d H:i' }}) {{ message.sender.user.first_name }} sent:
-    {{ message.content }}
+{% for message in chat_messages %}({{ message.time_sent|date:'Y-m-d H:i' }}) {{ message.sender.user.first_name }} sent: {{ message.content }}
 {% endfor %} Welcome {{ user.first_name }}!
 </textarea><br/>
 

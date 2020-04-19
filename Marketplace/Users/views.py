@@ -113,7 +113,7 @@ def profile(request, primary_key):
     # current user's profile.
     if user_info == current_user_info:
         context = {
-            'items': market_models.Product.objects.filter(artist=user_info),
+            'items': market_models.Product.objects.filter(artist=user_info, quantity__gt=0),
             'user_info': user_info,
             'current_user_info': current_user_info,
             'address': address,
@@ -124,7 +124,7 @@ def profile(request, primary_key):
         }
     else:
         context = {
-            'items': market_models.Product.objects.filter(artist=user_info),
+            'items': market_models.Product.objects.filter(artist=user_info, quantity__gt=0),
             'user_info': user_info,
             'current_user_info': current_user_info,
             'address': address,
