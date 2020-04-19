@@ -1,0 +1,21 @@
+#centeredDiv {
+    width: 30%;
+    margin: auto;
+}
+
+#starsDiv {
+    font-size: 0;
+}
+
+#starsDiv span {
+    padding-right: 7px;
+    font-size: 35px;
+}
+
+.bordered-star {
+    text-shadow: 0 0 3px #000;
+}
+
+.hovered {
+    color: darkgoldenrod;
+}

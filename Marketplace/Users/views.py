@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import UserInfo, Address
+from .models import UserInfo, Address, Rating
 from . import forms
 from django.db import IntegrityError
 from Market import models as market_models
@@ -24,7 +24,7 @@ def signup(request):
         form = forms.SignupForm(request.POST)
         if form.is_valid():
             try:
-                user_db = User.objects.create_user(
+                user_db = create_user(
                     username=form.cleaned_data['username'],
                     email=form.cleaned_data['email'],
                     password=form.cleaned_data['password'],
@@ -92,12 +92,12 @@ def authenticate_and_login(request, form, context):
         context['form'] = form
         return render(request, 'Users/login.html', context)
 
+
 @login_required
 def profile(request, primary_key):
-     
     user_data = User.objects.get(pk=primary_key)
     user_info = UserInfo.objects.get(user=user_data)
-    address = user_info.user_address.first()
+    address = user_info.user_address.filter(is_default_shipping=True).first()
     current_user_info = UserInfo.objects.get(user=request.user)
     chats = chat_models.Room.objects.filter(Q(user1=current_user_info) | Q(user2=current_user_info))
 
@@ -133,3 +133,40 @@ def profile(request, primary_key):
         }
 
     return render(request, 'Users/profile.html', context)
+
+
+@login_required
+def rate_user(request, primary_key):
+    receiver_user_info = UserInfo.objects.get(pk=primary_key)
+    current_user = UserInfo.objects.get(user=request.user)
+
+    existing_rating = Rating.objects.filter(receiver=receiver_user_info,
+                                            giver=current_user)
+
+    if request.method == 'POST':
+        form = forms.RatingForm(request.POST)
+        if form.is_valid():
+            if existing_rating.exists():
+                db_rating = existing_rating.first()
+                db_rating.rating = form.cleaned_data['rating']
+                db_rating.save()
+            else:
+                form.save()
+            messages.success(request, "Your rating has been computed successfully!")
+        else:
+            messages.error(request,
+                           "Something went wrong and your rating could not be computed. Please try again later.")
+        return HttpResponseRedirect(reverse('orders-history'))
+    else:
+        if existing_rating.exists():
+            form = forms.RatingForm(instance=existing_rating.first())
+        else:
+            form = forms.RatingForm(initial={'receiver': receiver_user_info,
+                                             'giver': current_user,
+                                             'rating': 1})
+        context = {
+            'form': form,
+            'receiver': receiver_user_info,
+            'ratingExists': existing_rating.exists()
+        }
+        return render(request, 'Users/rate_user.html', context)

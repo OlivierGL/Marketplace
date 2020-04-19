@@ -10,6 +10,12 @@ class LoginForm(forms.Form):
     password = forms.CharField()
 
 
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = models.Rating
+        fields = ['receiver', 'giver', 'rating']
+
+
 class AddressForm(forms.ModelForm):
     class Meta:
         model = models.Address
@@ -45,7 +51,7 @@ class SignupForm(AddressForm):
     password_confirm = forms.CharField()
 
     def clean(self):
-        cleaned_data = super(AddressForm, self).clean()
+        cleaned_data = super(SignupForm, self).clean()
 
         if 'password' in cleaned_data:
             try:

@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from . import models
 from Users import models as user_models
-from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import UpdateView, CreateView, DeleteView
+import json
 
 no_product_error_message = "Sorry, no {} are for sale right now."
 
@@ -78,11 +78,29 @@ def cart(request):
     cart_products = models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
 
     total = 0
+    unavailable_products = []
     for cart_product in cart_products:
+        # Validate if product is still available
+        if cart_product.product.quantity < cart_product.quantity:
+            unavailable_products.append(cart_product.product.name)
+            if cart_product.product.quantity <= 0:
+                cart_product.delete()
+                continue
+            else:
+                cart_product.quantity = cart_product.product.quantity
+                cart_product.save()
+
         product_total_price = cart_product.product.price * cart_product.quantity
         total += product_total_price
 
-    context = {'CartProducts': cart_products, 'total': total}
+    # Get products list again since it may have been updated
+    cart_products = models.CartProduct.objects.filter(cart=current_user.cart, quantity__gt=0)
+
+    context = {'cartProducts': cart_products,
+               'total': total,
+               'activeNavItem': "cart",
+               'unavailableProducts': json.dumps(unavailable_products)}
+
     return render(request, 'Market/cart.html', context)
 
 
@@ -101,7 +119,7 @@ def product(request, pk):
                'current_user': current_user,
                'product_in_cart': product_in_cart,
                'user_is_artist': user_is_artist,
-                }
+               }
     return render(request, 'Market/product.html', context)
 
 
@@ -155,8 +173,8 @@ class modify_product(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
-class delete_product(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
+class delete_product(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = '../../../'
     model = models.Product
 
@@ -165,7 +183,6 @@ class delete_product(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if product.artist.user == self.request.user:
             return True
         return False
-
 
 
 # Below is only to match different url parameters.
@@ -184,6 +201,5 @@ def product_prof(request, pk, primary_key):
                'current_user': current_user,
                'product_in_cart': product_in_cart,
                'user_is_artist': user_is_artist,
-                }
+               }
     return render(request, 'Market/product.html', context)
-

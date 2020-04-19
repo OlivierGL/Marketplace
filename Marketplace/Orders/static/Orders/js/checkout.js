@@ -10,7 +10,7 @@ checkoutPageSocket.onmessage = function (e) {
     let data = JSON.parse(e.data);
     let errors = data['errors'];
     if (errors) {
-        let message = "The following products are not available in stock anymore. Your cart has been updated. " + errors.join(', ');
+        let message = "An error has occurred and your order could not be processed. Please try again later.";
         let type = "Error";
         showModal(message, type);
         $("#modalWsMessage").on('hidden.bs.modal', function () {
