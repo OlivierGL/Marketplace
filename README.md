@@ -24,9 +24,10 @@ pip3 install django-paypal
 
 
 Run migrations, redis and the Django server in project/Marketplace/:  
-redis-server & 
+redis-server &           
 python3 manage.py migrate  
-python3 manage.py runserver  
+python3 manage.py runserver
+ 
 
 Go to http://127.0.0.1:8000/
 
