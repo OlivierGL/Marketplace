@@ -37,6 +37,10 @@ python3 .\manage.py test Users
 python3 .\manage.py test Market  
 
 
+# GitHub
+
+https://github.com/OlivierGL/Marketplace
+
 # PayPal
 
 Since the project is not going to be deployed, we use a Sandbox PayPal account.  
