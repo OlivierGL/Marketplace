@@ -6,7 +6,7 @@ Olivier Grenier-Leboeuf - 260869338
 
 # How to run
 
-Install python3 and pip:  
+Install python3 and pip (we used python 3.7.3 and above):  
 sudo apt-get update && sudo apt-get -y upgrade  
 sudo apt-get install python3  
 sudo apt-get install -y python3-pip  
@@ -23,18 +23,18 @@ Install specific django apps for this project (PayPal):
 pip3 install django-paypal
 
 
-Run migrations, redis and server:  
-python3 .\manage.py migrate  
-redis-server  
-python3 .\manage.py runserver  
+Run migrations, redis and the Django server in project/Marketplace/:  
+redis-server & 
+python3 manage.py migrate  
+python3 manage.py runserver  
 
 Go to http://127.0.0.1:8000/
 
 
 # Run tests
 
-python3 .\manage.py test Users  
-python3 .\manage.py test Market  
+python3 manage.py test Users  
+python3 manage.py test Market  
 
 
 # GitHub
